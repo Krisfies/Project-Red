@@ -15,9 +15,6 @@ func main() {
 	switch menu {
 	case 1:
 		p1.DisplayInfo()
-		p1.TakePot()
-		p1.DisplayInfo()
-		p1.AccessInventory()
 	case 2:
 		p1.AccessInventory()
 	case 3:
