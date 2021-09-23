@@ -69,12 +69,16 @@ func (p *Personnage) TakePot(){
 		if letter == "Potion de vie" {
 			if p.lp <= (p.lpmax - 50) {
 				p.lp += 50
+				p.inventory[len(p.inventory)-1] = ""
+				break
 			} else if p.lp > (p.lpmax - 50) && p.lp < p.lpmax {
 				p.lp = p.lpmax
+				p.inventory[len(p.inventory)-1] = ""
+				break
 			} else {
 				fmt.Println("Vous êtes full")
+				break
 			}
-			p.inventory[len(p.inventory)-1] = ""
 		}
 	}
 }
