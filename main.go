@@ -7,7 +7,7 @@ import (
 
 func main() {
 	var p1 Personnage
-	p1.Init("Matéo", "elfe", 1, 100, 0, []string{"Potion de vie", "Potion de vie", "Potion de vie"})
+	p1.Init("Matéo", "elfe", 1, 100, 30, []string{"Potion de vie", "Potion de vie", "Potion de vie"})
 
 	var menu int
 	fmt.Println("-----------")
@@ -104,9 +104,9 @@ func (p *Personnage) TakePot() {
 
 func (p *Personnage) Dead() {
 	if p.lp == 0 {
-		fmt.Println("Bravo, vous êtes mort. \n")
+		fmt.Printf("Bravo, vous êtes mort. \n")
 		time.Sleep(2 * time.Second)
-		fmt.Println("Mais ne paniquez pas, vous allez être ressuciter \n")
+		fmt.Printf("Mais ne paniquez pas, vous allez être ressuciter \n")
 		time.Sleep(2 * time.Second)
 		fmt.Println("Manoeuvre de réanimation en cours. . .")
 		time.Sleep(3 * time.Second)
