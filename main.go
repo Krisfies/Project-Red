@@ -7,36 +7,29 @@ import (
 
 func main() {
 	var p1 Personnage
-	p1.Init("Matéo", "elfe", 1, 100, 30, []string{"Potion de vie", "Potion de vie", "Potion de vie"}, []string{"Coup de poing"})
-	p1.spellbook("Feu")
-	fmt.Println(p1.skill)
-	// var menu int
-	// fmt.Println("+++++++++++++++++++++++++++++++")
-	// fmt.Println("A quoi voulez vous accéder:")
-	// time.Sleep(1 * time.Second)
-	// fmt.Println("----- \n Afficher les informations du personnage (1)")
-	// time.Sleep(1 * time.Second)
-	// fmt.Println("----- \n Accéder au contenu de l’inventaire (2)")
-	// time.Sleep(1 * time.Second)
-	// fmt.Println("----- \n Voir le Marchand (3)")
-	// time.Sleep(1 * time.Second)
-	// fmt.Println("----- \n Quitter (4) \n-----")
-	// time.Sleep(1 * time.Second)
-	// fmt.Println("Entrez le numéro de l'option:")
-	// fmt.Println("+++++++++++++++++++++++++++++++")
-	// fmt.Scanln(&menu)
-	// switch menu {
-	// case 1:
-	// 	p1.DisplayInfo()
-	// 	p1.Dead()
-	// case 2:
-	// 	p1.AccessInventory()
-	// case 3:
-	// 	p1.Marchand()
-	// case 4:
-	// 	fmt.Println("Fin de la transmission")
-	// 	break
-	// }
+	p1.Init("Bijoux", "elfe", 1, 100, 30, []string{"Potion de vie", "Potion de vie", "Potion de vie"}, []string{"Coup de poing"})
+	var menu int
+	fmt.Println("+++++++++++++++++++++++++++++++")
+	fmt.Println("A quoi voulez vous accéder:")
+	fmt.Println("----- \n Afficher les informations du personnage (1)")
+	fmt.Println("----- \n Accéder au contenu de l’inventaire (2)")
+	fmt.Println("----- \n Voir le Marchand (3)")
+	fmt.Println("----- \n Quitter (4) \n-----")
+	fmt.Println("Entrez le numéro de l'option:")
+	fmt.Println("+++++++++++++++++++++++++++++++")
+	fmt.Scanln(&menu)
+	switch menu {
+	case 1:
+		p1.DisplayInfo()
+		p1.Dead()
+	case 2:
+		p1.AccessInventory()
+	case 3:
+		p1.Marchand()
+	case 4:
+		fmt.Println("Fin de la transmission")
+		break
+	}
 }
 
 type Personnage struct {
@@ -93,7 +86,7 @@ func (p *Personnage) spellbook(item string) {
 			*h = append(*h, item)
 		}
 	}
-	// retour()
+	retour()
 }
 
 func (p *Personnage) Marchand() {
