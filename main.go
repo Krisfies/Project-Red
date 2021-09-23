@@ -8,7 +8,7 @@ func main() {
 
 	var menu int
 	fmt.Println("-----------")
-	fmt.Println("A quoi voulez vous accéder? \n Option 1: Afficher les informations du personnage \n Option 2: Accéder au contenu de l’inventaire \n Option 3: Quitter ")
+	fmt.Println("A quoi voulez vous accéder? \n Option 1: Afficher les informations du personnage \n Option 2: Accéder au contenu de l’inventaire \n Option 3: Voir le Marchand\n Option 4: Quitter ")
 	fmt.Println("Entrez le numéro de l'option")
 	fmt.Println("-----------")
 	fmt.Scanln(&menu)
@@ -21,6 +21,8 @@ func main() {
 	case 2:
 		p1.AccessInventory()
 	case 3:
+		p1.Marchand()
+	case 4:
 		fmt.Println("Fin de la transmission")
 		break
 	}
@@ -52,6 +54,25 @@ func (p Personnage) AccessInventory() {
 		fmt.Println("---]", p.inventory[i], "[---")
 	}
 }
+func (p *Personnage) Marchand() {
+	var menum int
+	fmt.Println("-----------------Marchand-------------------")
+	fmt.Println("tapez 1 pour obtenir une Potion de vie ;)")
+	fmt.Println("tapez 2 pour obtenir une Potion de poison ;(")
+	fmt.Println("____________________________________________")
+	fmt.Scanln(&menum)
+	switch menum {
+	case 1:
+		p.inventory = append(p.inventory, "Potion de vie")
+		p.AccessInventory()
+	case 2:
+		p.inventory = append(p.inventory, "Potion de poison")
+		p.AccessInventory()
+	}
+
+	p.inventory = append(p.inventory, "Potion de vie")
+	fmt.Println("Potion de vie")
+}
 
 func (p Personnage) DisplayInfo() {
 	fmt.Println("-----------")
@@ -64,14 +85,14 @@ func (p Personnage) DisplayInfo() {
 	fmt.Println("-----------")
 }
 
-func (p *Personnage) TakePot(){
+func (p *Personnage) TakePot() {
 	for _, letter := range p.inventory {
 		if letter == "Potion de vie" {
 			if p.lp <= (p.lpmax - 50) {
 				p.lp += 50
 				p.inventory[len(p.inventory)-1] = ""
 				break
-			} else if p.lp > (p.lpmax - 50) && p.lp < p.lpmax {
+			} else if p.lp > (p.lpmax-50) && p.lp < p.lpmax {
 				p.lp = p.lpmax
 				p.inventory[len(p.inventory)-1] = ""
 				break
