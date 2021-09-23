@@ -7,7 +7,7 @@ import (
 
 func main() {
 	var p1 Personnage
-	p1.Init("Matéo", "elfe", 1, 100, 30, []string{"Potion de vie", "Potion de vie", "Potion de vie"})
+	p1.Init("Bijoux", "elfe", 1, 100, 30, []string{"Potion de vie", "Potion de vie", "Potion de vie"})
 
 	var menu int
 	fmt.Println("+++++++++++++++++++++++++++++++")
@@ -85,7 +85,8 @@ func (p *Personnage) Marchand() {
 		p.AccessInventory()
 	case 2:
 		p.inventory = append(p.inventory, "Potion de poison")
-		p.AccessInventory()
+		p.PoisonPot()
+		p.Dead()
 	case 3:
 		main()
 	}
@@ -132,4 +133,21 @@ func (p *Personnage) Dead() {
 		p.lp = p.lpmax / 2
 		p.DisplayInfo()
 	}
+}
+
+func (p *Personnage) PoisonPot() {
+	for _, letter := range p.inventory {
+		if letter == "Potion de poison" {
+			time.Sleep(1 * time.Second)
+			fmt.Println(p.lp, "/", p.lpmax)
+			p.lp -= 10
+			fmt.Println(p.lp, "/", p.lpmax)
+			time.Sleep(1 * time.Second)
+			p.lp -= 10
+			fmt.Println(p.lp, "/", p.lpmax)
+			time.Sleep(1 * time.Second)
+			p.lp -= 10
+			fmt.Println(p.lp, "/", p.lpmax)
+		}
+	}		
 }
