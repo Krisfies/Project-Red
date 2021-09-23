@@ -16,7 +16,7 @@ func main() {
 	case 1:
 		p1.DisplayInfo()
 	case 2:
-		fmt.Println("Pas encore programmé bg")
+		p1.AccessInventory()
 	case 3:
 		fmt.Println("Non, tu restes ici")
 	}
@@ -38,6 +38,15 @@ func (p *Personnage) Init(name string, class string, level int, lpmax int, lp in
 	p.lpmax = lpmax
 	p.lp = lp
 	p.inventory = inventory
+}
+
+func (p Personnage) AccessInventory() {
+	if len(p.inventory) == 0 {
+		fmt.Println("inventaire vide fraté")
+	}
+	for i := 0; i < len(p.inventory); i++ {
+		fmt.Println("---", p.inventory[i], "---")
+	}
 }
 
 func (p Personnage) DisplayInfo() {
