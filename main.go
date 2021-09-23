@@ -18,6 +18,7 @@ func main() {
 	case 2:
 		p1.AccessInventory()
 	case 3:
+		fmt.Println("Fin de la transmission")
 		break
 	}
 }
