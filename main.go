@@ -131,10 +131,18 @@ func (p *Personnage) Dead() {
 		time.Sleep(2 * time.Second)
 		fmt.Printf("Mais ne paniquez pas, vous allez être ressuciter \n")
 		time.Sleep(2 * time.Second)
-		fmt.Println("Manoeuvre de réanimation en cours. . .")
-		time.Sleep(3 * time.Second)
+		fmt.Println("Manoeuvre de réanimation en cours")
+		time.Sleep(1 * time.Second)
+		fmt.Println(".")
+		time.Sleep(1 * time.Second)
+		fmt.Println(".")
+		time.Sleep(1 * time.Second)
+		fmt.Println(".")
+		time.Sleep(1 * time.Second)
 		p.lp = p.lpmax / 2
 		p.DisplayInfo()
+		time.Sleep(1 * time.Second)
+		fmt.Println("Rebienvenue parmi nous", p.name)
 	}
 }
 
@@ -143,6 +151,7 @@ func (p *Personnage) PoisonPot() {
 		if letter == "Potion de poison" {
 			time.Sleep(1 * time.Second)
 			fmt.Println(p.lp, "/", p.lpmax)
+			time.Sleep(1 * time.Second)
 			p.lp -= 10
 			fmt.Println(p.lp, "/", p.lpmax)
 			time.Sleep(1 * time.Second)
