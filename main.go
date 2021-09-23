@@ -45,7 +45,7 @@ func (p Personnage) AccessInventory() {
 		fmt.Println("inventaire vide fraté")
 	}
 	for i := 0; i < len(p.inventory); i++ {
-		fmt.Println("---", p.inventory[i], "---")
+		fmt.Println("---]", p.inventory[i], "[---")
 	}
 }
 
