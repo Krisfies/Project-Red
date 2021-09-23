@@ -61,17 +61,17 @@ func (p Personnage) DisplayInfo() {
 	fmt.Println("-----------")
 }
 
-func (p *Personnage) TakePot(){
-	for i, letter := range p.inventory {
+func (p *Personnage) TakePot() {
+	for _, letter := range p.inventory {
 		if letter == "Potion de vie" {
 			if p.lp <= (p.lpmax - 50) {
 				p.lp += 50
-			} else if p.lp > (p.lpmax - 50) && p.lp < p.lpmax {
+			} else if p.lp > (p.lpmax-50) && p.lp < p.lpmax {
 				p.lp = p.lpmax
 			} else {
 				fmt.Println("Vous êtes full")
 			}
-			
+
 		}
 	}
 }
