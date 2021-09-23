@@ -48,18 +48,26 @@ func (p *Personnage) Init(name string, class string, level int, lpmax int, lp in
 }
 
 func (p Personnage) AccessInventory() {
+	var rep int
 	if len(p.inventory) == 0 {
 		fmt.Println("inventaire vide fraté")
 	}
 	for i := 0; i < len(p.inventory); i++ {
 		fmt.Println("---]", p.inventory[i], "[---")
 	}
+	fmt.Println("tapez 1 pour retourner zo menu précédent")
+	fmt.Scanln(&rep)
+	if rep == 1 {
+		main()
+	}
+
 }
 func (p *Personnage) Marchand() {
 	var menum int
 	fmt.Println("-----------------Marchand-------------------")
 	fmt.Println("tapez 1 pour obtenir une Potion de vie ;)")
 	fmt.Println("tapez 2 pour obtenir une Potion de poison ;(")
+	fmt.Println(" tapez 3 pour retourner au menu précédent ")
 	fmt.Println("____________________________________________")
 	fmt.Scanln(&menum)
 	switch menum {
@@ -69,6 +77,8 @@ func (p *Personnage) Marchand() {
 	case 2:
 		p.inventory = append(p.inventory, "Potion de poison")
 		p.AccessInventory()
+	case 3:
+		main()
 	}
 }
 
