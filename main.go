@@ -69,9 +69,6 @@ func (p *Personnage) Marchand() {
 		p.inventory = append(p.inventory, "Potion de poison")
 		p.AccessInventory()
 	}
-
-	p.inventory = append(p.inventory, "Potion de vie")
-	fmt.Println("Potion de vie")
 }
 
 func (p Personnage) DisplayInfo() {
