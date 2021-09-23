@@ -71,6 +71,7 @@ func (p *Personnage) AccessInventory() {
 	}
 
 }
+
 func (p *Personnage) Marchand() {
 	var menum int
 	fmt.Println("-----------------Marchand-------------------")
@@ -81,12 +82,11 @@ func (p *Personnage) Marchand() {
 	fmt.Scanln(&menum)
 	switch menum {
 	case 1:
-		p.inventory = append(p.inventory, "Potion de vie")
+		p.AddInventory("Potion de vie")
 		p.AccessInventory()
 	case 2:
-		p.inventory = append(p.inventory, "Potion de poison")
-		p.PoisonPot()
-		p.Dead()
+		p.AddInventory("Potion de poison")
+		p.AccessInventory()
 	case 3:
 		main()
 	}
@@ -101,6 +101,9 @@ func (p Personnage) DisplayInfo() {
 	fmt.Println("Vie actuelle", p.lp)
 	fmt.Println("Inventaire", p.inventory)
 	fmt.Println("-----------")
+}
+func (p *Personnage) AddInventory(item string) {
+	p.inventory = append(p.inventory, item)
 }
 
 func (p *Personnage) TakePot() {
@@ -149,5 +152,5 @@ func (p *Personnage) PoisonPot() {
 			p.lp -= 10
 			fmt.Println(p.lp, "/", p.lpmax)
 		}
-	}		
+	}
 }
