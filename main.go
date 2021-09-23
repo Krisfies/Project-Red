@@ -7,8 +7,10 @@ func main() {
 	p1.Init("Matéo", "elfe", 1, 100, 42, []string{"Potion de vie", "Potion de vie", "Potion de vie"})
 
 	var menu int
+	fmt.Println("-----------")
 	fmt.Println("A quoi voulez vous accéder? \n Option 1: Afficher les informations du personnage \n Option 2: Accéder au contenu de l’inventaire \n Option 3: Quitter ")
 	fmt.Println("Entrez le numéro de l'option")
+	fmt.Println("-----------")
 	fmt.Scanln(&menu)
 	switch menu {
 	case 1:
