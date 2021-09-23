@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"time"
+)
 
 func main() {
 	var p1 Personnage
@@ -96,4 +99,15 @@ func (p *Personnage) TakePot() {
 			}
 		}
 	}
+}
+
+func (p *Personnage) dead() {
+	if p.lp == 0 {
+		fmt.Println("Bravo, vous êtes mort." \n)
+		fmt.Println(p.lp "/" p.lpmax)
+		fmt.Println("Mais ne paniquez pas, vous allez être ressuciter")
+		time.Sleep(1 * time.Second)
+		fmt.Println("Manoeuvre de réanimation en cours. . .")
+		time.Sleep(1 * time.Second)
+		p.DisplayInfo()
 }
