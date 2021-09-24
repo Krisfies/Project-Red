@@ -31,8 +31,8 @@ func (p *Personnage) CharCreation() {
 
 	fmt.Printf("Bienvenue dans le menu de création de personnage \nPour commencer, choisissez un nom pour votre avatar: \n")
 	fmt.Scanln(&name)
-	fmt.Println("Votre personnage se nomme désormais ")
 	p.Capitalize(name)
+	fmt.Println("Votre personnage se nomme désormais", name)
 	time.Sleep(3 * time.Second)
 	fmt.Println("\n Choisissez maintenant la race de ",name, "parmi:\n-Humain \n-Elfe \n-Nain")
 	fmt.Scanln(&class)
@@ -246,34 +246,28 @@ func (p *Personnage) PoisonPot() {
 	}
 }
 
+func prim(a rune) bool {
+	if (a >= 'A' && a <= 'Z') || (a >= 'a' && a <= 'z') || (a >= '0' && a <= '9') {
+		return true
+	}
+	return false
+}
+
 func (p *Personnage) Capitalize(s string) {
-	var res string
-	for index, cara := range s {
-		if index != 0 {
-			PInd := s[index-1]
-			if !('a' <= PInd && PInd <= 'z' || '0' <= PInd && PInd <= '9' || 'A' <= PInd && PInd <= 'Z') {
-				if 'a' <= cara && cara <= 'z' {
-					cara -= 32
-					res += string(cara)
-				} else {
-					res += string(cara)
-				}
-			} else {
-				if 'A' <= cara && cara <= 'Z' {
-					cara += 32
-					res += string(cara)
-				} else {
-					res += string(cara)
-				}
+	n := &s
+	ar := []rune(s)
+	letra := true
+	for i := 0; i < len(s); i++ {
+		if prim(ar[i]) == true && letra {
+			if ar[i] >= 'a' && ar[i] <= 'z' {
+				ar[i] = 'A' - 'a' + ar[i]
 			}
-		} else {
-			if 'a' <= cara && cara <= 'z' {
-				cara -= 32
-				res += string(cara)
-			} else {
-				res += string(cara)
-			}
+			letra = false
+		} else if ar[i] >= 'A' && ar[i] <= 'Z' {
+			ar[i] = 'a' - 'A' + ar[i]
+		} else if prim(ar[i]) == false {
+			letra = true
 		}
 	}
-	s = res
+	*n = string(ar)
 }
