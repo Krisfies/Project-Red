@@ -9,6 +9,10 @@ func main() {
 	// fonction qui execute nos sous fonctions et rentre les valeur ainsi que le menu principal
 	var p1 Personnage
 	p1.Init("Bijoux", "elfe", 1, 100, 42, []string{"Potion de vie", "Potion de vie", "Potion de vie"}, []string{"Coup de poing"})
+	p1.menu()
+}
+
+func (p *Personnage) menu() {
 	var menu int
 	fmt.Println("+++++++++++++++++++++++++++++++")
 	fmt.Println("A quoi voulez vous accéder:")
@@ -21,11 +25,11 @@ func main() {
 	fmt.Scanln(&menu)
 	switch menu {
 	case 1:
-		p1.DisplayInfo()
+		p.DisplayInfo()
 	case 2:
-		p1.AccessInventory()
+		p.AccessInventory()
 	case 3:
-		p1.Marchand()
+		p.Marchand()
 	case 4:
 		fmt.Println("Fin de la transmission")
 		break
@@ -61,16 +65,16 @@ func (p *Personnage) AccessInventory() {
 	} else {
 		fmt.Println(p.inventory)
 	}
-	retour()
+	p.retour()
 }
 
-func retour() {
+func (p *Personnage) retour() {
 	// fonction qui nous permet de retourner au menu précédent
 	var rep int
 	fmt.Println("tapez 1 pour retourner zo menu précédent")
 	fmt.Scanln(&rep)
 	if rep == 1 {
-		main()
+		p.menu()
 	}
 }
 
@@ -84,7 +88,7 @@ func (p *Personnage) spellbook(item string) {
 			*h = append(*h, item)
 		}
 	}
-	retour()
+	p.retour()
 }
 
 func (p *Personnage) Marchand() {
@@ -107,7 +111,7 @@ func (p *Personnage) Marchand() {
 	case 3:
 		p.spellbook("boule de feu")
 	case 4:
-		retour()
+		p.retour()
 	}
 }
 
@@ -122,7 +126,7 @@ func (p *Personnage) DisplayInfo() {
 	fmt.Println("Contenu de l'inventaire:", p.inventory)
 	fmt.Println("skill :", p.skill)
 	fmt.Println("-----------")
-	retour()
+	p.retour()
 
 }
 
