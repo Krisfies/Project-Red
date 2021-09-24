@@ -51,7 +51,7 @@ func (p *Personnage) CharCreation() {
 			class = "Nain"
 			lpmax = 120
 	}
-	lp = lpmax / 2
+	lp = 30
 	fmt.Println("Vous avez choisi", class, ", vous commencez donc avec", lp, "/", lpmax, "point de vie")
 	fmt.Println("Vous êtes niveau 1 et possédez le sort Coupe de poing")
 	level = 1
@@ -144,20 +144,23 @@ func (p *Personnage) spellbook(item string) {
 func (p *Personnage) Marchand() {
 	// fonction affichant le menu du marchand , et les ajoute a notre inventaire
 	var menum int
-	fmt.Println("-----------------Marchand-------------------")
-	fmt.Println("Tapez 1 pour obtenir une Potion de vie ;)")
-	fmt.Println("Tapez 2 pour obtenir une Potion de poison ;(")
-	fmt.Println("Tapez 3 pour tenter d'obtenir boule de feu ")
-	fmt.Println("Tapez 4 pour retourner au menu précédent ")
-	fmt.Println("--------------------------------------------")
+	fmt.Println("+++++++++++++++Marchand++++++++++++++")
+	fmt.Println("-----\nPotion de vie (1)")
+	fmt.Println("-----\nPotion de poison")
+	fmt.Println("-----\nBoule de Feu")
+	fmt.Println("-----\nRetour \n-----")
+	fmt.Println("+++++++++++++++++++++++++++++++++++++")
 	fmt.Scanln(&menum)
 	switch menum {
 	case 1:
 		p.AddInventory("Potion de vie")
 		p.AccessInventory()
+		p.TakePot()
 	case 2:
 		p.AddInventory("Potion de poison")
 		p.AccessInventory()
+		p.PoisonPot()
+		p.Dead()
 	case 3:
 		p.spellbook("boule de feu")
 	case 4:
