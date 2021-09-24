@@ -8,8 +8,58 @@ import (
 func main() {
 	// fonction qui execute nos sous fonctions et rentre les valeur ainsi que le menu principal
 	var p1 Personnage
-	p1.Init("Bijoux", "elfe", 1, 100, 42, []string{"Potion de vie", "Potion de vie", "Potion de vie"}, []string{"Coup de poing"})
+	p1.CharCreation()
+	fmt.Printf("Vous allez être redirigé vers le menu principal")
+	time.Sleep(1 * time.Second)
+	fmt.Printf(". ")
+	time.Sleep(1 * time.Second)
+	fmt.Printf(". ")
+	time.Sleep(1 * time.Second)
+	fmt.Printf(". \n")
+	time.Sleep(1 * time.Second)
 	p1.menu()
+}
+
+func (p *Personnage) CharCreation() {
+	var name string
+	var class string
+	var level int
+	var lpmax int
+	var lp int
+	var inventory []string
+	var skill []string
+
+	fmt.Printf("Bienvenue dans le menu de création de personnage \nPour commencer, choisissez un nom pour votre avatar: \n")
+	fmt.Scanln(&name)
+	fmt.Println("Votre personnage se nomme désormais ")
+	p.Capitalize(name)
+	time.Sleep(3 * time.Second)
+	fmt.Println("\n Choisissez maintenant la race de ",name, "parmi:\n-Humain \n-Elfe \n-Nain")
+	fmt.Scanln(&class)
+	if class != "Humain" && class != "Elfe" && class != "Nain" {
+		fmt.Printf("Erreur, veuillez entrer une valeur correcte:\n Humain Nain ou Elfe (n'oubliez pas la majuscule)")
+		fmt.Scanln(&class)
+	}
+	switch class {
+		case "Humain":
+			class = "Humain"
+		case "Elfe":
+			class = "Elfe"
+		case "Nain":
+			class = "Nain"
+	}
+	if class == "Humain" {
+		lpmax = 100
+	} else if p.class == "Elfe" {
+		lpmax = 80
+	} else if p.class == "Nain" {
+		lpmax = 120
+	}
+	lp = lpmax / 2
+	fmt.Println("Vous avez choisi", class, ", vous commencez donc avec", lp, "/", lpmax, "point de vie")
+	fmt.Println("Vous êtes niveau 1 et possédez le sort Coupe de poing")
+	level = 1
+	p.Init(name, class, level, lpmax, lp, inventory, skill)
 }
 
 func (p *Personnage) menu() {
@@ -194,4 +244,36 @@ func (p *Personnage) PoisonPot() {
 			fmt.Println(p.lp, "/", p.lpmax)
 		}
 	}
+}
+
+func (p *Personnage) Capitalize(s string) {
+	var res string
+	for index, cara := range s {
+		if index != 0 {
+			PInd := s[index-1]
+			if !('a' <= PInd && PInd <= 'z' || '0' <= PInd && PInd <= '9' || 'A' <= PInd && PInd <= 'Z') {
+				if 'a' <= cara && cara <= 'z' {
+					cara -= 32
+					res += string(cara)
+				} else {
+					res += string(cara)
+				}
+			} else {
+				if 'A' <= cara && cara <= 'Z' {
+					cara += 32
+					res += string(cara)
+				} else {
+					res += string(cara)
+				}
+			}
+		} else {
+			if 'a' <= cara && cara <= 'z' {
+				cara -= 32
+				res += string(cara)
+			} else {
+				res += string(cara)
+			}
+		}
+	}
+	s = res
 }
