@@ -14,15 +14,15 @@ func main() {
 	var menu int
 	fmt.Println("+++++++++++++++++++++++++++++++")
 	fmt.Println("A quoi voulez vous accéder:")
-	time.Sleep(1 * time.Second)
+	time.Sleep(100 * time.Millisecond)
 	fmt.Println("----- \n Afficher les informations du personnage (1)")
-	time.Sleep(1 * time.Second)
+	time.Sleep(100 * time.Millisecond)
 	fmt.Println("----- \n Accéder au contenu de l’inventaire (2)")
-	time.Sleep(1 * time.Second)
+	time.Sleep(100 * time.Millisecond)
 	fmt.Println("----- \n Voir le Marchand (3)")
-	time.Sleep(1 * time.Second)
+	time.Sleep(100 * time.Millisecond)
 	fmt.Println("----- \n Quitter (4) \n-----")
-	time.Sleep(1 * time.Second)
+	time.Sleep(100 * time.Millisecond)
 	fmt.Println("Entrez le numéro de l'option:")
 	fmt.Println("+++++++++++++++++++++++++++++++")
 	fmt.Scanln(&menu)
@@ -64,19 +64,14 @@ func (p *Personnage) Init(name string, class string, level int, lpmax int, lp in
 
 func (p *Personnage) AccessInventory() {
 	// fonction qui nous permet d'acceder a notre inventaire
-	var rep int
+	// var rep int
 	if len(p.inventory) == 0 {
 		fmt.Println("inventaire vide fraté")
 	}
 	for i := 0; i < len(p.inventory); i++ {
 		fmt.Println("---]", p.inventory[i], "[---")
 	}
-	fmt.Println("tapez 1 pour retourner zo menu précédent")
-	fmt.Scanln(&rep)
-	if rep == 1 {
-		main()
-	}
-
+	retour()
 }
 
 func retour() {
@@ -183,14 +178,14 @@ func (p *Personnage) PoisonPot() {
 	// fonction qui crée la potion poison et explique ce qu'elle fait sur un personnage
 	for _, letter := range p.inventory {
 		if letter == "Potion de poison" {
-			time.Sleep(1 * time.Second)
+			time.Sleep(100 * time.Millisecond)
 			fmt.Println(p.lp, "/", p.lpmax)
 			p.lp -= 10
 			fmt.Println(p.lp, "/", p.lpmax)
-			time.Sleep(1 * time.Second)
+			time.Sleep(100 * time.Millisecond)
 			p.lp -= 10
 			fmt.Println(p.lp, "/", p.lpmax)
-			time.Sleep(1 * time.Second)
+			time.Sleep(100 * time.Millisecond)
 			p.lp -= 10
 			fmt.Println(p.lp, "/", p.lpmax)
 		}
