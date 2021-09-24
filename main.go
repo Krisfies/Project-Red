@@ -154,11 +154,9 @@ func (p *Personnage) Marchand() {
 	switch menum {
 	case 1:
 		p.AddInventory("Potion de vie")
-		p.AccessInventory()
 		p.TakePot()
 	case 2:
 		p.AddInventory("Potion de poison")
-		p.AccessInventory()
 		p.PoisonPot()
 		p.Dead()
 	case 3:
