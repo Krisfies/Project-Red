@@ -43,17 +43,13 @@ func (p *Personnage) CharCreation() {
 	switch class {
 		case "Humain":
 			class = "Humain"
+			lpmax = 100
 		case "Elfe":
 			class = "Elfe"
+			lpmax = 80
 		case "Nain":
 			class = "Nain"
-	}
-	if class == "Humain" {
-		lpmax = 100
-	} else if p.class == "Elfe" {
-		lpmax = 80
-	} else if p.class == "Nain" {
-		lpmax = 120
+			lpmax = 120
 	}
 	lp = lpmax / 2
 	fmt.Println("Vous avez choisi", class, ", vous commencez donc avec", lp, "/", lpmax, "point de vie")
