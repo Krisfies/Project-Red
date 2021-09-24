@@ -60,6 +60,7 @@ func (p *Personnage) Init(name string, class string, level int, lpmax int, lp in
 
 func (p *Personnage) AccessInventory() {
 	// fonction qui nous permet d'acceder a notre inventaire
+	// var rep int
 	if len(p.inventory) == 0 {
 		fmt.Println("inventaire vide fraté")
 	} else {
