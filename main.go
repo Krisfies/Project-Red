@@ -153,6 +153,7 @@ func (p *Personnage) retour() {
 
 func (p *Personnage) spellbook(item string) {
 	// fonction qui nous permet d'ajouter ou repertorier les sorts (spell)
+	prix = 50
 	for _, letter := range p.skill {
 		if letter == ("Boule de feu") {
 			fmt.Println("dsl t'a déja les boules")
@@ -177,8 +178,8 @@ func (p *Personnage) Marchand() {
 	var menum int
 	fmt.Println("+++++++++++++++++++++Marchand+++++++++++++++++++")
 	fmt.Println("-------\nPotion de vie --> 30 pièces <--(1)")
-	fmt.Println("-----\nPotion de poison --> 35 pièces <-- (2)")
-	fmt.Println("-----\nBoule de Feu --> 10 pièces <-- (3)")
+	fmt.Println("-----\nPotion de poison --> 40 pièces <-- (2)")
+	fmt.Println("-----\nBoule de Feu --> 50 pièces <-- (3)")
 	fmt.Println("-----------------\n Retour (4) \n--------------")
 	fmt.Println("++++++++++++++++++++++++++++++++++++++++++++++++")
 	fmt.Scanln(&menum)
@@ -259,7 +260,7 @@ func (p *Personnage) Dead() {
 
 func (p *Personnage) PoisonPot() {
 	// fonction qui crée la potion poison et explique ce qu'elle fait sur un personnage
-	prix = 20
+	prix = 40
 	for _, letter := range p.inventory {
 		if letter == "Potion de poison" {
 			time.Sleep(100 * time.Millisecond)
