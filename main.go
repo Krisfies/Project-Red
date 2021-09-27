@@ -58,7 +58,7 @@ func (p *Personnage) CharCreation() {
 	money = 100
 	inventory = []string{"potion de vie", "potion de vie", "potion de vie"}
 	fmt.Println("Vous avez choisi", class, ", vous commencez donc avec", lp, "/", lpmax, "point de vie")
-	fmt.Println("Vous êtes niveau 1 et possédez le sort Coupe de poing", "vous avez", money, "pièces d'or")
+	fmt.Println("Vous êtes niveau 1 et possédez le sort Coupe de poing", "vous avez", money, "pièces d'or", skill, "coup de poing")
 	level = 1
 	p.Init(name, class, level, lpmax, lp, inventory, skill, money)
 }
@@ -89,6 +89,7 @@ func (p *Personnage) menu() {
 		switch n {
 		case 1:
 			p.TakePot()
+			fmt.Println(p.lp)
 			p.retour()
 		case 2:
 			p.PoisonPot()
@@ -96,7 +97,6 @@ func (p *Personnage) menu() {
 		case 3:
 			p.retour()
 		}
-		p.AccessInventory()
 	case 3:
 		p.Marchand()
 	case 4:
@@ -165,8 +165,10 @@ func (p *Personnage) spellbook(item string) {
 }
 
 func (p *Personnage) Buy(m string) {
+	fmt.Println("xxxxxxxxxxxxxxxxx")
+	fmt.Println(prix)
 	if p.money >= prix {
-		p.money = p.money - prix
+		p.money -= prix
 		p.AddInventory(m)
 	} else {
 		fmt.Println("il vous faut plus de dinerhos !")
@@ -199,7 +201,7 @@ func (p *Personnage) Marchand() {
 
 func (p *Personnage) DisplayInfo() {
 	// fonction nous permettant de voir les informations de notre personnage
-	fmt.Println("-----------")
+	fmt.Println("-------------------------")
 	fmt.Println("Nom:", p.name)
 	fmt.Println("Classe:", p.class)
 	fmt.Println("Niveau:", p.level)
@@ -208,7 +210,7 @@ func (p *Personnage) DisplayInfo() {
 	fmt.Println("Contenu de l'inventaire:", p.inventory)
 	fmt.Println("skill :", p.skill)
 	fmt.Println("pessos :", p.money)
-	fmt.Println("-----------")
+	fmt.Println("-------------------------")
 	p.retour()
 
 }
