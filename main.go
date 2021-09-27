@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+var n int
+
 func main() {
 	// fonction qui execute nos sous fonctions et rentre les valeur ainsi que le menu principal
 	var p1 Personnage
@@ -28,34 +30,36 @@ func (p *Personnage) CharCreation() {
 	var lp int
 	var inventory []string
 	var skill []string
+	var money int
 
 	fmt.Printf("Bienvenue dans le menu de création de personnage \nPour commencer, choisissez un nom pour votre avatar: \n")
 	fmt.Scanln(&name)
-	p.Capitalize(name)
 	fmt.Println("Votre personnage se nomme désormais", name)
 	time.Sleep(3 * time.Second)
-	fmt.Println("\n Choisissez maintenant la race de ",name, "parmi:\n-Humain \n-Elfe \n-Nain")
+	fmt.Println("\n Choisissez maintenant la race de ", name, "parmi:\n-Humain \n-Elfe \n-Nain")
 	fmt.Scanln(&class)
 	if class != "Humain" && class != "Elfe" && class != "Nain" {
 		fmt.Printf("Erreur, veuillez entrer une valeur correcte:\n Humain Nain ou Elfe (n'oubliez pas la majuscule)")
 		fmt.Scanln(&class)
 	}
 	switch class {
-		case "Humain":
-			class = "Humain"
-			lpmax = 100
-		case "Elfe":
-			class = "Elfe"
-			lpmax = 80
-		case "Nain":
-			class = "Nain"
-			lpmax = 120
+	case "Humain":
+		class = "Humain"
+		lpmax = 100
+	case "Elfe":
+		class = "Elfe"
+		lpmax = 80
+	case "Nain":
+		class = "Nain"
+		lpmax = 120
 	}
-	lp = 30
+	lp = lpmax / 2
+	money = 100
+	inventory = []string{"potion de vie", "potion de vie", "potion de vie"}
 	fmt.Println("Vous avez choisi", class, ", vous commencez donc avec", lp, "/", lpmax, "point de vie")
-	fmt.Println("Vous êtes niveau 1 et possédez le sort Coupe de poing")
+	fmt.Println("Vous êtes niveau 1 et possédez le sort Coupe de poing", "vous avez", money, "pièces d'or")
 	level = 1
-	p.Init(name, class, level, lpmax, lp, inventory, skill)
+	p.Init(name, class, level, lpmax, lp, inventory, skill, money)
 }
 
 func (p *Personnage) menu() {
@@ -69,16 +73,30 @@ func (p *Personnage) menu() {
 	fmt.Println("Entrez le numéro de l'option:")
 	fmt.Println("+++++++++++++++++++++++++++++++")
 	fmt.Scanln(&menu)
+
 	switch menu {
 	case 1:
 		p.DisplayInfo()
 	case 2:
+		fmt.Println("___________________________________________")
+		fmt.Println("Taper 1 pour prendre une potion de vie")
+		fmt.Println("Taper 2 pour utiliser une potion de poison")
+		fmt.Println("___________________________________________")
+		p.AccessInventory()
+		fmt.Scanln(&n)
+		switch n {
+		case 1:
+			p.TakePot()
+		case 2:
+			p.PoisonPot()
+		case 3:
+			p.retour()
+		}
 		p.AccessInventory()
 	case 3:
 		p.Marchand()
 	case 4:
 		fmt.Println("Fin de la transmission")
-		break
 	}
 }
 
@@ -91,9 +109,10 @@ type Personnage struct {
 	lp        int
 	inventory []string
 	skill     []string
+	money     int
 }
 
-func (p *Personnage) Init(name string, class string, level int, lpmax int, lp int, inventory []string, skill []string) {
+func (p *Personnage) Init(name string, class string, level int, lpmax int, lp int, inventory []string, skill []string, money int) {
 	// initialisation de notre personnage
 	p.name = name
 	p.class = class
@@ -102,6 +121,7 @@ func (p *Personnage) Init(name string, class string, level int, lpmax int, lp in
 	p.lp = lp
 	p.inventory = inventory
 	p.skill = skill
+	p.money = money
 }
 
 func (p *Personnage) AccessInventory() {
@@ -115,7 +135,6 @@ func (p *Personnage) AccessInventory() {
 	for i := 0; i < len(p.inventory); i++ {
 		fmt.Println("---]", p.inventory[i], "[---")
 	}
-	p.retour()
 }
 
 func (p *Personnage) retour() {
@@ -130,12 +149,11 @@ func (p *Personnage) retour() {
 
 func (p *Personnage) spellbook(item string) {
 	// fonction qui nous permet d'ajouter ou repertorier les sorts (spell)
-	h := &p.skill
 	for _, letter := range p.skill {
 		if letter == ("Boule de feu") {
 			fmt.Println("dsl t'a déja les boules")
 		} else {
-			*h = append(*h, item)
+			p.skill = append(p.skill, item)
 		}
 	}
 	p.retour()
@@ -146,19 +164,18 @@ func (p *Personnage) Marchand() {
 	var menum int
 	fmt.Println("+++++++++++++++Marchand++++++++++++++")
 	fmt.Println("-----\nPotion de vie (1)")
-	fmt.Println("-----\nPotion de poison")
-	fmt.Println("-----\nBoule de Feu")
-	fmt.Println("-----\nRetour \n-----")
+	fmt.Println("-----\nPotion de poison (2)")
+	fmt.Println("-----\nBoule de Feu (3)")
+	fmt.Println("-----\nRetourn (4) \n-----")
 	fmt.Println("+++++++++++++++++++++++++++++++++++++")
 	fmt.Scanln(&menum)
 	switch menum {
 	case 1:
 		p.AddInventory("Potion de vie")
-		p.TakePot()
+		p.retour()
 	case 2:
 		p.AddInventory("Potion de poison")
-		p.PoisonPot()
-		p.Dead()
+		p.retour()
 	case 3:
 		p.spellbook("boule de feu")
 	case 4:
@@ -241,30 +258,4 @@ func (p *Personnage) PoisonPot() {
 			fmt.Println(p.lp, "/", p.lpmax)
 		}
 	}
-}
-
-func prim(a rune) bool {
-	if (a >= 'A' && a <= 'Z') || (a >= 'a' && a <= 'z') || (a >= '0' && a <= '9') {
-		return true
-	}
-	return false
-}
-
-func (p *Personnage) Capitalize(s string) {
-	n := &s
-	ar := []rune(s)
-	letra := true
-	for i := 0; i < len(s); i++ {
-		if prim(ar[i]) == true && letra {
-			if ar[i] >= 'a' && ar[i] <= 'z' {
-				ar[i] = 'A' - 'a' + ar[i]
-			}
-			letra = false
-		} else if ar[i] >= 'A' && ar[i] <= 'Z' {
-			ar[i] = 'a' - 'A' + ar[i]
-		} else if prim(ar[i]) == false {
-			letra = true
-		}
-	}
-	*n = string(ar)
 }
