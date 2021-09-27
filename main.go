@@ -6,6 +6,7 @@ import (
 )
 
 var n int
+var prix int
 
 func main() {
 	// fonction qui execute nos sous fonctions et rentre les valeur ainsi que le menu principal
@@ -81,14 +82,17 @@ func (p *Personnage) menu() {
 		fmt.Println("___________________________________________")
 		fmt.Println("Taper 1 pour prendre une potion de vie")
 		fmt.Println("Taper 2 pour utiliser une potion de poison")
+		fmt.Println("Taper 3 pour retourner au menu précédent")
 		fmt.Println("___________________________________________")
 		p.AccessInventory()
 		fmt.Scanln(&n)
 		switch n {
 		case 1:
 			p.TakePot()
+			p.retour()
 		case 2:
 			p.PoisonPot()
+			p.retour()
 		case 3:
 			p.retour()
 		}
@@ -159,22 +163,31 @@ func (p *Personnage) spellbook(item string) {
 	p.retour()
 }
 
+func (p *Personnage) Buy(m string) {
+	if p.money >= prix {
+		p.money = p.money - prix
+		p.AddInventory(m)
+	} else {
+		fmt.Println("il vous faut plus de dinerhos !")
+	}
+}
+
 func (p *Personnage) Marchand() {
 	// fonction affichant le menu du marchand , et les ajoute a notre inventaire
 	var menum int
-	fmt.Println("+++++++++++++++Marchand++++++++++++++")
-	fmt.Println("-----\nPotion de vie (1)")
-	fmt.Println("-----\nPotion de poison (2)")
-	fmt.Println("-----\nBoule de Feu (3)")
-	fmt.Println("-----\nRetourn (4) \n-----")
-	fmt.Println("+++++++++++++++++++++++++++++++++++++")
+	fmt.Println("+++++++++++++++++++++Marchand+++++++++++++++++++")
+	fmt.Println("-------\nPotion de vie --> 30 pièces <--(1)")
+	fmt.Println("-----\nPotion de poison --> 35 pièces <-- (2)")
+	fmt.Println("-----\nBoule de Feu --> 10 pièces <-- (3)")
+	fmt.Println("-----------------\n Retour (4) \n--------------")
+	fmt.Println("++++++++++++++++++++++++++++++++++++++++++++++++")
 	fmt.Scanln(&menum)
 	switch menum {
 	case 1:
-		p.AddInventory("Potion de vie")
+		p.Buy("Potion de vie")
 		p.retour()
 	case 2:
-		p.AddInventory("Potion de poison")
+		p.Buy("Potion de poison")
 		p.retour()
 	case 3:
 		p.spellbook("boule de feu")
@@ -193,6 +206,7 @@ func (p *Personnage) DisplayInfo() {
 	fmt.Println("Vie actuelle:", p.lp)
 	fmt.Println("Contenu de l'inventaire:", p.inventory)
 	fmt.Println("skill :", p.skill)
+	fmt.Println("pessos :", p.money)
 	fmt.Println("-----------")
 	p.retour()
 
@@ -204,6 +218,7 @@ func (p *Personnage) AddInventory(item string) {
 
 func (p *Personnage) TakePot() {
 	// fonction qui nous permet de prendre une potion de soin
+	prix = 30
 	for _, letter := range p.inventory {
 		if letter == "Potion de vie" {
 			if p.lp <= (p.lpmax - 50) {
@@ -244,6 +259,7 @@ func (p *Personnage) Dead() {
 
 func (p *Personnage) PoisonPot() {
 	// fonction qui crée la potion poison et explique ce qu'elle fait sur un personnage
+	prix = 20
 	for _, letter := range p.inventory {
 		if letter == "Potion de poison" {
 			time.Sleep(100 * time.Millisecond)
