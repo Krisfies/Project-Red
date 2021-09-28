@@ -34,7 +34,7 @@ func (p *Personnage) CharCreation() {
 
 	fmt.Printf("Bienvenue dans le menu de création de personnage \nPour commencer, choisissez un nom pour votre avatar: \n")
 	fmt.Scanln(&name)
-	if name == "A6" {
+	if name == "A6" { //Easter egg n°1
 		class = "???"
 		level = 999
 		lpmax = 9999
@@ -47,7 +47,7 @@ func (p *Personnage) CharCreation() {
 			z01.PrintRune(letter)
 		}
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-	} else if name == "Ibérie" {
+	} else if name == "Ibérie" { //Easter egg n°2
 		class = "Esportugais"
 		level = 5
 		lpmax = 60
@@ -80,7 +80,7 @@ func (p *Personnage) CharCreation() {
 			class = "Nain"
 			lpmax = 120
 		}
-		if class != "Humain" && class != "Elfe" && class != "Nain" {
+		if class != "Humain" && class != "Elfe" && class != "Nain" { //Easter egg n°3
 			class = "Troll"
 			lpmax = 50
 		}
