@@ -47,6 +47,19 @@ func (p *Personnage) CharCreation() {
 			z01.PrintRune(letter)
 		}
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+	} else if name == "Ibérie" {
+		class = "Esportugais"
+		level = 5
+		lpmax = 60
+		lp = lpmax/2
+		inventory = []string{"Marteau nationalocommuniste de la démocratie"}
+		skill = []string{"Instabilité Politique"}
+		money = 10000
+		fmt.Println("Votre pays se nomme donc", name)
+		fmt.Println(name, "est donc Péninsule, elle commence avec", lp, " point de vie et", lpmax, "point de vie maximum.")
+		fmt.Println(name, "est niveau 1, possède le sort Instabilité politique et a", money, "pièces d'or.")
+		time.Sleep(4 * time.Second)
+		p.Init(name, class, level, lpmax, lp, inventory, skill, money)
 	} else {
 		fmt.Println("Votre personnage se nomme donc", name)
 		time.Sleep(3 * time.Second)
@@ -83,8 +96,8 @@ func (p *Personnage) CharCreation() {
 		fmt.Println(name, "est niveau 1, possède le sort Coup de poing et a", money, "pièces d'or.")
 		level = 1
 		time.Sleep(4 * time.Second)
+		p.Init(name, class, level, lpmax, lp, inventory, skill, money)
 	}
-	p.Init(name, class, level, lpmax, lp, inventory, skill, money)
 }
 
 func (p *Personnage) menu() {
@@ -105,7 +118,6 @@ func (p *Personnage) menu() {
 	switch menu {
 	case 1:
 		p.DisplayInfo()
-		p.menu()
 	case 2:
 		p.AccessInventory()
 	case 3:
@@ -205,6 +217,7 @@ func (p *Personnage) Spellbook() {
 	for _, letter := range p.skill {
 		if letter == ("Boule de feu") {
 			fmt.Println("dsl t'a déja les boules")
+
 		} else {
 			p.skill = append(p.skill, "Boule de feu")
 		}
@@ -252,6 +265,7 @@ func (p *Personnage) Marchand() {
 
 func (p *Personnage) DisplayInfo() {
 	// fonction nous permettant de voir les informations de notre personnage
+	var back int
 	fmt.Println("-------------------------")
 	fmt.Println("Nom:", p.name)
 	fmt.Println("Classe:", p.class)
@@ -262,6 +276,12 @@ func (p *Personnage) DisplayInfo() {
 	fmt.Println("skill :", p.skill)
 	fmt.Println("pessos :", p.money)
 	fmt.Println("-------------------------")
+	fmt.Println("Revenir au menu principal (1)")
+	fmt.Scanln(&back)
+	switch back {
+	case 1:
+		p.menu()
+	}
 }
 
 func (p *Personnage) AddInventory(item string, price int) {
@@ -391,14 +411,16 @@ func (p *Personnage) GoblinPattern(m *Monstre) {
 	fmt.Println(m.name, "attaque", p.name, "et lui inflige", m.attack)
 }
 
-func (p *Personnage) CharTurn() {
+func (p *Personnage) CharTurn(m *Monstre) {
 	var choice int
+	var damage int = 5
 	fmt.Println("Attaquer (1)")
 	fmt.Println("Utiliser un objet (2)")
 	fmt.Scanln(&choice)
 	switch choice {
 	case 1:
-		fmt.Println(p.name, "utilise Attaque Basique et inflige 5 points de dégâts à Y, il lui reste X PV")
+		m.lp -= damage
+		fmt.Println(p.name, "utilise Attaque Basique et inflige", damage, "points de dégâts à", m.name, "il lui reste", m.lp, "PV")
 	case 2:
 		for i := 0; i < len(p.inventory); i++ {
 			if p.inventory[i] != " " {
@@ -418,7 +440,9 @@ func (p *Personnage) TrainingFight() {
 		fmt.Println("Tour", turn)
 		time.Sleep(1 * time.Second)
 		fmt.Println("C'est au joueur !")
+		p.CharTurn(&e1)
 		if e1.lp <= 0 {
+			fmt.Println(e1.name,"est mort ! Vive",e1.name)
 			break
 		}
 		time.Sleep(1 * time.Second)
