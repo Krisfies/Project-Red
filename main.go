@@ -2,11 +2,9 @@ package main
 
 import (
 	"fmt"
+	"os"
 	"time"
 )
-
-var n int
-var prix int
 
 func main() {
 	// fonction qui execute nos sous fonctions et rentre les valeur ainsi que le menu principal
@@ -35,12 +33,12 @@ func (p *Personnage) CharCreation() {
 
 	fmt.Printf("Bienvenue dans le menu de création de personnage \nPour commencer, choisissez un nom pour votre avatar: \n")
 	fmt.Scanln(&name)
-	fmt.Println("Votre personnage se nomme désormais", name)
+	fmt.Println("Votre personnage se nommera donc", name)
 	time.Sleep(3 * time.Second)
-	fmt.Println("\n Choisissez maintenant la race de ", name, "parmi:\n-Humain \n-Elfe \n-Nain")
+	fmt.Println("\nChoisissez maintenant la race de ", name, "parmi:\n-Humain\n-Elfe\n-Nain")
 	fmt.Scanln(&class)
 	if class != "Humain" && class != "Elfe" && class != "Nain" {
-		fmt.Printf("Erreur, veuillez entrer une valeur correcte:\n Humain Nain ou Elfe (n'oubliez pas la majuscule)")
+		fmt.Println("Erreur, veuillez entrer une valeur correcte:\nHumain, Elfe ou Nain")
 		fmt.Scanln(&class)
 	}
 	switch class {
@@ -54,11 +52,16 @@ func (p *Personnage) CharCreation() {
 		class = "Nain"
 		lpmax = 120
 	}
+	if class != "Humain" && class != "Elfe" && class != "Nain" {
+		class = "Trolleur"
+	}
 	lp = lpmax / 2
 	money = 100
-	inventory = []string{"potion de vie", "potion de vie", "potion de vie"}
-	fmt.Println("Vous avez choisi", class, ", vous commencez donc avec", lp, "/", lpmax, "point de vie")
-	fmt.Println("Vous êtes niveau 1 et possédez le sort Coupe de poing", "vous avez", money, "pièces d'or", skill, "coup de poing")
+	inventory = []string{"Potion de vie", "Potion de vie", "Potion de vie"}
+	skill = []string{"Coup de poing"}
+	os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+	fmt.Println(name, "sera donc un", class, ", il commencera avec", lp, " point de vie et", lpmax, "point de vie maximum.")
+	fmt.Println(name, "est niveau 1, possède le sort Coup de poing et a", money, "pièces d'or.")
 	level = 1
 	p.Init(name, class, level, lpmax, lp, inventory, skill, money)
 }
@@ -79,24 +82,7 @@ func (p *Personnage) menu() {
 	case 1:
 		p.DisplayInfo()
 	case 2:
-		fmt.Println("___________________________________________")
-		fmt.Println("Taper 1 pour prendre une potion de vie")
-		fmt.Println("Taper 2 pour utiliser une potion de poison")
-		fmt.Println("Taper 3 pour retourner au menu précédent")
-		fmt.Println("___________________________________________")
 		p.AccessInventory()
-		fmt.Scanln(&n)
-		switch n {
-		case 1:
-			p.TakePot()
-			fmt.Println(p.lp)
-			p.retour()
-		case 2:
-			p.PoisonPot()
-			p.retour()
-		case 3:
-			p.retour()
-		}
 	case 3:
 		p.Marchand()
 	case 4:
@@ -137,41 +123,65 @@ func (p *Personnage) AccessInventory() {
 		fmt.Println(p.inventory)
 	}
 	for i := 0; i < len(p.inventory); i++ {
-		fmt.Println("---]", p.inventory[i], "[---")
+		if p.inventory[i] != " " {
+			fmt.Println("---]", p.inventory[i], "[---")
+		}
+		var use int
+		fmt.Println("___________________________________________")
+		fmt.Println("Prendre une Potion de vie (1)")
+		fmt.Println("Prendre une Potion de poison (2)")
+		fmt.Println("Utiliser le Livre de sort : Boule de Feu (3)")
+		fmt.Println("Menu précédent (4)")
+		fmt.Println("___________________________________________")
+		fmt.Scanln(&use)
+		switch use {
+		case 1:
+			p.TakePot()
+			p.Retour()
+		case 2:
+			p.PoisonPot()
+			p.Retour()
+		case 3:
+			p.Spellbook()
+		case 4:
+			p.Retour()
+		}
 	}
 }
 
-func (p *Personnage) retour() {
-	// fonction qui nous permet de retourner au menu précédent
+func (p *Personnage) Retour() {
+	// fonction qui nous permet de Retourner au menu précédent
 	var rep int
-	fmt.Println("tapez 1 pour retourner zo menu précédent")
+	fmt.Println("tapez 1 pour Retourner zo menu précédent")
 	fmt.Scanln(&rep)
 	if rep == 1 {
 		p.menu()
 	}
 }
 
-func (p *Personnage) spellbook(item string) {
+func (p *Personnage) Spellbook() {
 	// fonction qui nous permet d'ajouter ou repertorier les sorts (spell)
-	prix = 50
 	for _, letter := range p.skill {
 		if letter == ("Boule de feu") {
 			fmt.Println("dsl t'a déja les boules")
 		} else {
-			p.skill = append(p.skill, item)
+			p.skill = append(p.skill, "Boule de feu")
 		}
 	}
-	p.retour()
+	p.Retour()
 }
 
-func (p *Personnage) Buy(m string) {
-	fmt.Println("xxxxxxxxxxxxxxxxx")
-	fmt.Println(prix)
-	if p.money >= prix {
-		p.money -= prix
-		p.AddInventory(m)
-	} else {
-		fmt.Println("il vous faut plus de dinerhos !")
+// func (p *Personnage) GetPrice(item int) {
+// 	prpotionvie = 40
+// 	prpotionpoison = 35
+// 	Prcapacitée = 25
+// 	for {
+
+// 	}
+// }
+func (p Personnage) sec() {
+	if p.money < 0 {
+		fmt.Println("t'es a sec mec")
 	}
 }
 
@@ -179,23 +189,33 @@ func (p *Personnage) Marchand() {
 	// fonction affichant le menu du marchand , et les ajoute a notre inventaire
 	var menum int
 	fmt.Println("+++++++++++++++++++++Marchand+++++++++++++++++++")
-	fmt.Println("-------\nPotion de vie --> 30 pièces <--(1)")
-	fmt.Println("-----\nPotion de poison --> 40 pièces <-- (2)")
-	fmt.Println("-----\nBoule de Feu --> 50 pièces <-- (3)")
+	fmt.Println("-------\nPotion de vie --> 15 pièces <--(1)")
+	fmt.Println("-----\nPotion de poison --> 20 pièces <-- (2)")
+	fmt.Println("-----\nLivre de sort:Boule de Feu --> 25 pièces <-- (3)")
 	fmt.Println("-----------------\n Retour (4) \n--------------")
 	fmt.Println("++++++++++++++++++++++++++++++++++++++++++++++++")
 	fmt.Scanln(&menum)
 	switch menum {
 	case 1:
-		p.Buy("Potion de vie")
-		p.retour()
+		p.AddInventory("Potion de vie")
+		p.sec()
+		p.money -= 15
+		fmt.Println("il vous reste", p.money, "pièces")
+		p.Retour()
 	case 2:
-		p.Buy("Potion de poison")
-		p.retour()
+		p.AddInventory("Potion de poison")
+		p.sec()
+		p.money -= 20
+		fmt.Println("il vous reste", p.money, "pièces")
+		p.Retour()
 	case 3:
-		p.spellbook("boule de feu")
+		p.AddInventory("Livre de sort: Boule de Feu")
+		p.sec()
+		p.money -= 25
+		fmt.Println("il vous reste", p.money, "pièces")
+		p.Retour()
 	case 4:
-		p.retour()
+		p.Retour()
 	}
 }
 
@@ -211,8 +231,7 @@ func (p *Personnage) DisplayInfo() {
 	fmt.Println("skill :", p.skill)
 	fmt.Println("pessos :", p.money)
 	fmt.Println("-------------------------")
-	p.retour()
-
+	p.Retour()
 }
 
 func (p *Personnage) AddInventory(item string) {
@@ -221,7 +240,6 @@ func (p *Personnage) AddInventory(item string) {
 
 func (p *Personnage) TakePot() {
 	// fonction qui nous permet de prendre une potion de soin
-	prix = 30
 	for _, letter := range p.inventory {
 		if letter == "Potion de vie" {
 			if p.lp <= (p.lpmax - 50) {
@@ -241,7 +259,7 @@ func (p *Personnage) TakePot() {
 }
 
 func (p *Personnage) Dead() {
-	// fonction qui verifie si le personnage est mort et le ressussite a la moitié de ses pv
+	// fonction qui verifie si le personnage est mort et le ressucite a la moitié de ses pv
 	if p.lp == 0 {
 		fmt.Printf("Bravo, vous êtes mort. \n")
 		time.Sleep(2 * time.Second)
@@ -262,19 +280,31 @@ func (p *Personnage) Dead() {
 
 func (p *Personnage) PoisonPot() {
 	// fonction qui crée la potion poison et explique ce qu'elle fait sur un personnage
-	prix = 40
 	for _, letter := range p.inventory {
 		if letter == "Potion de poison" {
-			time.Sleep(100 * time.Millisecond)
-			fmt.Println(p.lp, "/", p.lpmax)
+			fmt.Println("Vous buvez la potion de poison, ouch")
+			p.inventory[len(p.inventory)-1] = ""
+			time.Sleep(1 * time.Second)
+			fmt.Println(p.lp, "/", p.lpmax, "PV")
 			p.lp -= 10
-			fmt.Println(p.lp, "/", p.lpmax)
-			time.Sleep(100 * time.Millisecond)
+			fmt.Println(p.lp, "/", p.lpmax, "PV")
+			time.Sleep(1 * time.Second)
 			p.lp -= 10
-			fmt.Println(p.lp, "/", p.lpmax)
-			time.Sleep(100 * time.Millisecond)
+			fmt.Println(p.lp, "/", p.lpmax, "PV")
+			time.Sleep(1 * time.Second)
 			p.lp -= 10
-			fmt.Println(p.lp, "/", p.lpmax)
+			fmt.Println(p.lp, "/", p.lpmax, "PV")
 		}
 	}
 }
+
+// func (p *Personnage) InvCheck() {
+// 	var capacity int = 0
+// 	for i := 0; i < len(p.inventory); i++ {
+// 		capacity += 1
+// 		if capacity == 10 {
+
+// 		}
+// 	}
+
+// }
