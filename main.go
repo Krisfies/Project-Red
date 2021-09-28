@@ -345,9 +345,9 @@ func (p *Personnage) Forgeron() {
 }
 
 type Monstre struct {
-	name string
-	lp int
-	lpmax int
+	name   string
+	lp     int
+	lpmax  int
 	attack int
 }
 
@@ -355,12 +355,12 @@ func (m *Monstre) InitGoblin(name string, lpmax int, attack int) {
 	// initialisation de notre personnage
 	m.name = name
 	m.lpmax = lpmax
-	m.lp = lpmax/2
+	m.lp = lpmax / 2
 	m.attack = attack
 }
 
 func (p *Personnage) GoblinPattern(m *Monstre) {
-	p.lp-= m.attack
+	p.lp -= m.attack
 	fmt.Println(m.name, "attaque", p.name, "et lui inflige")
 }
 
