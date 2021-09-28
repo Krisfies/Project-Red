@@ -388,11 +388,7 @@ func (m *Monstre) InitGoblin(name string, lpmax int, attack int) {
 
 func (p *Personnage) GoblinPattern(m *Monstre) {
 	p.lp -= m.attack
-<<<<<<< HEAD
 	fmt.Println(m.name, "attaque", p.name, "et lui inflige", m.attack)
-=======
-	fmt.Println(m.name, "attaque", p.name, "et lui inflige")
->>>>>>> d2862c411416f1b799c5e6801c13d3f1ca7f6e2b
 }
 
 func (p *Personnage) CharTurn() {
