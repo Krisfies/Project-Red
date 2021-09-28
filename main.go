@@ -54,6 +54,7 @@ func (p *Personnage) CharCreation() {
 	}
 	if class != "Humain" && class != "Elfe" && class != "Nain" {
 		class = "Troll"
+		lpmax = 50
 	}
 	lp = lpmax / 2
 	money = 100
@@ -73,7 +74,8 @@ func (p *Personnage) menu() {
 	fmt.Println("----- \n Afficher les informations du personnage (1)")
 	fmt.Println("----- \n Accéder au contenu de l’inventaire (2)")
 	fmt.Println("----- \n Voir le Marchand (3)")
-	fmt.Println("----- \n Quitter (4) \n-----")
+	fmt.Println("----- \n S'entrainer contre un gobelin (4)")
+	fmt.Println("----- \n Quitter (5) \n-----")
 	fmt.Println("Entrez le numéro de l'option:")
 	fmt.Println("+++++++++++++++++++++++++++++++")
 	fmt.Scanln(&menu)
@@ -92,6 +94,8 @@ func (p *Personnage) menu() {
 		fmt.Println("++++++++++++++++++++++++++++++++++++++++++++++++")
 		p.Marchand()
 	case 4:
+		p.TrainingFight()
+	case 5:
 		fmt.Println("Fin de la transmission")
 	}
 }
@@ -280,13 +284,38 @@ func (p *Personnage) PoisonPot() {
 	}
 }
 
-// func (p *Personnage) InvCheck() {
-// 	var capacity int = 0
-// 	for i := 0; i < len(p.inventory); i++ {
-// 		capacity += 1
-// 		if capacity == 10 {
+type Monstre struct {
+	name string
+	lp int
+	lpmax int
+	attack int
+}
 
-// 		}
-// 	}
+func (m *Monstre) InitGoblin(name string, lpmax int, attack int) {
+	// initialisation de notre personnage
+	m.name = name
+	m.lpmax = lpmax
+	m.lp = lpmax/2
+	m.attack = attack
+}
 
-// }
+func (p *Personnage) GoblinPattern(&e1 Monstre) {
+	p.lp-= attack
+	fmt.Println(name, "attaque", p.name, "et lui inflige")
+}
+
+func (p *Personnage) TrainingFight() {
+	var e1 Monstre
+	e1.InitGoblin("Gobelin d'entrainement", 40, 5)
+	var turn int
+	for i := 0; i <= 9999; i++ {
+		turn++
+		fmt.Println("Tour", turn)
+		time.Sleep(1 * time.Second)
+		fmt.Println("C'est au joueur !")
+		time.Sleep(1 * time.Second)
+		fmt.Println("C'est à l'ennemi !")
+		p.GoblinPattern(&e1)
+		time.Sleep(1 * time.Second)
+	}
+}
