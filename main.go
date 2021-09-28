@@ -74,7 +74,11 @@ func (p *Personnage) menu() {
 	fmt.Println("----- \n Afficher les informations du personnage (1)")
 	fmt.Println("----- \n Accéder au contenu de l’inventaire (2)")
 	fmt.Println("----- \n Voir le Marchand (3)")
+<<<<<<< HEAD
 	fmt.Println("----- \n S'entrainer contre un gobelin (4)")
+=======
+	fmt.Println("----- \n Aller parler au Forgeron (4)")
+>>>>>>> 17374e5b518d3954e750d78964525493a9497402
 	fmt.Println("----- \n Quitter (5) \n-----")
 	fmt.Println("Entrez le numéro de l'option:")
 	fmt.Println("+++++++++++++++++++++++++++++++")
@@ -87,16 +91,31 @@ func (p *Personnage) menu() {
 		p.AccessInventory()
 	case 3:
 		fmt.Println("+++++++++++++++++++++Marchand+++++++++++++++++++")
-		fmt.Println("-------\nPotion de vie --> 15 pièces <--(1)")
+		fmt.Println("-----\nPotion de vie --> 15 pièces <--(1)")
 		fmt.Println("-----\nPotion de poison --> 20 pièces <-- (2)")
 		fmt.Println("-----\nLivre de sort:Boule de Feu --> 25 pièces <-- (3)")
-		fmt.Println("-----------------\n Retour au menu principal (4) \n--------------")
+		fmt.Println("-----\nFourrure de Loup --> 5 pièces <--(4)")
+		fmt.Println("-----\nPeau de Troll --> 6 pièces <--(5)")
+		fmt.Println("-----\nCuir de Sanglier --> 4 pièces <--(6)")
+		fmt.Println("-----\nPlume de Corbac --> 6 pièces <--(7)")
+		fmt.Println("-----\nRetour au menu principal (8) \n--")
 		fmt.Println("++++++++++++++++++++++++++++++++++++++++++++++++")
 		p.Marchand()
 	case 4:
+<<<<<<< HEAD
 		p.TrainingFight()
 	case 5:
 		fmt.Println("Fin de la transmission")
+=======
+		fmt.Println("------ Vous entrez dans la forge ------")
+		fmt.Println("--\n Construire un Chapeau de l'aventurier (1) --")
+		fmt.Println("requiert 1 plume de corbeau et 1 cuir de sanglier")
+		fmt.Println("--\n Construire une Tunique de l'Aventurier (2) --")
+		fmt.Println("requiert 2 Fourrure de Loup et 1 Peau de Troll")
+		fmt.Println("--\n Construire les bottes de l'aventurier (3) --")
+		fmt.Println("requiert 1 Fourrure de Loup et 1 Cuir de Sanglier")
+		p.Forgeron()
+>>>>>>> 17374e5b518d3954e750d78964525493a9497402
 	}
 }
 
@@ -147,22 +166,22 @@ func (p *Personnage) AccessInventory() {
 }
 
 func (p *Personnage) UseInventory() {
+	// fonction qui nous permet d'interagir avec les éléments de l'inventaire
 	var use int
 	fmt.Scanln(&use)
-		switch use {
-		case 1:
-			p.TakePot()
-			p.UseInventory()
-		case 2:
-			p.PoisonPot()
-			p.UseInventory()
-		case 3:
-			p.Spellbook()
-		case 4:
-			p.menu()
-		}
+	switch use {
+	case 1:
+		p.TakePot()
+		p.UseInventory()
+	case 2:
+		p.PoisonPot()
+		p.UseInventory()
+	case 3:
+		p.Spellbook()
+	case 4:
+		p.menu()
+	}
 }
-
 
 func (p *Personnage) Spellbook() {
 	// fonction qui nous permet d'ajouter ou repertorier les sorts (spell)
@@ -194,6 +213,22 @@ func (p *Personnage) Marchand() {
 		fmt.Println("il vous reste", p.money, "pièces")
 		p.Marchand()
 	case 4:
+		p.AddInventory("Fourrure de Loup", 5)
+		fmt.Println("il vous reste", p.money, "pièces")
+		p.Marchand()
+	case 5:
+		p.AddInventory("Peau de Troll", 6)
+		fmt.Println("il vous reste", p.money, "pièces")
+		p.Marchand()
+	case 6:
+		p.AddInventory("Cuir de Sanglier", 4)
+		fmt.Println("il vous reste", p.money, "pièces")
+		p.Marchand()
+	case 7:
+		p.AddInventory("Plume de Corbac", 6)
+		fmt.Println("il vous reste", p.money, "pièces")
+		p.Marchand()
+	case 8:
 		p.menu()
 	}
 }
@@ -284,6 +319,7 @@ func (p *Personnage) PoisonPot() {
 	}
 }
 
+<<<<<<< HEAD
 type Monstre struct {
 	name string
 	lp int
@@ -319,3 +355,36 @@ func (p *Personnage) TrainingFight() {
 		time.Sleep(1 * time.Second)
 	}
 }
+=======
+func (p *Personnage) Forgeron() {
+	var enclume int
+	fmt.Scanln(&enclume)
+	switch enclume {
+	case 1:
+		for _, letter := range p.inventory {
+			if letter != "Plume de Cobrac" && letter != "Cuir de Sanglier" {
+				fmt.Println("vous n'avez pas les ressources nécéssaires !")
+			} else {
+				p.AddInventory("Chapeau de l'Aventurier", 5)
+			}
+		}
+	case 2:
+		for _, letter := range p.inventory {
+			if letter != "Fourrure de Loup" && letter != "Peau de Troll" {
+				fmt.Println("vous n'avez pas les ressources nécéssaires !")
+			} else {
+				p.AddInventory("Tunique de l'Aventurier", 5)
+			}
+		}
+	case 3:
+		for _, letter := range p.inventory {
+			if letter != "Fourrure de Loup" && letter != "Cuir de Sanglier" {
+				fmt.Println("vous n'avez pas les ressources nécéssaires !")
+			} else {
+				p.AddInventory("Bottes de l'Aventurier", 5)
+			}
+		}
+	}
+	p.menu()
+}
+>>>>>>> 17374e5b518d3954e750d78964525493a9497402
