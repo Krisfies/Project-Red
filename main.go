@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"time"
+	"github.com/01-edu/z01"
 )
 
 func main() {
@@ -33,42 +34,62 @@ func (p *Personnage) CharCreation() {
 
 	fmt.Printf("Bienvenue dans le menu de création de personnage \nPour commencer, choisissez un nom pour votre avatar: \n")
 	fmt.Scanln(&name)
-	fmt.Println("Votre personnage se nomme donc", name)
-	time.Sleep(3 * time.Second)
-	fmt.Println("\nChoisissez maintenant la race de ", name, "parmi:\n-Humain\n-Elfe\n-Nain")
-	fmt.Scanln(&class)
-	if class != "Humain" && class != "Elfe" && class != "Nain" {
-		fmt.Println("Erreur, veuillez entrer une valeur correcte:\nHumain, Elfe ou Nain")
+	if name == "A6" {
+		class = "???"
+		level = 999
+		lpmax = 9999
+		lp = lpmax/2
+		inventory = []string{"Gantelet de l'infini"}
+		money = 999999
+		var welcoming string = "Bienvenue A6"
+		for _, letter := range welcoming {
+			time.Sleep(100 * time.Millisecond)
+			z01.PrintRune(letter)
+		}
+		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+	} else {
+		fmt.Println("Votre personnage se nomme donc", name)
+		time.Sleep(3 * time.Second)
+		fmt.Println("\nChoisissez maintenant la race de ", name, "parmi:\n-Humain\n-Elfe\n-Nain")
 		fmt.Scanln(&class)
+		if class != "Humain" && class != "Elfe" && class != "Nain" {
+			fmt.Println("Erreur, veuillez entrer une valeur correcte:\nHumain, Elfe ou Nain")
+			fmt.Scanln(&class)
+		}
+		switch class {
+		case "Humain":
+			class = "Humain"
+			lpmax = 100
+		case "Elfe":
+			class = "Elfe"
+			lpmax = 80
+		case "Nain":
+			class = "Nain"
+			lpmax = 120
+		}
+		if class != "Humain" && class != "Elfe" && class != "Nain" {
+			class = "Troll"
+			lpmax = 50
+		}
+		lp = lpmax / 2
+		money = 100
+		inventory = []string{"Potion de vie", "Potion de vie", "Potion de vie"}
+		skill = []string{"Coup de poing"}
+		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+		fmt.Println(name, "est donc un", class, ", il commence avec", lp, " point de vie et", lpmax, "point de vie maximum.")
+		if class == "Troll" {
+			fmt.Println("Ça t'apprendra à faire le malin")
+		}
+		fmt.Println(name, "est niveau 1, possède le sort Coup de poing et a", money, "pièces d'or.")
+		level = 1
+		time.Sleep(4 * time.Second)
 	}
-	switch class {
-	case "Humain":
-		class = "Humain"
-		lpmax = 100
-	case "Elfe":
-		class = "Elfe"
-		lpmax = 80
-	case "Nain":
-		class = "Nain"
-		lpmax = 120
-	}
-	if class != "Humain" && class != "Elfe" && class != "Nain" {
-		class = "Troll"
-		lpmax = 50
-	}
-	lp = lpmax / 2
-	money = 100
-	inventory = []string{"Potion de vie", "Potion de vie", "Potion de vie"}
-	skill = []string{"Coup de poing"}
-	os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-	fmt.Println(name, "est donc un", class, ", il commence avec", lp, " point de vie et", lpmax, "point de vie maximum.")
-	fmt.Println(name, "est niveau 1, possède le sort Coup de poing et a", money, "pièces d'or.")
-	level = 1
 	p.Init(name, class, level, lpmax, lp, inventory, skill, money)
 }
 
 func (p *Personnage) menu() {
 	var menu int
+	os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
 	fmt.Println("+++++++++++++++++++++++++++++++")
 	fmt.Println("A quoi voulez vous accéder:")
 	fmt.Println("----- \n Afficher les informations du personnage (1)")
@@ -84,6 +105,7 @@ func (p *Personnage) menu() {
 	switch menu {
 	case 1:
 		p.DisplayInfo()
+		p.menu()
 	case 2:
 		p.AccessInventory()
 	case 3:
@@ -100,15 +122,17 @@ func (p *Personnage) menu() {
 		p.Marchand()
 	case 4:
 		fmt.Println("------ Vous entrez dans la forge ------")
-		fmt.Println("--\n Construire un Chapeau de l'aventurier (1) --")
+		fmt.Println("\n-- Construire un Chapeau de l'aventurier (1) --")
 		fmt.Println("requiert 1 plume de corbeau et 1 cuir de sanglier")
-		fmt.Println("--\n Construire une Tunique de l'Aventurier (2) --")
+		fmt.Println("\n-- Construire une Tunique de l'Aventurier (2) --")
 		fmt.Println("requiert 2 Fourrure de Loup et 1 Peau de Troll")
-		fmt.Println("--\n Construire les bottes de l'aventurier (3) --")
+		fmt.Println("\n-- Construire les bottes de l'aventurier (3) --")
 		fmt.Println("requiert 1 Fourrure de Loup et 1 Cuir de Sanglier")
+		fmt.Println("\n-- Retourner au menu principal (4) --")
 		p.Forgeron()
 	case 5:
 		p.TrainingFight()
+		p.menu()
 	}
 }
 
@@ -238,7 +262,6 @@ func (p *Personnage) DisplayInfo() {
 	fmt.Println("skill :", p.skill)
 	fmt.Println("pessos :", p.money)
 	fmt.Println("-------------------------")
-	p.menu()
 }
 
 func (p *Personnage) AddInventory(item string, price int) {
@@ -277,7 +300,7 @@ func (p *Personnage) Dead() {
 	if p.lp == 0 {
 		fmt.Printf("Bravo, vous êtes mort. \n")
 		time.Sleep(2 * time.Second)
-		fmt.Printf("Mais ne paniquez pas, vous allez être ressuciter \n")
+		fmt.Printf("Mais ne paniquez pas, vous allez être ressucité \n")
 		time.Sleep(2 * time.Second)
 		fmt.Printf("Manoeuvre de réanimation en cours")
 		time.Sleep(1 * time.Second)
@@ -324,6 +347,7 @@ func (p *Personnage) Forgeron() {
 				p.AddInventory("Chapeau de l'Aventurier", 5)
 			}
 		}
+		p.Forgeron()
 	case 2:
 		for _, letter := range p.inventory {
 			if letter != "Fourrure de Loup" && letter != "Peau de Troll" {
@@ -332,6 +356,7 @@ func (p *Personnage) Forgeron() {
 				p.AddInventory("Tunique de l'Aventurier", 5)
 			}
 		}
+		p.Forgeron()
 	case 3:
 		for _, letter := range p.inventory {
 			if letter != "Fourrure de Loup" && letter != "Cuir de Sanglier" {
@@ -340,8 +365,10 @@ func (p *Personnage) Forgeron() {
 				p.AddInventory("Bottes de l'Aventurier", 5)
 			}
 		}
+		p.Forgeron()
+	case 4:
+		p.menu()
 	}
-	p.menu()
 }
 
 type Monstre struct {
@@ -360,8 +387,8 @@ func (m *Monstre) InitGoblin(name string, lpmax int, attack int) {
 }
 
 func (p *Personnage) GoblinPattern(m *Monstre) {
-	p.lp-= m.attack
-	fmt.Println(m.name, "attaque", p.name, "et lui inflige")
+	p.lp -= m.attack
+	fmt.Println(m.name, "attaque", p.name, "et lui inflige", m.attack)
 }
 
 func (p *Personnage) CharTurn() {
@@ -391,9 +418,16 @@ func (p *Personnage) TrainingFight() {
 		fmt.Println("Tour", turn)
 		time.Sleep(1 * time.Second)
 		fmt.Println("C'est au joueur !")
+		if e1.lp <= 0 {
+			break
+		}
 		time.Sleep(1 * time.Second)
 		fmt.Println("C'est à l'ennemi !")
 		p.GoblinPattern(&e1)
+		if p.lp <= 0 {
+			p.Dead()
+			break
+		}
 		time.Sleep(1 * time.Second)
 	}
 }
