@@ -74,12 +74,9 @@ func (p *Personnage) menu() {
 	fmt.Println("----- \n Afficher les informations du personnage (1)")
 	fmt.Println("----- \n Accéder au contenu de l’inventaire (2)")
 	fmt.Println("----- \n Voir le Marchand (3)")
-<<<<<<< HEAD
-	fmt.Println("----- \n S'entrainer contre un gobelin (4)")
-=======
 	fmt.Println("----- \n Aller parler au Forgeron (4)")
->>>>>>> 17374e5b518d3954e750d78964525493a9497402
-	fmt.Println("----- \n Quitter (5) \n-----")
+	fmt.Println("----- \n S'entrainer contre un gobelin (5)")
+	fmt.Println("----- \n Quitter (6) \n-----")
 	fmt.Println("Entrez le numéro de l'option:")
 	fmt.Println("+++++++++++++++++++++++++++++++")
 	fmt.Scanln(&menu)
@@ -102,11 +99,6 @@ func (p *Personnage) menu() {
 		fmt.Println("++++++++++++++++++++++++++++++++++++++++++++++++")
 		p.Marchand()
 	case 4:
-<<<<<<< HEAD
-		p.TrainingFight()
-	case 5:
-		fmt.Println("Fin de la transmission")
-=======
 		fmt.Println("------ Vous entrez dans la forge ------")
 		fmt.Println("--\n Construire un Chapeau de l'aventurier (1) --")
 		fmt.Println("requiert 1 plume de corbeau et 1 cuir de sanglier")
@@ -115,7 +107,8 @@ func (p *Personnage) menu() {
 		fmt.Println("--\n Construire les bottes de l'aventurier (3) --")
 		fmt.Println("requiert 1 Fourrure de Loup et 1 Cuir de Sanglier")
 		p.Forgeron()
->>>>>>> 17374e5b518d3954e750d78964525493a9497402
+	case 5:
+		p.TrainingFight()
 	}
 }
 
@@ -319,43 +312,6 @@ func (p *Personnage) PoisonPot() {
 	}
 }
 
-<<<<<<< HEAD
-type Monstre struct {
-	name string
-	lp int
-	lpmax int
-	attack int
-}
-
-func (m *Monstre) InitGoblin(name string, lpmax int, attack int) {
-	// initialisation de notre personnage
-	m.name = name
-	m.lpmax = lpmax
-	m.lp = lpmax/2
-	m.attack = attack
-}
-
-func (p *Personnage) GoblinPattern(&e1 Monstre) {
-	p.lp-= attack
-	fmt.Println(name, "attaque", p.name, "et lui inflige")
-}
-
-func (p *Personnage) TrainingFight() {
-	var e1 Monstre
-	e1.InitGoblin("Gobelin d'entrainement", 40, 5)
-	var turn int
-	for i := 0; i <= 9999; i++ {
-		turn++
-		fmt.Println("Tour", turn)
-		time.Sleep(1 * time.Second)
-		fmt.Println("C'est au joueur !")
-		time.Sleep(1 * time.Second)
-		fmt.Println("C'est à l'ennemi !")
-		p.GoblinPattern(&e1)
-		time.Sleep(1 * time.Second)
-	}
-}
-=======
 func (p *Personnage) Forgeron() {
 	var enclume int
 	fmt.Scanln(&enclume)
@@ -387,4 +343,57 @@ func (p *Personnage) Forgeron() {
 	}
 	p.menu()
 }
->>>>>>> 17374e5b518d3954e750d78964525493a9497402
+
+type Monstre struct {
+	name string
+	lp int
+	lpmax int
+	attack int
+}
+
+func (m *Monstre) InitGoblin(name string, lpmax int, attack int) {
+	// initialisation de notre personnage
+	m.name = name
+	m.lpmax = lpmax
+	m.lp = lpmax/2
+	m.attack = attack
+}
+
+func (p *Personnage) GoblinPattern(m *Monstre) {
+	p.lp-= m.attack
+	fmt.Println(m.name, "attaque", p.name, "et lui inflige")
+}
+
+func (p *Personnage) CharTurn() {
+	var choice int
+	fmt.Println("Attaquer (1)")
+	fmt.Println("Utiliser un objet (2)")
+	fmt.Scanln(&choice)
+	switch choice {
+	case 1:
+		fmt.Println(p.name, "utilise Attaque Basique et inflige 5 points de dégâts à Y, il lui reste X PV")
+	case 2:
+		for i := 0; i < len(p.inventory); i++ {
+			if p.inventory[i] != " " {
+				fmt.Println("---]", p.inventory[i], "[---")
+
+			}
+		}
+	}
+}
+
+func (p *Personnage) TrainingFight() {
+	var e1 Monstre
+	e1.InitGoblin("Gobelin d'entrainement", 40, 5)
+	var turn int
+	for i := 0; i <= 9999; i++ {
+		turn++
+		fmt.Println("Tour", turn)
+		time.Sleep(1 * time.Second)
+		fmt.Println("C'est au joueur !")
+		time.Sleep(1 * time.Second)
+		fmt.Println("C'est à l'ennemi !")
+		p.GoblinPattern(&e1)
+		time.Sleep(1 * time.Second)
+	}
+}
