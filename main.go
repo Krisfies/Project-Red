@@ -117,10 +117,13 @@ func (p *Personnage) menu() {
 
 	switch menu {
 	case 1:
+		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
 		p.DisplayInfo()
 	case 2:
+		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
 		p.AccessInventory()
 	case 3:
+		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
 		fmt.Println("+++++++++++++++++++++Marchand+++++++++++++++++++")
 		fmt.Println("-----\nPotion de vie --> 15 pièces <--(1)")
 		fmt.Println("-----\nPotion de poison --> 20 pièces <-- (2)")
@@ -133,6 +136,7 @@ func (p *Personnage) menu() {
 		fmt.Println("++++++++++++++++++++++++++++++++++++++++++++++++")
 		p.Marchand()
 	case 4:
+		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
 		fmt.Println("------ Vous entrez dans la forge ------")
 		fmt.Println("\n-- Construire un Chapeau de l'aventurier (1) --")
 		fmt.Println("requiert 1 plume de corbeau et 1 cuir de sanglier")
@@ -143,6 +147,7 @@ func (p *Personnage) menu() {
 		fmt.Println("\n-- Retourner au menu principal (4) --")
 		p.Forgeron()
 	case 5:
+		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
 		p.TrainingFight()
 		p.menu()
 	}
@@ -176,14 +181,15 @@ func (p *Personnage) AccessInventory() {
 	// fonction qui nous permet d'acceder a notre inventaire
 	// var rep int
 	if len(p.inventory) == 0 {
-		fmt.Println("inventaire vide fraté")
+		fmt.Println("Inventaire vide fraté")
 	} else {
-		fmt.Println(p.inventory)
-	}
-	for i := 0; i < len(p.inventory); i++ {
-		if p.inventory[i] != " " {
-			fmt.Println("---]", p.inventory[i], "[---")
+		fmt.Printf("\n")
+		for i := 0; i < len(p.inventory); i++ {
+			if p.inventory[i] != " " {
+				fmt.Println("---]", p.inventory[i], "[---")
+			}
 		}
+		fmt.Printf("\n")
 	}
 	fmt.Println("___________________________________________")
 	fmt.Println("Prendre une Potion de vie (1)")
@@ -293,6 +299,18 @@ func (p *Personnage) AddInventory(item string, price int) {
 	}
 }
 
+func (p *Personnage) RemoveInventory(item string) {
+	var index int = -1
+	for i := range p.inventory {
+		if p.inventory[i] == item {
+			index = i
+		}
+	}
+	if index != -1 {
+		p.inventory = append(p.inventory[ : index], p.inventory[index+1 :]...)
+	}
+}
+
 func (p *Personnage) TakePot() {
 	// fonction qui nous permet de prendre une potion de soin
 	for _, letter := range p.inventory {
@@ -300,12 +318,12 @@ func (p *Personnage) TakePot() {
 			if p.lp <= (p.lpmax - 50) {
 				p.lp += 50
 				fmt.Println("Glou glou glou, ça fait du bien")
-				p.inventory[len(p.inventory)-1] = ""
+				p.RemoveInventory("Potion de vie")
 				break
 			} else if p.lp > (p.lpmax-50) && p.lp < p.lpmax {
 				p.lp = p.lpmax
 				fmt.Println("Glou glou glou, ça fait du bien")
-				p.inventory[len(p.inventory)-1] = ""
+				p.RemoveInventory("Potion de vie")
 				break
 			} else {
 				fmt.Println("Vous êtes full, vous ne pouvez pas utiliser la potion")
@@ -340,7 +358,7 @@ func (p *Personnage) PoisonPot() {
 	for _, letter := range p.inventory {
 		if letter == "Potion de poison" {
 			fmt.Println("Vous buvez la potion de poison, ouch")
-			p.inventory[len(p.inventory)-1] = ""
+			p.RemoveInventory("Potion de poison")
 			time.Sleep(1 * time.Second)
 			fmt.Println(p.lp, "/", p.lpmax, "PV")
 			p.lp -= 10
@@ -360,31 +378,23 @@ func (p *Personnage) Forgeron() {
 	fmt.Scanln(&enclume)
 	switch enclume {
 	case 1:
-		for _, letter := range p.inventory {
-			if letter != "Plume de Cobrac" && letter != "Cuir de Sanglier" {
-				fmt.Println("vous n'avez pas les ressources nécéssaires !")
-			} else {
-				p.AddInventory("Chapeau de l'Aventurier", 5)
-			}
-		}
+		p.AddInventory("Chapeau de l'Aventurier", 5)
+		p.RemoveInventory("Plume de Corbac")
+		p.RemoveInventory("Cuir de Sanglier")
+		fmt.Println("Vous êtes maintenant en possession de Chapeau de l'Aventurier")
 		p.Forgeron()
 	case 2:
-		for _, letter := range p.inventory {
-			if letter != "Fourrure de Loup" && letter != "Peau de Troll" {
-				fmt.Println("vous n'avez pas les ressources nécéssaires !")
-			} else {
-				p.AddInventory("Tunique de l'Aventurier", 5)
-			}
-		}
+		p.AddInventory("Tunique de l'Aventurier", 5)
+		p.RemoveInventory("Fourrure de Loup")
+		p.RemoveInventory("Fourrure de Loup")
+		p.RemoveInventory("Peau de Troll")
+		fmt.Println("Vous êtes maintenant en possession de Tunique de l'Aventurier")
 		p.Forgeron()
 	case 3:
-		for _, letter := range p.inventory {
-			if letter != "Fourrure de Loup" && letter != "Cuir de Sanglier" {
-				fmt.Println("vous n'avez pas les ressources nécéssaires !")
-			} else {
-				p.AddInventory("Bottes de l'Aventurier", 5)
-			}
-		}
+		p.AddInventory("Bottes de l'Aventurier", 5)
+		p.RemoveInventory("Fourrure de Loup")
+		p.RemoveInventory("Cuir de Sanglier")
+		fmt.Println("Vous êtes maintenant en possession de Bottes de l'Aventurier")
 		p.Forgeron()
 	case 4:
 		p.menu()
@@ -420,7 +430,7 @@ func (p *Personnage) CharTurn(m *Monstre) {
 	switch choice {
 	case 1:
 		m.lp -= damage
-		fmt.Println(p.name, "utilise Attaque Basique et inflige", damage, "points de dégâts à", m.name, "il lui reste", m.lp, "PV")
+		fmt.Println(p.name, "utilise Coup de poing et inflige", damage, "points de dégâts à", m.name, "il lui reste", m.lp, "PV")
 	case 2:
 		for i := 0; i < len(p.inventory); i++ {
 			if p.inventory[i] != " " {
