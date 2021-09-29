@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"time"
+
 	"github.com/01-edu/z01"
 )
 
@@ -38,7 +39,7 @@ func (p *Personnage) CharCreation() {
 		class = "???"
 		level = 999
 		lpmax = 9999
-		lp = lpmax/2
+		lp = lpmax / 2
 		inventory = []string{"Gantelet de l'infini"}
 		money = 999999
 		var welcoming string = "Bienvenue A6"
@@ -51,7 +52,7 @@ func (p *Personnage) CharCreation() {
 		class = "Esportugais"
 		level = 5
 		lpmax = 60
-		lp = lpmax/2
+		lp = lpmax / 2
 		inventory = []string{"Marteau nationalocommuniste de la démocratie"}
 		skill = []string{"Instabilité Politique"}
 		money = 10000
@@ -452,13 +453,14 @@ func (p *Personnage) TrainingFight() {
 		fmt.Println("C'est au joueur !")
 		p.CharTurn(&e1)
 		if e1.lp <= 0 {
-			fmt.Println(e1.name,"est mort ! Vive",e1.name)
+			fmt.Println(e1.name, "est mort ! Vive", e1.name)
 			break
 		}
 		time.Sleep(1 * time.Second)
 		fmt.Println("C'est à l'ennemi !")
 		p.GoblinPattern(&e1)
 		if p.lp <= 0 {
+			fmt.Println("Bien joué grand fou, vous avez vaincu le grrand gobelin !")
 			p.Dead()
 			break
 		}
