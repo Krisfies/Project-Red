@@ -49,7 +49,7 @@ func (p *Personnage) CharCreation() {
 		}
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
 	} else if name == "Ibérie" { //Easter egg n°2
-		class = "Esportugais"
+		class = "Péninsule"
 		level = 5
 		lpmax = 60
 		lp = lpmax / 2
@@ -57,13 +57,13 @@ func (p *Personnage) CharCreation() {
 		skill = []string{"Instabilité Politique"}
 		money = 10000
 		fmt.Println("Votre pays se nomme donc", name)
-		fmt.Println(name, "est donc Péninsule, elle commence avec", lp, " point de vie et", lpmax, "point de vie maximum.")
+		fmt.Println(name, "est donc une",class,"elle commence avec", lp, " point de vie et", lpmax, "point de vie maximum.")
 		fmt.Println(name, "est niveau 1, possède le sort Instabilité politique et a", money, "pièces d'or.")
-		time.Sleep(4 * time.Second)
+		time.Sleep(5 * time.Second)
 		p.Init(name, class, level, lpmax, lp, inventory, skill, money)
 	} else {
 		fmt.Println("Votre personnage se nomme donc", name)
-		time.Sleep(3 * time.Second)
+		time.Sleep(2 * time.Second)
 		fmt.Println("\nChoisissez maintenant la race de ", name, "parmi:\n-Humain\n-Elfe\n-Nain")
 		fmt.Scanln(&class)
 		if class != "Humain" && class != "Elfe" && class != "Nain" {
@@ -96,13 +96,14 @@ func (p *Personnage) CharCreation() {
 		}
 		fmt.Println(name, "est niveau 1, possède le sort Coup de poing et a", money, "pièces d'or.")
 		level = 1
-		time.Sleep(4 * time.Second)
+		time.Sleep(3 * time.Second)
 		p.Init(name, class, level, lpmax, lp, inventory, skill, money)
 	}
 }
 
 func (p *Personnage) menu() {
 	var menu int
+	var retour int
 	os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
 	fmt.Println("+++++++++++++++++++++++++++++++")
 	fmt.Println("A quoi voulez vous accéder:")
@@ -120,6 +121,12 @@ func (p *Personnage) menu() {
 	case 1:
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
 		p.DisplayInfo()
+		fmt.Println("Retour au menu principal (1)")
+		fmt.Scanln(&retour)
+		switch retour {
+		case 1:
+			p.menu()
+		}
 	case 2:
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
 		p.AccessInventory()
@@ -151,6 +158,9 @@ func (p *Personnage) menu() {
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
 		p.TrainingFight()
 		p.menu()
+	case 6:
+		fmt.Println("Fin de la transmission")
+		break
 	}
 }
 
@@ -180,7 +190,6 @@ func (p *Personnage) Init(name string, class string, level int, lpmax int, lp in
 
 func (p *Personnage) AccessInventory() {
 	// fonction qui nous permet d'acceder a notre inventaire
-	// var rep int
 	if len(p.inventory) == 0 {
 		fmt.Println("Inventaire vide fraté")
 	} else {
@@ -192,12 +201,12 @@ func (p *Personnage) AccessInventory() {
 		}
 		fmt.Printf("\n")
 	}
-	fmt.Println("___________________________________________")
+	fmt.Println("----------------")
 	fmt.Println("Prendre une Potion de vie (1)")
 	fmt.Println("Prendre une Potion de poison (2)")
 	fmt.Println("Utiliser le Livre de sort : Boule de Feu (3)")
 	fmt.Println("Menu précédent (4)")
-	fmt.Println("___________________________________________")
+	fmt.Println("----------------")
 	p.UseInventory()
 }
 
@@ -272,7 +281,6 @@ func (p *Personnage) Marchand() {
 
 func (p *Personnage) DisplayInfo() {
 	// fonction nous permettant de voir les informations de notre personnage
-	var back int
 	fmt.Println("-------------------------")
 	fmt.Println("Nom:", p.name)
 	fmt.Println("Classe:", p.class)
@@ -283,12 +291,6 @@ func (p *Personnage) DisplayInfo() {
 	fmt.Println("skill :", p.skill)
 	fmt.Println("pessos :", p.money)
 	fmt.Println("-------------------------")
-	fmt.Println("Revenir au menu principal (1)")
-	fmt.Scanln(&back)
-	switch back {
-	case 1:
-		p.menu()
-	}
 }
 
 func (p *Personnage) AddInventory(item string, price int) {
@@ -419,7 +421,7 @@ func (m *Monstre) InitGoblin(name string, lpmax int, attack int) {
 
 func (p *Personnage) GoblinPattern(m *Monstre) {
 	p.lp -= m.attack
-	fmt.Println(m.name, "attaque", p.name, "et lui inflige", m.attack)
+	fmt.Println(m.name, "attaque", p.name, "et lui inflige", m.attack, " points de dégâts, il lui reste", p.lp, "PV")
 }
 
 func (p *Personnage) CharTurn(m *Monstre) {
@@ -439,6 +441,19 @@ func (p *Personnage) CharTurn(m *Monstre) {
 
 			}
 		}
+		fmt.Println("Prendre une potion de soin (1)")
+		fmt.Println("Prendre une potion de poison (2)")
+		fmt.Println("Retour (3)")
+		var use int
+		fmt.Scanln(&use)
+		switch use {
+		case 1:
+			p.TakePot()
+		case 2:
+			p.PoisonPot()
+		case 3:
+			p.CharTurn(m)
+		}
 	}
 }
 
@@ -448,22 +463,24 @@ func (p *Personnage) TrainingFight() {
 	var turn int
 	for i := 0; i <= 9999; i++ {
 		turn++
+		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
 		fmt.Println("Tour", turn)
 		time.Sleep(1 * time.Second)
 		fmt.Println("C'est au joueur !")
 		p.CharTurn(&e1)
 		if e1.lp <= 0 {
-			fmt.Println(e1.name, "est mort ! Vive", e1.name)
+			fmt.Println("\n",e1.name, "est mort ! Vive", e1.name, "1")
+			time.Sleep(2 * time.Second)
 			break
 		}
 		time.Sleep(1 * time.Second)
-		fmt.Println("C'est à l'ennemi !")
+		fmt.Println("\nC'est à l'ennemi !")
 		p.GoblinPattern(&e1)
 		if p.lp <= 0 {
-			fmt.Println("Bien joué grand fou, vous avez vaincu le grrand gobelin !")
+			fmt.Println(e1.name,"vous a battu")
 			p.Dead()
 			break
 		}
-		time.Sleep(1 * time.Second)
+		time.Sleep(3 * time.Second)
 	}
 }
