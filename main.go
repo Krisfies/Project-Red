@@ -35,7 +35,7 @@ func (p *Personnage) CharCreation() {
 
 	fmt.Printf("Bienvenue dans le menu de création de personnage \nPour commencer, choisissez un nom pour votre avatar: \n")
 	fmt.Scanln(&name)
-	if name == "A6" { //Easter egg n°1
+	if name == "A6" { //Easter egg n°1, un peu le mode développeur du jeu
 		class = "???"
 		level = 999
 		lpmax = 9999
@@ -48,8 +48,8 @@ func (p *Personnage) CharCreation() {
 			z01.PrintRune(letter)
 		}
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-	} else if name == "Ibérie" { //Easter egg n°2
-		class = "Péninsule"
+	} else if name == "Ibérie" { //Easter egg n°2, référence à Hearts of Iron 4
+		class = "Pays ?"
 		level = 5
 		lpmax = 60
 		lp = lpmax / 2
@@ -57,7 +57,7 @@ func (p *Personnage) CharCreation() {
 		skill = []string{"Instabilité Politique"}
 		money = 10000
 		fmt.Println("Votre pays se nomme donc", name)
-		fmt.Println(name, "est donc une",class,"elle commence avec", lp, " point de vie et", lpmax, "point de vie maximum.")
+		fmt.Println(name, "est donc un",class,"elle commence avec", lp, " point de vie et", lpmax, "point de vie maximum.")
 		fmt.Println(name, "est niveau 1, possède le sort Instabilité politique et a", money, "pièces d'or.")
 		time.Sleep(5 * time.Second)
 		p.Init(name, class, level, lpmax, lp, inventory, skill, money)
@@ -374,6 +374,10 @@ func (p *Personnage) PoisonPot() {
 			fmt.Println(p.lp, "/", p.lpmax, "PV")
 		}
 	}
+}
+
+func (p *Personnage) Verify() {
+	
 }
 
 func (p *Personnage) Forgeron() {
