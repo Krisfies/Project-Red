@@ -174,6 +174,20 @@ type Personnage struct {
 	inventory []string
 	skill     []string
 	money     int
+	Equipement
+}
+
+type Equipement struct {
+	Chapeau   string
+	Tunique   string
+	Maxbottes string
+}
+
+type Monstre struct {
+	name   string
+	lp     int
+	lpmax  int
+	attack int
 }
 
 func (p *Personnage) Init(name string, class string, level int, lpmax int, lp int, inventory []string, skill []string, money int) {
@@ -228,6 +242,25 @@ func (p *Personnage) UseInventory() {
 	}
 }
 
+func (p *Personnage) Checkequip() {
+	for _, letter := range p.inventory {
+		if letter == "Chapeau de l'Aventurier" {
+			p.lpmax += 10
+			fmt.Println("grâce au chapeau la frappe, tu gagne + 10 de pv max !")
+		}
+		if letter == "Tunique de l'Aventurier" {
+			p.lpmax += 25
+			fmt.Println("grâce a la tunique gucci, tu gagne + 25 de pv max !")
+			p.RemoveInventory("")
+
+		}
+		if letter == "Bottes de l'Aventurier" {
+			p.lpmax += 15
+			fmt.Println("grâce a la nouvelle paire, tu gagne + 15 de pv max !")
+		}
+	}
+}
+
 func (p *Personnage) Spellbook() {
 	// fonction qui nous permet d'ajouter ou repertorier les sorts (spell)
 	for _, letter := range p.skill {
@@ -276,21 +309,6 @@ func (p *Personnage) Marchand() {
 		p.Marchand()
 	case 8:
 		p.menu()
-	}
-}
-
-func (p *Personnage) Checkinv(item string, prix int) {
-	var founditem = false
-	for _, letter := range p.inventory {
-		if letter == item {
-			founditem = true
-		}
-	}
-	if founditem {
-		fmt.Println("vous avez deja l'objet", item)
-	} else {
-		p.AddInventory(item, prix)
-		fmt.Println("vous possedez desormais :", item)
 	}
 }
 
@@ -397,17 +415,20 @@ func (p *Personnage) Forgeron() {
 	switch enclume {
 	case 1:
 		p.Checkinv("Chapeau de l'Aventurier", 5)
+		p.Checkequip()
 		p.RemoveInventory("Plume de Corbac")
 		p.RemoveInventory("Cuir de Sanglier")
 		p.Forgeron()
 	case 2:
 		p.Checkinv("Tunique de l'Aventurier", 5)
+		p.Checkequip()
 		p.RemoveInventory("Fourrure de Loup")
 		p.RemoveInventory("Fourrure de Loup")
 		p.RemoveInventory("Peau de Troll")
 		p.Forgeron()
 	case 3:
 		p.Checkinv("Bottes de l'Aventurier", 5)
+		p.Checkequip()
 		p.RemoveInventory("Fourrure de Loup")
 		p.RemoveInventory("Cuir de Sanglier")
 		p.Forgeron()
@@ -416,11 +437,19 @@ func (p *Personnage) Forgeron() {
 	}
 }
 
-type Monstre struct {
-	name   string
-	lp     int
-	lpmax  int
-	attack int
+func (p *Personnage) Checkinv(item string, prix int) {
+	var founditem = false
+	for _, letter := range p.inventory {
+		if letter == item {
+			founditem = true
+		}
+	}
+	if founditem {
+		fmt.Println("vous avez deja l'objet", item)
+	} else {
+		p.AddInventory(item, prix)
+		fmt.Println("vous possedez desormais :", item)
+	}
 }
 
 func (m *Monstre) InitGoblin(name string, lpmax int, attack int) {
