@@ -435,9 +435,9 @@ func (p *Personnage) Checkinv(item string, prix int) bool {
 		}
 	}
 	if founditem {
-		return founditem == true
+		return founditem
 	} else {
-		return founditem == false
+		return founditem
 	}
 }
 
