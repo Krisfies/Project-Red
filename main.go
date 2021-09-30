@@ -242,25 +242,6 @@ func (p *Personnage) UseInventory() {
 	}
 }
 
-func (p *Personnage) Checkequip() {
-	for _, letter := range p.inventory {
-		if letter == "Chapeau de l'Aventurier" {
-			p.lpmax += 10
-			fmt.Println("grâce au chapeau la frappe, tu gagne + 10 de pv max !")
-		}
-		if letter == "Tunique de l'Aventurier" {
-			p.lpmax += 25
-			fmt.Println("grâce a la tunique gucci, tu gagne + 25 de pv max !")
-			p.RemoveInventory("")
-
-		}
-		if letter == "Bottes de l'Aventurier" {
-			p.lpmax += 15
-			fmt.Println("grâce a la nouvelle paire, tu gagne + 15 de pv max !")
-		}
-	}
-}
-
 func (p *Personnage) Spellbook() {
 	// fonction qui nous permet d'ajouter ou repertorier les sorts (spell)
 	for _, letter := range p.skill {
@@ -353,6 +334,12 @@ func (p *Personnage) TakePot() {
 		if letter == "Potion de vie" {
 			if p.lp <= (p.lpmax - 50) {
 				p.lp += 50
+				fmt.Println("   :~:  ")
+				fmt.Println("   | |    ")
+				fmt.Println("  .' `.   	 ")
+				fmt.Println(".'     `. ")
+				fmt.Println("|       | ")
+				fmt.Println(" `.._..' ")
 				fmt.Println("Glou glou glou, ça fait du bien")
 				p.RemoveInventory("Potion de vie")
 				break
@@ -414,41 +401,43 @@ func (p *Personnage) Forgeron() {
 	fmt.Scanln(&enclume)
 	switch enclume {
 	case 1:
-		p.Checkinv("Chapeau de l'Aventurier", 5)
-		p.Checkequip()
-		p.RemoveInventory("Plume de Corbac")
-		p.RemoveInventory("Cuir de Sanglier")
-		p.Forgeron()
+		if p.Checkinv("Chapeau de l'Aventurier", 5) {
+			p.lpmax += 15
+			p.RemoveInventory("Plume de Corbac")
+			p.RemoveInventory("Cuir de Sanglier")
+			p.Forgeron()
+		}
 	case 2:
-		p.Checkinv("Tunique de l'Aventurier", 5)
-		p.Checkequip()
-		p.RemoveInventory("Fourrure de Loup")
-		p.RemoveInventory("Fourrure de Loup")
-		p.RemoveInventory("Peau de Troll")
-		p.Forgeron()
+		if p.Checkinv("Tunique de l'Aventurier", 5) {
+			p.lpmax += 25
+			p.RemoveInventory("Fourrure de Loup")
+			p.RemoveInventory("Fourrure de Loup")
+			p.RemoveInventory("Peau de Troll")
+			p.Forgeron()
+		}
 	case 3:
-		p.Checkinv("Bottes de l'Aventurier", 5)
-		p.Checkequip()
-		p.RemoveInventory("Fourrure de Loup")
-		p.RemoveInventory("Cuir de Sanglier")
-		p.Forgeron()
+		if p.Checkinv("Bottes de l'Aventurier", 5) {
+			p.lpmax += 10
+			p.RemoveInventory("Fourrure de Loup")
+			p.RemoveInventory("Cuir de Sanglier")
+			p.Forgeron()
+		}
 	case 4:
 		p.menu()
 	}
 }
 
-func (p *Personnage) Checkinv(item string, prix int) {
-	var founditem = false
+func (p *Personnage) Checkinv(item string, prix int) bool {
+	var founditem bool
 	for _, letter := range p.inventory {
 		if letter == item {
 			founditem = true
 		}
 	}
 	if founditem {
-		fmt.Println("vous avez deja l'objet", item)
+		return founditem == true
 	} else {
-		p.AddInventory(item, prix)
-		fmt.Println("vous possedez desormais :", item)
+		return founditem == false
 	}
 }
 
