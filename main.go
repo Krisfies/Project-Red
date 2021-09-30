@@ -57,7 +57,7 @@ func (p *Personnage) CharCreation() {
 		skill = []string{"Instabilité Politique"}
 		money = 10000
 		fmt.Println("Votre pays se nomme donc", name)
-		fmt.Println(name, "est donc un",class,"elle commence avec", lp, " point de vie et", lpmax, "point de vie maximum.")
+		fmt.Println(name, "est donc un", class, "elle commence avec", lp, " point de vie et", lpmax, "point de vie maximum.")
 		fmt.Println(name, "est niveau 1, possède le sort Instabilité politique et a", money, "pièces d'or.")
 		time.Sleep(5 * time.Second)
 		p.Init(name, class, level, lpmax, lp, inventory, skill, money)
@@ -97,8 +97,8 @@ func (p *Personnage) CharCreation() {
 		fmt.Println(name, "est niveau 1, possède le sort Coup de poing et a", money, "pièces d'or.")
 		level = 1
 		time.Sleep(3 * time.Second)
-		p.Init(name, class, level, lpmax, lp, inventory, skill, money)
 	}
+	p.Init(name, class, level, lpmax, lp, inventory, skill, money)
 }
 
 func (p *Personnage) menu() {
@@ -263,7 +263,7 @@ func (p *Personnage) Marchand() {
 		fmt.Println("il vous reste", p.money, "pièces")
 		p.Marchand()
 	case 5:
-		p.AddInventory("Peau de Troll", 6)
+		p.AddInventory("Peau de Troll", 5)
 		fmt.Println("il vous reste", p.money, "pièces")
 		p.Marchand()
 	case 6:
@@ -276,6 +276,21 @@ func (p *Personnage) Marchand() {
 		p.Marchand()
 	case 8:
 		p.menu()
+	}
+}
+
+func (p *Personnage) Checkinv(item string, prix int) {
+	var founditem = false
+	for _, letter := range p.inventory {
+		if letter == item {
+			founditem = true
+		}
+	}
+	if founditem {
+		fmt.Println("vous avez deja l'objet", item)
+	} else {
+		p.AddInventory(item, prix)
+		fmt.Println("vous possedez desormais :", item)
 	}
 }
 
@@ -310,7 +325,7 @@ func (p *Personnage) RemoveInventory(item string) {
 		}
 	}
 	if index != -1 {
-		p.inventory = append(p.inventory[ : index], p.inventory[index+1 :]...)
+		p.inventory = append(p.inventory[:index], p.inventory[index+1:]...)
 	}
 }
 
@@ -376,32 +391,25 @@ func (p *Personnage) PoisonPot() {
 	}
 }
 
-func (p *Personnage) Verify() {
-	
-}
-
 func (p *Personnage) Forgeron() {
 	var enclume int
 	fmt.Scanln(&enclume)
 	switch enclume {
 	case 1:
-		p.AddInventory("Chapeau de l'Aventurier", 5)
+		p.Checkinv("Chapeau de l'Aventurier", 5)
 		p.RemoveInventory("Plume de Corbac")
 		p.RemoveInventory("Cuir de Sanglier")
-		fmt.Println("Vous êtes maintenant en possession de Chapeau de l'Aventurier")
 		p.Forgeron()
 	case 2:
-		p.AddInventory("Tunique de l'Aventurier", 5)
+		p.Checkinv("Tunique de l'Aventurier", 5)
 		p.RemoveInventory("Fourrure de Loup")
 		p.RemoveInventory("Fourrure de Loup")
 		p.RemoveInventory("Peau de Troll")
-		fmt.Println("Vous êtes maintenant en possession de Tunique de l'Aventurier")
 		p.Forgeron()
 	case 3:
-		p.AddInventory("Bottes de l'Aventurier", 5)
+		p.Checkinv("Bottes de l'Aventurier", 5)
 		p.RemoveInventory("Fourrure de Loup")
 		p.RemoveInventory("Cuir de Sanglier")
-		fmt.Println("Vous êtes maintenant en possession de Bottes de l'Aventurier")
 		p.Forgeron()
 	case 4:
 		p.menu()
@@ -473,7 +481,7 @@ func (p *Personnage) TrainingFight() {
 		fmt.Println("C'est au joueur !")
 		p.CharTurn(&e1)
 		if e1.lp <= 0 {
-			fmt.Println("\n",e1.name, "est mort ! Vive", e1.name, "1")
+			fmt.Println("\n", e1.name, "est mort ! Vive", e1.name, "1")
 			time.Sleep(2 * time.Second)
 			break
 		}
@@ -481,7 +489,7 @@ func (p *Personnage) TrainingFight() {
 		fmt.Println("\nC'est à l'ennemi !")
 		p.GoblinPattern(&e1)
 		if p.lp <= 0 {
-			fmt.Println(e1.name,"vous a battu")
+			fmt.Println(e1.name, "vous a battu")
 			p.Dead()
 			break
 		}
