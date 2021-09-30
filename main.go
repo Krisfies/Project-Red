@@ -35,8 +35,8 @@ func (p *Personnage) CharCreation() {
 
 	fmt.Printf("Bienvenue dans le menu de création de personnage \nPour commencer, choisissez un nom pour votre avatar: \n")
 	fmt.Scanln(&name)
-	if name == "utilisateur" { //Easter egg n°1, un peu le mode développeur du jeu
-		class = "???"
+	if name == "Utilisateur" { //Easter egg n°1, un peu le mode développeur du jeu
+		class = "Utilisateur"
 		level = 999
 		lpmax = 9999
 		lp = lpmax / 2
