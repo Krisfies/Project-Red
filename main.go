@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 	"time"
-
+	"math/rand"
 	"github.com/01-edu/z01"
 )
 
@@ -37,16 +37,17 @@ func (p *Personnage) CharCreation() {
 	fmt.Scanln(&name)
 	if name == "Utilisateur" { //Easter egg n°1, un peu le mode développeur du jeu
 		class = "Utilisateur"
-		level = 999
-		lpmax = 9999
+		level = 1
+		lpmax = 100
 		lp = lpmax / 2
 		inventory = []string{"Gantelet de l'infini"}
-		money = 999999
-		var welcoming string = "Bienvenue A6"
+		money = 100
+		var welcoming string = "Bienvenue Utilisateur"
 		for _, letter := range welcoming {
 			time.Sleep(100 * time.Millisecond)
 			z01.PrintRune(letter)
 		}
+		time.Sleep(100 * time.Millisecond)
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
 	} else {
 		fmt.Println("Votre personnage se nomme donc", name)
@@ -99,7 +100,8 @@ func (p *Personnage) menu() {
 	fmt.Println("----- \n Voir le Marchand (3)")
 	fmt.Println("----- \n Aller parler au Forgeron (4)")
 	fmt.Println("----- \n S'entrainer contre un gobelin (5)")
-	fmt.Println("----- \n Quitter (6) \n-----")
+	fmt.Println("----- \n Affronter les Quatres Grands (6)")
+	fmt.Println("----- \n Quitter (7) \n-----")
 	fmt.Println("Entrez le numéro de l'option:")
 	fmt.Println("+++++++++++++++++++++++++++++++")
 	fmt.Scanln(&menu)
@@ -146,6 +148,8 @@ func (p *Personnage) menu() {
 		p.TrainingFight()
 		p.menu()
 	case 6:
+		p.TheFirst()
+	case 7:
 		fmt.Println("Fin de la transmission")
 		break
 	}
@@ -428,6 +432,11 @@ func (p *Personnage) Checkinv(item string, prix int) bool {
 	}
 }
 
+func (m *Monstre) RealKnife() {
+	m.lp = 0
+	fmt.Println("Vous avez tué", m.name)
+}
+
 func (m *Monstre) InitGoblin(name string, lpmax int, attack int) {
 	// initialisation de notre personnage
 	m.name = name
@@ -436,9 +445,10 @@ func (m *Monstre) InitGoblin(name string, lpmax int, attack int) {
 	m.attack = attack
 }
 
-func (p *Personnage) GoblinPattern(m *Monstre) {
-	p.lp -= m.attack
+func (p *Personnage) GoblinPattern(m *Monstre, att int) {
+	p.lp -= m.attack*att
 	fmt.Println(m.name, "attaque", p.name, "et lui inflige", m.attack, " points de dégâts, il lui reste", p.lp, "PV")
+
 }
 
 func (p *Personnage) CharTurn(m *Monstre) {
@@ -476,25 +486,198 @@ func (p *Personnage) CharTurn(m *Monstre) {
 
 func (p *Personnage) TrainingFight() {
 	var e1 Monstre
-	e1.InitGoblin("Gobelin d'entrainement", 40, 5)
+	var e2 Monstre
+	n := rand.Intn(10)
+	if n == 9 {
+		var turn int
+		e2.InitGoblin("Mimic", 80, 5)
+		for i := 0; i <= 9999; i++ {
+			turn++
+			os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+			fmt.Println("Tour", turn)
+			time.Sleep(1 * time.Second)
+			fmt.Println("C'est au joueur !")
+			p.CharTurn(&e2)
+			if e2.lp <= 0 {
+				var mimic string = "Vous avez vaincu le mimic "
+				for _, letter := range mimic {
+					time.Sleep(25 * time.Millisecond)
+					z01.PrintRune(letter)
+				}
+				time.Sleep(1 * time.Second)
+				var strange1 string = "vous le fouillez"
+				var strange2 string = " et obtenez "
+				var strange3 string = "un objet étrange"
+				for _, letter := range strange1 {
+					time.Sleep(100 * time.Millisecond)
+					z01.PrintRune(letter)
+				}
+				for _, letter := range strange2 {
+					time.Sleep(200 * time.Millisecond)
+					z01.PrintRune(letter)
+				}
+				for _, letter := range strange3 {
+					time.Sleep(400 * time.Millisecond)
+					z01.PrintRune(letter)
+				}
+				time.Sleep(3 * time.Second)
+				p.AddInventory("Véritable couteau", 0)
+				break
+			}
+			time.Sleep(1 * time.Second)
+			fmt.Println("\nC'est à l'ennemi !")
+			p.GoblinPattern(&e2, 1)
+			if p.lp <= 0 {
+				fmt.Println(e2.name, "vous a battu")
+				p.Dead()
+				break
+			}
+			time.Sleep(3 * time.Second)
+		}
+	} else {
+		e1.InitGoblin("Gobelin d'entrainement", 40, 5)
+		var turn int
+		for i := 0; i <= 9999; i++ {
+			turn++
+			os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+			fmt.Println("Tour", turn)
+			time.Sleep(1 * time.Second)
+			fmt.Println("C'est au joueur !")
+			p.CharTurn(&e1)
+			if e1.lp <= 0 {
+				fmt.Println("\nVous avez vaincu", e1.name)
+				time.Sleep(2 * time.Second)
+				break
+			}
+			time.Sleep(1 * time.Second)
+			fmt.Println("\nC'est à l'ennemi !")
+			if turn%3 == 3 || turn == 3 {
+				p.GoblinPattern(&e1, 2)
+			}else {
+				p.GoblinPattern(&e1, 1)
+			}
+			if p.lp <= 0 {
+				fmt.Println(e1.name, "vous a battu")
+				p.Dead()
+				break
+			}
+			time.Sleep(3 * time.Second)
+		}
+	}
+}
+
+func (p *Personnage) TheFirst() {
+	var e3 Monstre
+	e3.InitGoblin("Python", 80, 8)
 	var turn int
+		for i := 0; i <= 9999; i++ {
+			turn++
+
+			os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+			fmt.Println("Tour", turn)
+			time.Sleep(1 * time.Second)
+			fmt.Println("C'est au joueur !")
+			p.CharTurn(&e3)
+			if e3.lp <= 0 {
+				fmt.Println("\nVous avez vaincu", e3.name)
+				time.Sleep(2 * time.Second)
+				p.TheSecond()
+				break
+			}
+			time.Sleep(1 * time.Second)
+			fmt.Println("\nC'est à l'ennemi !")
+				p.GoblinPattern(&e3, 1)
+			if p.lp <= 0 {
+				fmt.Println(&e3.name, "vous a battu")
+				p.Dead()
+				break
+			}
+			time.Sleep(3 * time.Second)
+		}
+}
+
+func (p *Personnage) TheSecond() {
+	var e4 Monstre
+	e4.InitGoblin("Java", 100, 10)
+	var turn2 int
+		for i := 0; i <= 9999; i++ {
+			turn2++
+
+			os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+			fmt.Println("Tour", turn2)
+			time.Sleep(1 * time.Second)
+			fmt.Println("C'est au joueur !")
+			p.CharTurn(&e4)
+			if e4.lp <= 0 {
+				fmt.Println("\nVous avez vaincu", e4.name)
+				time.Sleep(2 * time.Second)
+				p.TheThird()
+				break
+			}
+			time.Sleep(1 * time.Second)
+			fmt.Println("\nC'est à l'ennemi !")
+				p.GoblinPattern(&e4, 1)
+			if p.lp <= 0 {
+				fmt.Println(&e4.name, "vous a battu")
+				p.Dead()
+				break
+			}
+			time.Sleep(3 * time.Second)
+		}
+}
+
+func (p *Personnage) TheThird() {
+	var e5 Monstre
+	e5.InitGoblin("C++", 150, 15)
+	var turn3 int
+		for i := 0; i <= 9999; i++ {
+			turn3++
+
+			os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+			fmt.Println("Tour", turn3)
+			time.Sleep(1 * time.Second)
+			fmt.Println("C'est au joueur !")
+			p.CharTurn(&e5)
+			if e5.lp <= 0 {
+				fmt.Println("\nVous avez vaincu", e5.name)
+				time.Sleep(2 * time.Second)
+				p.TheFourth()
+				break
+			}
+			time.Sleep(1 * time.Second)
+			fmt.Println("\nC'est à l'ennemi !")
+				p.GoblinPattern(&e5, 1)
+			if p.lp <= 0 {
+				fmt.Println(&e5.name, "vous a battu")
+				p.Dead()
+				break
+			}
+			time.Sleep(3 * time.Second)
+		}
+}
+
+func (p *Personnage) TheFourth() {
+	var e6 Monstre
+	e6.InitGoblin("Golang", 200, 20)
+	var turn4 int
 	for i := 0; i <= 9999; i++ {
-		turn++
+		turn4++
+
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-		fmt.Println("Tour", turn)
+		fmt.Println("Tour", turn4)
 		time.Sleep(1 * time.Second)
 		fmt.Println("C'est au joueur !")
-		p.CharTurn(&e1)
-		if e1.lp <= 0 {
-			fmt.Println("\n", e1.name, "est mort ! Vive", e1.name, "1")
+		p.CharTurn(&e6)
+		if e6.lp <= 0 {
+			fmt.Println("\nVous avez vaincu", e6.name)
 			time.Sleep(2 * time.Second)
 			break
 		}
 		time.Sleep(1 * time.Second)
 		fmt.Println("\nC'est à l'ennemi !")
-		p.GoblinPattern(&e1)
+			p.GoblinPattern(&e6, 1)
 		if p.lp <= 0 {
-			fmt.Println(e1.name, "vous a battu")
+			fmt.Println(&e6.name, "vous a battu")
 			p.Dead()
 			break
 		}
