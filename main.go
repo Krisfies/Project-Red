@@ -38,16 +38,16 @@ func (p *Personnage) CharCreation() {
 	if name == "Utilisateur" { //Easter egg n°1, un peu le mode développeur du jeu
 		class = "Utilisateur"
 		level = 1
-		lpmax = 100
-		lp = lpmax / 2
+		lpmax = 9999
+		lp = lpmax
 		inventory = []string{"Gantelet de l'infini"}
-		money = 100
+		money = 10000
 		var welcoming string = "Bienvenue Utilisateur"
 		for _, letter := range welcoming {
 			time.Sleep(100 * time.Millisecond)
 			z01.PrintRune(letter)
 		}
-		time.Sleep(100 * time.Millisecond)
+		time.Sleep(200 * time.Millisecond)
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
 	} else {
 		fmt.Println("Votre personnage se nomme donc", name)
@@ -141,7 +141,13 @@ func (p *Personnage) menu() {
 		fmt.Println("requiert 2 Fourrure de Loup et 1 Peau de Troll")
 		fmt.Println("\n-- Construire les bottes de l'aventurier (3) --")
 		fmt.Println("requiert 1 Fourrure de Loup et 1 Cuir de Sanglier")
-		fmt.Println("\n-- Retourner au menu principal (4) --")
+		fmt.Printf("\n-- Retourner au menu principal (4) --\n")
+		fmt.Println("\nVotre inventaire:")
+		for i := 0; i < len(p.inventory); i++ {
+			if p.inventory[i] != " " {
+				fmt.Println("---]", p.inventory[i], "[---")
+			}
+		}
 		p.Forgeron()
 	case 5:
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
@@ -249,35 +255,29 @@ func (p *Personnage) Spellbook() {
 func (p *Personnage) Marchand() {
 	// fonction affichant le menu du marchand , et les ajoute a notre inventaire
 	var menum int
+	fmt.Println("Vous avez", p.money, "pièces")
 	fmt.Scanln(&menum)
 	switch menum {
 	case 1:
 		p.AddInventory("Potion de vie", 15)
-		fmt.Println("il vous reste", p.money, "pièces")
 		p.Marchand()
 	case 2:
 		p.AddInventory("Potion de poison", 20)
-		fmt.Println("il vous reste", p.money, "pièces")
 		p.Marchand()
 	case 3:
 		p.AddInventory("Livre de sort: Boule de Feu", 25)
-		fmt.Println("il vous reste", p.money, "pièces")
 		p.Marchand()
 	case 4:
 		p.AddInventory("Fourrure de Loup", 5)
-		fmt.Println("il vous reste", p.money, "pièces")
 		p.Marchand()
 	case 5:
 		p.AddInventory("Peau de Troll", 5)
-		fmt.Println("il vous reste", p.money, "pièces")
 		p.Marchand()
 	case 6:
 		p.AddInventory("Cuir de Sanglier", 4)
-		fmt.Println("il vous reste", p.money, "pièces")
 		p.Marchand()
 	case 7:
 		p.AddInventory("Plume de Corbac", 6)
-		fmt.Println("il vous reste", p.money, "pièces")
 		p.Marchand()
 	case 8:
 		p.menu()
@@ -392,25 +392,39 @@ func (p *Personnage) Forgeron() {
 	fmt.Scanln(&enclume)
 	switch enclume {
 	case 1:
-		if p.Checkinv("Chapeau de l'Aventurier", 5) {
-			p.lpmax += 15
+		if p.Checkinv("Plume de Corbac") == true && p.Checkinv("Cuir de Sanglier") == true && p.Checkinv("Chapeau de l'aventurier") == false {
+			p.AddInventory("Chapeau de l'aventurier", 5)
 			p.RemoveInventory("Plume de Corbac")
 			p.RemoveInventory("Cuir de Sanglier")
+			fmt.Println("Vous êtes désormais en possession de Chapeau de l'aventurier")
+			p.Forgeron()
+		} else {
+			fmt.Println("Tu te moques de moi ? Regarde ton inventaire l'ami")
 			p.Forgeron()
 		}
 	case 2:
-		if p.Checkinv("Tunique de l'Aventurier", 5) {
-			p.lpmax += 25
+		if p.Checkinv("Fourrure de Loup") == true && p.Checkinv("Peau de Troll") == true {
 			p.RemoveInventory("Fourrure de Loup")
-			p.RemoveInventory("Fourrure de Loup")
-			p.RemoveInventory("Peau de Troll")
+			if p.Checkinv("Fourrure de Loup") == true {
+				p.RemoveInventory("Fourrure de Loup")
+				p.RemoveInventory("Peau de Troll")
+				p.AddInventory("Tunique de l'Aventurier", 5)
+				p.Forgeron()
+			} else {
+				p.AddInventory("Fourrure de Loup", 5)
+			}
+		} else {
+			fmt.Println("Tu te moques de moi ? Regarde ton inventaire l'ami")
 			p.Forgeron()
 		}
 	case 3:
-		if p.Checkinv("Bottes de l'Aventurier", 5) {
-			p.lpmax += 10
+		if p.Checkinv("Fourrure de Loup") == true && p.Checkinv("Cuir de Sanglier") == true {
 			p.RemoveInventory("Fourrure de Loup")
 			p.RemoveInventory("Cuir de Sanglier")
+			p.AddInventory("Bottes de l'Aventurier", 0)
+			p.Forgeron()
+		} else {
+			fmt.Println("Tu te moques de moi ? Regarde ton inventaire l'ami")
 			p.Forgeron()
 		}
 	case 4:
@@ -418,22 +432,75 @@ func (p *Personnage) Forgeron() {
 	}
 }
 
-func (p *Personnage) Checkinv(item string, prix int) bool {
+func (p *Personnage) Checkinv(item string) bool {
 	var founditem bool
 	for _, letter := range p.inventory {
 		if letter == item {
 			founditem = true
 		}
 	}
-	if founditem {
-		return founditem
+	if founditem == true {
+		return true
 	} else {
-		return founditem
+		return false
 	}
 }
 
-func (m *Monstre) RealKnife() {
-	m.lp = 0
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+//VRAI COUTEAU
+
+func (p *Personnage) RealKnife(m *Monstre) {
+	for i := 0; i < len(p.inventory); i++ {
+		if p.inventory[i] != " " {
+			m.lp = 0
+		}
+	}
 	fmt.Println("Vous avez tué", m.name)
 }
 
@@ -459,7 +526,11 @@ func (p *Personnage) CharTurn(m *Monstre) {
 	fmt.Scanln(&choice)
 	switch choice {
 	case 1:
+		if p.name == "Utilisateur" {
+			m.lp -= damage*10
+		} else {
 		m.lp -= damage
+		}
 		fmt.Println(p.name, "utilise Coup de poing et inflige", damage, "points de dégâts à", m.name, "il lui reste", m.lp, "PV")
 	case 2:
 		for i := 0; i < len(p.inventory); i++ {
@@ -588,7 +659,7 @@ func (p *Personnage) TheFirst() {
 			fmt.Println("\nC'est à l'ennemi !")
 				p.GoblinPattern(&e3, 1)
 			if p.lp <= 0 {
-				fmt.Println(&e3.name, "vous a battu")
+				fmt.Println(e3.name, "vous a battu")
 				p.Dead()
 				break
 			}
@@ -618,7 +689,7 @@ func (p *Personnage) TheSecond() {
 			fmt.Println("\nC'est à l'ennemi !")
 				p.GoblinPattern(&e4, 1)
 			if p.lp <= 0 {
-				fmt.Println(&e4.name, "vous a battu")
+				fmt.Println(e4.name, "vous a battu")
 				p.Dead()
 				break
 			}
@@ -648,7 +719,7 @@ func (p *Personnage) TheThird() {
 			fmt.Println("\nC'est à l'ennemi !")
 				p.GoblinPattern(&e5, 1)
 			if p.lp <= 0 {
-				fmt.Println(&e5.name, "vous a battu")
+				fmt.Println(e5.name, "vous a battu")
 				p.Dead()
 				break
 			}
@@ -677,7 +748,7 @@ func (p *Personnage) TheFourth() {
 		fmt.Println("\nC'est à l'ennemi !")
 			p.GoblinPattern(&e6, 1)
 		if p.lp <= 0 {
-			fmt.Println(&e6.name, "vous a battu")
+			fmt.Println(e6.name, "vous a battu")
 			p.Dead()
 			break
 		}
