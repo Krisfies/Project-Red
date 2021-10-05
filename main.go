@@ -393,23 +393,25 @@ func (p *Personnage) Forgeron() {
 	fmt.Scanln(&enclume)
 	switch enclume {
 	case 1:
-		if p.Checkinv("Plume de Corbac") == true && p.Checkinv("Cuir de Sanglier") == true && p.Checkinv("Chapeau de l'aventurier") == false {
+		if p.Checkinv("Plume de Corbac") && p.Checkinv("Cuir de Sanglier") && !p.Checkinv("Chapeau de l'aventurier") {
 			p.AddInventory("Chapeau de l'aventurier", 5)
 			p.RemoveInventory("Plume de Corbac")
 			p.RemoveInventory("Cuir de Sanglier")
 			fmt.Println("Vous êtes désormais en possession de Chapeau de l'aventurier")
+			p.lpmax += 20
 			p.Forgeron()
 		} else {
 			fmt.Println("Tu te moques de moi ? Regarde ton inventaire l'ami")
 			p.Forgeron()
 		}
 	case 2:
-		if p.Checkinv("Fourrure de Loup") == true && p.Checkinv("Peau de Troll") == true {
+		if p.Checkinv("Fourrure de Loup") && p.Checkinv("Peau de Troll") {
 			p.RemoveInventory("Fourrure de Loup")
-			if p.Checkinv("Fourrure de Loup") == true {
+			if p.Checkinv("Fourrure de Loup") {
 				p.RemoveInventory("Fourrure de Loup")
 				p.RemoveInventory("Peau de Troll")
 				p.AddInventory("Tunique de l'Aventurier", 5)
+				p.lpmax += 20
 				p.Forgeron()
 			} else {
 				p.AddInventory("Fourrure de Loup", 5)
@@ -419,10 +421,11 @@ func (p *Personnage) Forgeron() {
 			p.Forgeron()
 		}
 	case 3:
-		if p.Checkinv("Fourrure de Loup") == true && p.Checkinv("Cuir de Sanglier") == true {
+		if p.Checkinv("Fourrure de Loup") && p.Checkinv("Cuir de Sanglier") {
 			p.RemoveInventory("Fourrure de Loup")
 			p.RemoveInventory("Cuir de Sanglier")
 			p.AddInventory("Bottes de l'Aventurier", 0)
+			p.lpmax += 15
 			p.Forgeron()
 		} else {
 			fmt.Println("Tu te moques de moi ? Regarde ton inventaire l'ami")
@@ -440,60 +443,13 @@ func (p *Personnage) Checkinv(item string) bool {
 			founditem = true
 		}
 	}
-	if founditem == true {
+	if founditem {
 		return true
 	} else {
 		return false
 	}
 }
 
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
-//VRAI COUTEAU
 //VRAI COUTEAU
 
 func (p *Personnage) RealKnife(m *Monstre) {
