@@ -176,9 +176,9 @@ type Personnage struct {
 }
 
 type Equipement struct {
-	Chapeau   string
-	Tunique   string
-	Maxbottes string
+	Chapeau string
+	Tunique string
+	Bottes  string
 }
 
 type Monstre struct {
@@ -217,7 +217,10 @@ func (p *Personnage) AccessInventory() {
 	fmt.Println("Prendre une Potion de vie (1)")
 	fmt.Println("Prendre une Potion de poison (2)")
 	fmt.Println("Utiliser le Livre de sort : Boule de Feu (3)")
-	fmt.Println("Menu précédent (4)")
+	fmt.Println("Mettre votre chapeau (4)")
+	fmt.Println("Mettre votre Tunique (5)")
+	fmt.Println("Mettre vos bottes (6)")
+	fmt.Println("Menu précédent (7)")
 	fmt.Println("----------------")
 	p.UseInventory()
 }
@@ -235,7 +238,40 @@ func (p *Personnage) UseInventory() {
 		p.UseInventory()
 	case 3:
 		p.Spellbook()
+		p.UseInventory()
 	case 4:
+		if p.Checkinv("Chapeau de l'aventurier") {
+			p.Chapeau = "Chapeau de l'aventurier"
+			p.RemoveInventory("Chapeau de l'Aventurier")
+			fmt.Println("Vous avez désormais +15 hp avec le couvre chef !")
+			p.UseInventory()
+		} else if !p.Checkinv("Chapeau de L'aventurier") {
+			fmt.Println("tu l'a déja équiper !")
+			p.UseInventory()
+		}
+	case 5:
+		if !p.Checkinv("Tunique de l'Aventurier") {
+			p.Tunique = "Tunique de l'Aventurier"
+			p.lpmax += 20
+			fmt.Println("Vous avez désormais +20 hp grace a la tunique !")
+			p.RemoveInventory("Tunique de l'Aventurier")
+			p.UseInventory()
+		} else {
+			fmt.Println("tu l'a déja équiper !")
+			p.UseInventory()
+		}
+	case 6:
+		if !p.Checkinv("Bottes de l'Aventurier") {
+			p.Bottes = "Bottes de l'Aventurier"
+			p.lpmax += 10
+			fmt.Println("Vous avez désormais +10 hp grace a la paire !")
+			p.RemoveInventory("Bottes de l'Aventurier")
+			p.UseInventory()
+		} else {
+			fmt.Println("tu l'a déja équiper !")
+			p.UseInventory()
+		}
+	case 7:
 		p.menu()
 	}
 }
@@ -398,7 +434,6 @@ func (p *Personnage) Forgeron() {
 			p.RemoveInventory("Plume de Corbac")
 			p.RemoveInventory("Cuir de Sanglier")
 			fmt.Println("Vous êtes désormais en possession de Chapeau de l'aventurier")
-			p.lpmax += 20
 			p.Forgeron()
 		} else {
 			fmt.Println("Tu te moques de moi ? Regarde ton inventaire l'ami")
@@ -411,7 +446,7 @@ func (p *Personnage) Forgeron() {
 				p.RemoveInventory("Fourrure de Loup")
 				p.RemoveInventory("Peau de Troll")
 				p.AddInventory("Tunique de l'Aventurier", 5)
-				p.lpmax += 20
+				fmt.Println("Vous êtes désormais en possession de la Tunique de l'aventurier")
 				p.Forgeron()
 			} else {
 				p.AddInventory("Fourrure de Loup", 5)
@@ -425,7 +460,7 @@ func (p *Personnage) Forgeron() {
 			p.RemoveInventory("Fourrure de Loup")
 			p.RemoveInventory("Cuir de Sanglier")
 			p.AddInventory("Bottes de l'Aventurier", 0)
-			p.lpmax += 15
+			fmt.Println("Vous êtes désormais en possession des Bottes de l'aventurier")
 			p.Forgeron()
 		} else {
 			fmt.Println("Tu te moques de moi ? Regarde ton inventaire l'ami")
