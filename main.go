@@ -48,7 +48,7 @@ func (p *Personnage) CharCreation() {
 			time.Sleep(100 * time.Millisecond)
 			z01.PrintRune(letter)
 		}
-		time.Sleep(200 * time.Millisecond)
+		time.Sleep(300 * time.Millisecond)
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
 	} else {
 		fmt.Println("Votre personnage se nomme donc", name)
@@ -485,15 +485,16 @@ func (p *Personnage) Checkinv(item string) bool {
 	}
 }
 
-//VRAI COUTEAU
-
-func (p *Personnage) RealKnife(m *Monstre) {
-	for i := 0; i < len(p.inventory); i++ {
-		if p.inventory[i] != " " {
-			m.lp = 0
+func (p *Personnage) RealKnife() bool {
+	var couteau bool
+	for _, letter := range p.inventory {
+		if letter == "Véritable couteau" {
+			couteau = true
+		} else {
+			couteau = false
 		}
 	}
-	fmt.Println("Vous avez tué", m.name)
+	return couteau
 }
 
 func (m *Monstre) InitGoblin(name string, lpmax int, attack int) {
@@ -518,7 +519,9 @@ func (p *Personnage) CharTurn(m *Monstre) {
 	fmt.Scanln(&choice)
 	switch choice {
 	case 1:
-		if p.name == "Utilisateur" {
+		if p.RealKnife() == true {
+			m.lp = 0
+		} else if p.name == "Utilisateur" {
 			m.lp -= damage * 10
 		} else {
 			m.lp -= damage
@@ -552,6 +555,7 @@ func (p *Personnage) TrainingFight() {
 	var e2 Monstre
 	n := rand.Intn(10)
 	if n == 9 {
+		fmt.Println("Un mimic sauvage apparaît, que faites vous ?")
 		var turn int
 		e2.InitGoblin("Mimic", 80, 5)
 		for i := 0; i <= 9999; i++ {
@@ -599,6 +603,7 @@ func (p *Personnage) TrainingFight() {
 		}
 	} else {
 		e1.InitGoblin("Gobelin d'entrainement", 40, 5)
+		fmt.Println("Le", e1.name, "estprêt à se battre")
 		var turn int
 		for i := 0; i <= 9999; i++ {
 			turn++
