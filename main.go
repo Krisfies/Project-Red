@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
 	"time"
-	"math/rand"
+
 	"github.com/01-edu/z01"
 )
 
@@ -513,7 +514,7 @@ func (m *Monstre) InitGoblin(name string, lpmax int, attack int) {
 }
 
 func (p *Personnage) GoblinPattern(m *Monstre, att int) {
-	p.lp -= m.attack*att
+	p.lp -= m.attack * att
 	fmt.Println(m.name, "attaque", p.name, "et lui inflige", m.attack, " points de dégâts, il lui reste", p.lp, "PV")
 
 }
@@ -527,9 +528,9 @@ func (p *Personnage) CharTurn(m *Monstre) {
 	switch choice {
 	case 1:
 		if p.name == "Utilisateur" {
-			m.lp -= damage*10
+			m.lp -= damage * 10
 		} else {
-		m.lp -= damage
+			m.lp -= damage
 		}
 		fmt.Println(p.name, "utilise Coup de poing et inflige", damage, "points de dégâts à", m.name, "il lui reste", m.lp, "PV")
 	case 2:
@@ -624,7 +625,7 @@ func (p *Personnage) TrainingFight() {
 			fmt.Println("\nC'est à l'ennemi !")
 			if turn%3 == 3 || turn == 3 {
 				p.GoblinPattern(&e1, 2)
-			}else {
+			} else {
 				p.GoblinPattern(&e1, 1)
 			}
 			if p.lp <= 0 {
@@ -641,90 +642,90 @@ func (p *Personnage) TheFirst() {
 	var e3 Monstre
 	e3.InitGoblin("Python", 80, 8)
 	var turn int
-		for i := 0; i <= 9999; i++ {
-			turn++
+	for i := 0; i <= 9999; i++ {
+		turn++
 
-			os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-			fmt.Println("Tour", turn)
-			time.Sleep(1 * time.Second)
-			fmt.Println("C'est au joueur !")
-			p.CharTurn(&e3)
-			if e3.lp <= 0 {
-				fmt.Println("\nVous avez vaincu", e3.name)
-				time.Sleep(2 * time.Second)
-				p.TheSecond()
-				break
-			}
-			time.Sleep(1 * time.Second)
-			fmt.Println("\nC'est à l'ennemi !")
-				p.GoblinPattern(&e3, 1)
-			if p.lp <= 0 {
-				fmt.Println(e3.name, "vous a battu")
-				p.Dead()
-				break
-			}
-			time.Sleep(3 * time.Second)
+		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+		fmt.Println("Tour", turn)
+		time.Sleep(1 * time.Second)
+		fmt.Println("C'est au joueur !")
+		p.CharTurn(&e3)
+		if e3.lp <= 0 {
+			fmt.Println("\nVous avez vaincu", e3.name)
+			time.Sleep(2 * time.Second)
+			p.TheSecond()
+			break
 		}
+		time.Sleep(1 * time.Second)
+		fmt.Println("\nC'est à l'ennemi !")
+		p.GoblinPattern(&e3, 1)
+		if p.lp <= 0 {
+			fmt.Println(e3.name, "vous a battu")
+			p.Dead()
+			break
+		}
+		time.Sleep(3 * time.Second)
+	}
 }
 
 func (p *Personnage) TheSecond() {
 	var e4 Monstre
 	e4.InitGoblin("Java", 100, 10)
 	var turn2 int
-		for i := 0; i <= 9999; i++ {
-			turn2++
+	for i := 0; i <= 9999; i++ {
+		turn2++
 
-			os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-			fmt.Println("Tour", turn2)
-			time.Sleep(1 * time.Second)
-			fmt.Println("C'est au joueur !")
-			p.CharTurn(&e4)
-			if e4.lp <= 0 {
-				fmt.Println("\nVous avez vaincu", e4.name)
-				time.Sleep(2 * time.Second)
-				p.TheThird()
-				break
-			}
-			time.Sleep(1 * time.Second)
-			fmt.Println("\nC'est à l'ennemi !")
-				p.GoblinPattern(&e4, 1)
-			if p.lp <= 0 {
-				fmt.Println(e4.name, "vous a battu")
-				p.Dead()
-				break
-			}
-			time.Sleep(3 * time.Second)
+		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+		fmt.Println("Tour", turn2)
+		time.Sleep(1 * time.Second)
+		fmt.Println("C'est au joueur !")
+		p.CharTurn(&e4)
+		if e4.lp <= 0 {
+			fmt.Println("\nVous avez vaincu", e4.name)
+			time.Sleep(2 * time.Second)
+			p.TheThird()
+			break
 		}
+		time.Sleep(1 * time.Second)
+		fmt.Println("\nC'est à l'ennemi !")
+		p.GoblinPattern(&e4, 1)
+		if p.lp <= 0 {
+			fmt.Println(e4.name, "vous a battu")
+			p.Dead()
+			break
+		}
+		time.Sleep(3 * time.Second)
+	}
 }
 
 func (p *Personnage) TheThird() {
 	var e5 Monstre
 	e5.InitGoblin("C++", 150, 15)
 	var turn3 int
-		for i := 0; i <= 9999; i++ {
-			turn3++
+	for i := 0; i <= 9999; i++ {
+		turn3++
 
-			os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-			fmt.Println("Tour", turn3)
-			time.Sleep(1 * time.Second)
-			fmt.Println("C'est au joueur !")
-			p.CharTurn(&e5)
-			if e5.lp <= 0 {
-				fmt.Println("\nVous avez vaincu", e5.name)
-				time.Sleep(2 * time.Second)
-				p.TheFourth()
-				break
-			}
-			time.Sleep(1 * time.Second)
-			fmt.Println("\nC'est à l'ennemi !")
-				p.GoblinPattern(&e5, 1)
-			if p.lp <= 0 {
-				fmt.Println(e5.name, "vous a battu")
-				p.Dead()
-				break
-			}
-			time.Sleep(3 * time.Second)
+		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+		fmt.Println("Tour", turn3)
+		time.Sleep(1 * time.Second)
+		fmt.Println("C'est au joueur !")
+		p.CharTurn(&e5)
+		if e5.lp <= 0 {
+			fmt.Println("\nVous avez vaincu", e5.name)
+			time.Sleep(2 * time.Second)
+			p.TheFourth()
+			break
 		}
+		time.Sleep(1 * time.Second)
+		fmt.Println("\nC'est à l'ennemi !")
+		p.GoblinPattern(&e5, 1)
+		if p.lp <= 0 {
+			fmt.Println(e5.name, "vous a battu")
+			p.Dead()
+			break
+		}
+		time.Sleep(3 * time.Second)
+	}
 }
 
 func (p *Personnage) TheFourth() {
@@ -746,7 +747,7 @@ func (p *Personnage) TheFourth() {
 		}
 		time.Sleep(1 * time.Second)
 		fmt.Println("\nC'est à l'ennemi !")
-			p.GoblinPattern(&e6, 1)
+		p.GoblinPattern(&e6, 1)
 		if p.lp <= 0 {
 			fmt.Println(e6.name, "vous a battu")
 			p.Dead()
