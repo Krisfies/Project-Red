@@ -5,162 +5,19 @@ import (
 	"math/rand"
 	"os"
 	"time"
-
 	"github.com/01-edu/z01"
 )
 
-func main() {
-	// fonction qui execute nos sous fonctions et rentre les valeur ainsi que le menu principal
-	var p1 Personnage
-	p1.CharCreation()
-	fmt.Printf("Vous allez être redirigé vers le menu principal")
-	time.Sleep(1 * time.Second)
-	fmt.Printf(". ")
-	time.Sleep(1 * time.Second)
-	fmt.Printf(". ")
-	time.Sleep(1 * time.Second)
-	fmt.Printf(". \n")
-	time.Sleep(1 * time.Second)
-	p1.menu()
-}
-
-func (p *Personnage) CharCreation() {
-	var name string
-	var class string
-	var level int
-	var lpmax int
-	var lp int
-	var inventory []string
-	var skill []string
-	var money int
-
-	fmt.Printf("Bienvenue dans le menu de création de personnage \nPour commencer, choisissez un nom pour votre avatar: \n")
-	fmt.Scanln(&name)
-	if name == "Utilisateur" { //Easter egg n°1, un peu le mode développeur du jeu
-		class = "Utilisateur"
-		level = 1
-		lpmax = 9999
-		lp = lpmax
-		inventory = []string{"Gantelet de l'infini"}
-		money = 10000
-		var welcoming string = "Bienvenue Utilisateur"
-		for _, letter := range welcoming {
-			time.Sleep(100 * time.Millisecond)
-			z01.PrintRune(letter)
-		}
-		time.Sleep(300 * time.Millisecond)
-		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-	} else {
-		fmt.Println("Votre personnage se nomme donc", name)
-		time.Sleep(2 * time.Second)
-		fmt.Println("\nChoisissez maintenant la race de ", name, "parmi:\n-Humain\n-Elfe\n-Nain")
-		fmt.Scanln(&class)
-		if class != "Humain" && class != "Elfe" && class != "Nain" {
-			fmt.Println("Erreur, veuillez entrer une valeur correcte:\nHumain, Elfe ou Nain")
-			fmt.Scanln(&class)
-		}
-		switch class {
-		case "Humain":
-			class = "Humain"
-			lpmax = 100
-		case "Elfe":
-			class = "Elfe"
-			lpmax = 80
-		case "Nain":
-			class = "Nain"
-			lpmax = 120
-		}
-		if class != "Humain" && class != "Elfe" && class != "Nain" { //Easter egg n°3
-			class = "Troll"
-			lpmax = 50
-		}
-		lp = lpmax / 2
-		money = 100
-		inventory = []string{"Potion de vie", "Potion de vie", "Potion de vie"}
-		skill = []string{"Coup de poing"}
-		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-		fmt.Println(name, "est donc un", class, ", il commence avec", lp, " point de vie et", lpmax, "point de vie maximum.")
-		if class == "Troll" {
-			fmt.Println("Ça t'apprendra à faire le malin")
-		}
-		fmt.Println(name, "est niveau 1, possède le sort Coup de poing et a", money, "pièces d'or.")
-		level = 1
-		time.Sleep(3 * time.Second)
-	}
-	p.Init(name, class, level, lpmax, lp, inventory, skill, money)
-}
-
-func (p *Personnage) menu() {
-	var menu int
-	var retour int
-	os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-	fmt.Println("+++++++++++++++++++++++++++++++")
-	fmt.Println("A quoi voulez vous accéder:")
-	fmt.Println("----- \n Afficher les informations du personnage (1)")
-	fmt.Println("----- \n Accéder au contenu de l’inventaire (2)")
-	fmt.Println("----- \n Voir le Marchand (3)")
-	fmt.Println("----- \n Aller parler au Forgeron (4)")
-	fmt.Println("----- \n S'entrainer contre un gobelin (5)")
-	fmt.Println("----- \n Affronter les Quatres Grands (6)")
-	fmt.Println("----- \n Quitter (7) \n-----")
-	fmt.Println("Entrez le numéro de l'option:")
-	fmt.Println("+++++++++++++++++++++++++++++++")
-	fmt.Scanln(&menu)
-
-	switch menu {
-	case 1:
-		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-		p.DisplayInfo()
-		fmt.Println("Retour au menu principal (1)")
-		fmt.Scanln(&retour)
-		switch retour {
-		case 1:
-			p.menu()
-		}
-	case 2:
-		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-		p.AccessInventory()
-	case 3:
-		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-		fmt.Println("+++++++++++++++++++++Marchand+++++++++++++++++++")
-		fmt.Println("-----\nPotion de vie --> 15 pièces <--(1)")
-		fmt.Println("-----\nPotion de poison --> 20 pièces <-- (2)")
-		fmt.Println("-----\nLivre de sort:Boule de Feu --> 25 pièces <-- (3)")
-		fmt.Println("-----\nFourrure de Loup --> 5 pièces <--(4)")
-		fmt.Println("-----\nPeau de Troll --> 6 pièces <--(5)")
-		fmt.Println("-----\nCuir de Sanglier --> 4 pièces <--(6)")
-		fmt.Println("-----\nPlume de Corbac --> 6 pièces <--(7)")
-		fmt.Println("-----\nRetour au menu principal (8) \n--")
-		fmt.Println("++++++++++++++++++++++++++++++++++++++++++++++++")
-		p.Marchand()
-	case 4:
-		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-		fmt.Println("------ Vous entrez dans la forge ------")
-		fmt.Println("\n-- Construire un Chapeau de l'aventurier (1) --")
-		fmt.Println("requiert 1 plume de corbeau et 1 cuir de sanglier")
-		fmt.Println("\n-- Construire une Tunique de l'Aventurier (2) --")
-		fmt.Println("requiert 2 Fourrure de Loup et 1 Peau de Troll")
-		fmt.Println("\n-- Construire les bottes de l'aventurier (3) --")
-		fmt.Println("requiert 1 Fourrure de Loup et 1 Cuir de Sanglier")
-		fmt.Printf("\n-- Retourner au menu principal (4) --\n")
-		fmt.Println("\nVotre inventaire:")
-		for i := 0; i < len(p.inventory); i++ {
-			if p.inventory[i] != " " {
-				fmt.Println("---]", p.inventory[i], "[---")
-			}
-		}
-		p.Forgeron()
-	case 5:
-		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-		p.TrainingFight()
-		p.menu()
-	case 6:
-		p.TheFirst()
-	case 7:
-		fmt.Println("Fin de la transmission")
-		break
-	}
-}
+const (
+    Reset  = "\033[0m"
+    Red    = "\033[31m"
+    Green  = "\033[32m"
+    Yellow = "\033[33m"
+    Blue   = "\033[34m"
+    Purple = "\033[35m"
+    Cyan   = "\033[36m"
+    White  = "\033[37m"
+)
 
 type Personnage struct {
 	// creation de la structure de notre personnage
@@ -188,6 +45,112 @@ type Monstre struct {
 	attack int
 }
 
+func main() {
+	// fonction qui execute nos sous fonctions et rentre les valeur ainsi que le menu principal
+	var p1 Personnage
+	p1.CharCreation()
+	Slow("Vous vous rendez sur la place principale",1)
+	time.Sleep(1 * time.Second)
+	fmt.Printf(". ")
+	time.Sleep(1 * time.Second)
+	fmt.Printf(". ")
+	time.Sleep(1 * time.Second)
+	fmt.Printf(". \n")
+	time.Sleep(1 * time.Second)
+	p1.menu()
+}
+
+func (p *Personnage) CharCreation() {
+	var name string
+	var class string
+	var level int
+	var lpmax int
+	var lp int
+	var inventory []string
+	var skill []string
+	var money int
+
+	os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+	Slow("Bienvenue dans",1)
+	fmt.Printf(Yellow +" ")
+	Slow("Goldy",1)
+	time.Sleep(100 * time.Millisecond)
+	fmt.Printf("\n" + Reset)
+	Slow("Vous êtes dans le menu de création de personnage\n",1)
+	Slow("Pour commencer, choisissez un nom pour votre avatar: \n",1)
+	fmt.Scanln(&name)
+	if name == "Utilisateur" { //Easter egg n°1, le mode développeur du jeu
+		class = "Utilisateur"
+		level = 1
+		lpmax = 9999
+		lp = lpmax
+		inventory = []string{"Gantelet de l'infini"}
+		money = 10000
+		Slow("Bienvenue Utilisateur\n",1)
+		time.Sleep(300 * time.Millisecond)
+		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+	} else {
+		Slow("Votre personnage se nomme donc ",1)
+		Slow(name,1)
+		time.Sleep(2 * time.Second)
+		fmt.Println("")
+		Slow("Choisissez maintenant la race de ",1)
+		Slow(name,1)
+		Slow(" parmi:\n",1)
+		Slow("-Humain\n",1)
+		Slow("-Elfe\n",1)
+		Slow("-Nain\n",1)
+		fmt.Scanln(&class)
+		if class != "Humain" && class != "Elfe" && class != "Nain" {
+			Slow("Erreur, veuillez entrer une valeur correcte:\n",1)
+			Slow("Humain, Elfe ou Nain\n",1)
+			fmt.Scanln(&class)
+		}
+		switch class {
+		case "Humain":
+			class = "Humain"
+			lpmax = 100
+		case "Elfe":
+			class = "Elfe"
+			lpmax = 80
+		case "Nain":
+			class = "Nain"
+			lpmax = 120
+		}
+		if class != "Humain" && class != "Elfe" && class != "Nain" { //Easter egg n°3
+			class = "Troll"
+			lpmax = 50
+		}
+		lp = lpmax / 2
+		money = 100
+		inventory = []string{"Potion de vie", "Potion de vie", "Potion de vie"}
+		skill = []string{"Coup de poing"}
+		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+		Slow(name,1)
+		Slow(" est donc un ",1)
+		Slow(class,1)
+		Slow(", il commence avec ",1)
+		fmt.Print(lp)
+		Slow(" point de vie et ",1)
+		fmt.Print(lpmax)
+		Slow(" points de vie maximum.",1)
+		fmt.Println("")
+		if class == "Troll" {
+			Slow("Ça t'apprendras à pas savoir écrire\n",1)
+		}
+		Slow(name,1)
+		Slow(" est niveau 1, possède le sort Coup de poing et a ",1)
+		fmt.Printf(Yellow +"")
+		fmt.Print(money)
+		Slow(" pièces",1)
+		fmt.Println(""+ Reset)
+		level = 1
+		time.Sleep(3 * time.Second)
+	}
+	Slow("Lancement de la simulation\n",1)
+	p.Init(name, class, level, lpmax, lp, inventory, skill, money)
+}
+
 func (p *Personnage) Init(name string, class string, level int, lpmax int, lp int, inventory []string, skill []string, money int) {
 	// initialisation de notre personnage
 	p.name = name
@@ -200,28 +163,218 @@ func (p *Personnage) Init(name string, class string, level int, lpmax int, lp in
 	p.money = money
 }
 
+func (p *Personnage) menu() {
+	var menu int
+	var retour int
+	os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+	Slow("\n+++++++++++++++++++++++++++++++\n",3)
+	Slow("Que voulez vous faire ?\n",3)
+	Slow("----- \n",3)
+	fmt.Print(Yellow + "")
+	Slow("(1) ",3)
+	fmt.Print(""+ Reset)
+	Slow("Regarder la carte ",3)
+	fmt.Print(Yellow + "")
+	Slow("d'Identité\n",3)
+	fmt.Print("" + Reset)
+	Slow("----- \n",3)
+	fmt.Print(Yellow + "")
+	Slow("(2) ",3)
+	fmt.Print(""+ Reset)
+	Slow("Jeter un oeil dans le ",3)
+	fmt.Print(Yellow + "")
+	Slow("Sac\n",3)
+	fmt.Print(""+ Reset)
+	Slow("----- \n",3)
+	fmt.Print(Yellow + "")
+	Slow("(3) ",3)
+	fmt.Print(""+ Reset)
+	Slow("Se rendre dans la boutique du ",3)
+	fmt.Print(Yellow + "")
+	Slow("Marchand\n",3)
+	fmt.Print(""+ Reset)
+	Slow("----- \n",3)
+	fmt.Print(Yellow + "")
+	Slow("(4) ",3)
+	fmt.Print(""+ Reset)
+	Slow("Aller à la ",3)
+	fmt.Print(Yellow + "")
+	Slow("Forge\n",3)
+	fmt.Print(""+ Reset)
+	Slow("----- \n",3)
+	fmt.Print(Yellow + "")
+	Slow("(5) ",3)
+	fmt.Print(""+ Reset)
+	Slow("Partir en exploration dans le ",3)
+	fmt.Print(Yellow + "")
+	Slow("Donjon\n",3)
+	fmt.Print(""+ Reset)
+	Slow("----- \n",3)
+	fmt.Print(Yellow +"")
+	Slow("(6) ",3)
+	fmt.Print(""+ Reset)
+	Slow("Affronter les ",3)
+	fmt.Print(Yellow + "")
+	Slow("Quatres Grands\n",3)
+	fmt.Print(""+ Reset)
+	Slow("----- \n",3)
+	fmt.Print(Yellow + "")
+	Slow("(0) ",3)
+	fmt.Print(""+ Reset)
+	Slow("Faire un ",3)
+	fmt.Print(Yellow + "")
+	Slow("somme",3)
+	fmt.Print(""+ Reset)
+	Slow("\n-----\n",3)
+	Slow("Entrez le numéro de l'option:\n",3)
+	Slow("+++++++++++++++++++++++++++++++",3)
+	fmt.Scanln(&menu)
+
+	switch menu {
+	case 1:
+		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+		p.DisplayInfo()
+		fmt.Print(Yellow + "")
+		Slow("(0)", 1)
+		fmt.Print(""+ Reset)
+		Slow("Arrêter de regarder la",1)
+		fmt.Print(Yellow +"")
+		Slow("carte\n",1)
+		fmt.Print(""+ Reset)
+		fmt.Scanln(&retour)
+		switch retour {
+		case 0:
+			p.menu()
+		}
+	case 2:
+		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+		p.AccessInventory()
+	case 3:
+		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+		Slow("+++++++++++++++++++++Marchand+++++++++++++++++++\n",2)
+		Slow("-----\n",2)
+		fmt.Print(Yellow + "")
+		Slow(" (1) Potion de vie ",2)
+		fmt.Print(""+ Reset)
+		Slow("-->",2)
+		fmt.Print(Yellow + "")
+		Slow("15 pièces",2)
+		fmt.Print("" + Reset)
+		Slow("<--",2)
+		Slow("-----\n",2)
+		fmt.Print(Yellow + "")
+		Slow("(2) Potion de poison",2)
+		fmt.Print(""+ Reset)
+		Slow("-->",2)
+		fmt.Print(Yellow + "")
+		Slow("20 pièces",2)
+		fmt.Print(""+ Reset)
+		Slow("<--",2)
+		Slow("-----\n",2)
+		fmt.Print(Yellow + "")
+		Slow("(3) Livre de sort:Boule de Feu",2)
+		fmt.Print(""+ Reset)
+		Slow("-->",2)
+		fmt.Print(Yellow + "")
+		Slow("25 pièces",2)
+		fmt.Print(""+ Reset)
+		Slow("<--",2)
+		Slow("-----\n",2)
+		fmt.Print(Yellow + "")
+		Slow("(4) Fourrure de Loup",2)
+		fmt.Print(""+ Reset)
+		Slow("-->",2)
+		fmt.Print(Yellow + "")
+		Slow("5 pièces", 2)
+		fmt.Print(""+ Reset)
+		Slow("<--",2)
+		Slow("-----\n", Yellow + "(5) Peau de Troll" + Reset, "-->", Yellow + "6 pièces" + Reset, "<--")
+		Slow("-----\n", Yellow + "(6) Cuir de Sanglier" + Reset, "-->", Yellow + "4 pièces" + Reset, "<--")
+		Slow("-----\n", Yellow + "(7) Plume de Corbac" + Reset, "-->", Yellow + "6 pièces" + Reset, "<--")
+		Slow("-----\n", Yellow + "(0)" + Reset, "Retour la", Yellow + "place centrale" + Reset, "\n--")
+		Slow("++++++++++++++++++++++++++++++++++++++++++++++++",2)
+		p.Marchand()
+	case 4:
+		p.Forgeron()
+	case 5:
+		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+		p.TrainingFight()
+		p.menu()
+	case 6:
+		p.TheFirst()
+	case 0:
+		fmt.Println("Fin de la transmission")
+		break
+	case 7171:
+		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+		Slow("Bravo",1)
+		fmt.Printf(p.name)
+		Slow("tu as réussi à triompher des quatres Grands",1)
+		fmt.Printf("\n")
+		Slow("Ta quête s'arrête ici mon ami, mais nos voyagent se recroiseront, soit en sur.",1)
+
+	}
+}
+
+func (p *Personnage) DisplayInfo() {
+	// fonction nous permettant de voir les informations de notre personnage
+	Slow("-------------------------",2)
+	Slow("Nom: ",2)
+	Slow(p.name,2)
+	Slow("\nClasse:",2)
+	Slow(p.class,2)
+	Slow("\nNiveau:",2)
+	fmt.Print(p.level)
+	Slow("\nVie maximum:",2)
+	fmt.Print(p.lpmax)
+	Slow("\nVie actuelle:",2)
+	fmt.Print(p.lp)
+	Slow("\nContenu de l'inventaire:",2)
+	fmt.Print(p.inventory)
+	Slow("\nskill:",2)
+	fmt.Print(p.skill)
+	Slow("\nPièces:",2)
+	fmt.Print(p.money)
+	Slow("-------------------------",2)
+}
+
 func (p *Personnage) AccessInventory() {
 	// fonction qui nous permet d'acceder a notre inventaire
 	if len(p.inventory) == 0 {
-		fmt.Println("Inventaire vide fraté")
+		Slow("\nLa sacoche est",1)
+		fmt.Print(Yellow + "")
+		Slow("vide",1)
+		fmt.Print(""+ Reset)
 	} else {
-		fmt.Printf("\n")
+		fmt.Print("\n")
 		for i := 0; i < len(p.inventory); i++ {
 			if p.inventory[i] != " " {
-				fmt.Println("---]", p.inventory[i], "[---")
+				Slow("---] ",2) 
+				fmt.Print(""+ Yellow, p.inventory[i], Reset +"")
+				Slow("[---",2)
+				fmt.Print(""+ Yellow)
 			}
 		}
 		fmt.Printf("\n")
 	}
-	fmt.Println("----------------")
-	fmt.Println("Prendre une Potion de vie (1)")
-	fmt.Println("Prendre une Potion de poison (2)")
-	fmt.Println("Utiliser le Livre de sort : Boule de Feu (3)")
-	fmt.Println("Mettre votre chapeau (4)")
-	fmt.Println("Mettre votre Tunique (5)")
-	fmt.Println("Mettre vos bottes (6)")
-	fmt.Println("Menu précédent (7)")
-	fmt.Println("----------------")
+	Slow("----------------\n",2)
+	Slow("Prendre une ",2)
+	fmt.Print(Yellow + "")
+	Slow("Potion de vie (1)",2)
+	fmt.Print(""+ Reset)
+	Slow("Prendre une Potion de poison (2)",2)
+	Slow("Utiliser le Livre de sort : Boule de Feu (3)",2)
+	Slow("Mettre le chapeau (4)",2)
+	Slow("Mettre le Tunique (5)",2)
+	Slow("Mettre les bottes (6)",2)
+	fmt.Print(Yellow + "")
+	Slow("(0)",2)
+	fmt.Print(""+ Reset)
+	Slow("Arrêter de regarder dans le",2)
+	fmt.Print(Yellow + "")
+	Slow("sac",2)
+	fmt.Print(""+ Reset)
+	Slow("----------------",2)
 	p.UseInventory()
 }
 
@@ -246,7 +399,7 @@ func (p *Personnage) UseInventory() {
 			fmt.Println("Vous avez désormais +15 hp avec le couvre chef !")
 			p.UseInventory()
 		} else if !p.Checkinv("Chapeau de L'aventurier") {
-			fmt.Println("tu l'a déja équiper !")
+			fmt.Println("Tu l'as déja équiper !")
 			p.UseInventory()
 		}
 	case 5:
@@ -257,7 +410,7 @@ func (p *Personnage) UseInventory() {
 			p.RemoveInventory("Tunique de l'Aventurier")
 			p.UseInventory()
 		} else {
-			fmt.Println("tu l'a déja équiper !")
+			fmt.Println("Tu l'as déja équiper !")
 			p.UseInventory()
 		}
 	case 6:
@@ -268,11 +421,79 @@ func (p *Personnage) UseInventory() {
 			p.RemoveInventory("Bottes de l'Aventurier")
 			p.UseInventory()
 		} else {
-			fmt.Println("tu l'a déja équiper !")
+			fmt.Println("Tu l'as déja équiper !")
 			p.UseInventory()
 		}
-	case 7:
+	case 0:
 		p.menu()
+	}
+}
+
+func (p *Personnage) TakePot() {
+	// fonction qui nous permet de prendre une potion de soin
+	for _, letter := range p.inventory {
+		if letter == "Potion de vie" {
+			if p.lp <= (p.lpmax - 50) {
+				p.lp += 50
+				fmt.Println("   :~:  ")
+				fmt.Println("   | |    ")
+				fmt.Println("  .' `.   	 ")
+				fmt.Println(".'     `. ")
+				fmt.Println("|       | ")
+				fmt.Println(" `.._..' ")
+				fmt.Println("Glou glou glou, ça fait du bien")
+				p.RemoveInventory("Potion de vie")
+				break
+			} else if p.lp > (p.lpmax-50) && p.lp < p.lpmax {
+				p.lp = p.lpmax
+				fmt.Println("Glou glou glou, ça fait du bien")
+				p.RemoveInventory("Potion de vie")
+				break
+			} else {
+				fmt.Println("Vous êtes full, vous ne pouvez pas utiliser la potion")
+				break
+			}
+		}
+	}
+}
+
+func (p *Personnage) PoisonPot() {
+	// fonction qui crée la potion poison et explique ce qu'elle fait sur un personnage
+	for _, letter := range p.inventory {
+		if letter == "Potion de poison" {
+			fmt.Println("Vous buvez la potion de poison, ouch")
+			p.RemoveInventory("Potion de poison")
+			time.Sleep(1 * time.Second)
+			fmt.Println(p.lp, "/", p.lpmax, "PV")
+			p.lp -= 10
+			fmt.Println(p.lp, "/", p.lpmax, "PV")
+			time.Sleep(1 * time.Second)
+			p.lp -= 10
+			fmt.Println(p.lp, "/", p.lpmax, "PV")
+			time.Sleep(1 * time.Second)
+			p.lp -= 10
+			fmt.Println(p.lp, "/", p.lpmax, "PV")
+		}
+	}
+}
+
+func (p *Personnage) Dead() {
+	// fonction qui verifie si le personnage est mort et le ressucite a la moitié de ses pv
+	if p.lp == 0 {
+		fmt.Printf("Bravo, vous êtes mort. \n")
+		time.Sleep(2 * time.Second)
+		fmt.Printf("Mais ne paniquez pas, vous allez être ressucité \n")
+		time.Sleep(2 * time.Second)
+		fmt.Printf("Manoeuvre de réanimation en cours")
+		time.Sleep(1 * time.Second)
+		fmt.Printf(". ")
+		time.Sleep(1 * time.Second)
+		fmt.Printf(". ")
+		time.Sleep(1 * time.Second)
+		fmt.Printf(". \n")
+		time.Sleep(1 * time.Second)
+		p.lp = p.lpmax / 2
+		p.DisplayInfo()
 	}
 }
 
@@ -280,7 +501,7 @@ func (p *Personnage) Spellbook() {
 	// fonction qui nous permet d'ajouter ou repertorier les sorts (spell)
 	for _, letter := range p.skill {
 		if letter == ("Boule de feu") {
-			fmt.Println("dsl t'a déja les boules")
+			fmt.Println("Tu as déjà les boules")
 
 		} else {
 			p.skill = append(p.skill, "Boule de feu")
@@ -316,23 +537,9 @@ func (p *Personnage) Marchand() {
 	case 7:
 		p.AddInventory("Plume de Corbac", 6)
 		p.Marchand()
-	case 8:
+	case 0:
 		p.menu()
 	}
-}
-
-func (p *Personnage) DisplayInfo() {
-	// fonction nous permettant de voir les informations de notre personnage
-	fmt.Println("-------------------------")
-	fmt.Println("Nom:", p.name)
-	fmt.Println("Classe:", p.class)
-	fmt.Println("Niveau:", p.level)
-	fmt.Println("Vie maximum:", p.lpmax)
-	fmt.Println("Vie actuelle:", p.lp)
-	fmt.Println("Contenu de l'inventaire:", p.inventory)
-	fmt.Println("skill :", p.skill)
-	fmt.Println("pessos :", p.money)
-	fmt.Println("-------------------------")
 }
 
 func (p *Personnage) AddInventory(item string, price int) {
@@ -356,75 +563,22 @@ func (p *Personnage) RemoveInventory(item string) {
 	}
 }
 
-func (p *Personnage) TakePot() {
-	// fonction qui nous permet de prendre une potion de soin
-	for _, letter := range p.inventory {
-		if letter == "Potion de vie" {
-			if p.lp <= (p.lpmax - 50) {
-				p.lp += 50
-				fmt.Println("   :~:  ")
-				fmt.Println("   | |    ")
-				fmt.Println("  .' `.   	 ")
-				fmt.Println(".'     `. ")
-				fmt.Println("|       | ")
-				fmt.Println(" `.._..' ")
-				fmt.Println("Glou glou glou, ça fait du bien")
-				p.RemoveInventory("Potion de vie")
-				break
-			} else if p.lp > (p.lpmax-50) && p.lp < p.lpmax {
-				p.lp = p.lpmax
-				fmt.Println("Glou glou glou, ça fait du bien")
-				p.RemoveInventory("Potion de vie")
-				break
-			} else {
-				fmt.Println("Vous êtes full, vous ne pouvez pas utiliser la potion")
-				break
+func (p *Personnage) Forgeron() {
+	os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+		fmt.Println("------ Vous entrez dans la forge ------")
+		fmt.Println("\n-- Construire un Chapeau de l'aventurier (1) --")
+		fmt.Println("requiert 1 plume de corbeau et 1 cuir de sanglier")
+		fmt.Println("\n-- Construire une Tunique de l'Aventurier (2) --")
+		fmt.Println("requiert 2 Fourrure de Loup et 1 Peau de Troll")
+		fmt.Println("\n-- Construire les bottes de l'aventurier (3) --")
+		fmt.Println("requiert 1 Fourrure de Loup et 1 Cuir de Sanglier")
+		fmt.Printf("\n-- Retourner au menu principal (0) --\n")
+		fmt.Println("\nVotre inventaire:")
+		for i := 0; i < len(p.inventory); i++ {
+			if p.inventory[i] != " " {
+				fmt.Println("---]", p.inventory[i], "[---")
 			}
 		}
-	}
-}
-
-func (p *Personnage) Dead() {
-	// fonction qui verifie si le personnage est mort et le ressucite a la moitié de ses pv
-	if p.lp == 0 {
-		fmt.Printf("Bravo, vous êtes mort. \n")
-		time.Sleep(2 * time.Second)
-		fmt.Printf("Mais ne paniquez pas, vous allez être ressucité \n")
-		time.Sleep(2 * time.Second)
-		fmt.Printf("Manoeuvre de réanimation en cours")
-		time.Sleep(1 * time.Second)
-		fmt.Printf(". ")
-		time.Sleep(1 * time.Second)
-		fmt.Printf(". ")
-		time.Sleep(1 * time.Second)
-		fmt.Printf(". \n")
-		time.Sleep(1 * time.Second)
-		p.lp = p.lpmax / 2
-		p.DisplayInfo()
-	}
-}
-
-func (p *Personnage) PoisonPot() {
-	// fonction qui crée la potion poison et explique ce qu'elle fait sur un personnage
-	for _, letter := range p.inventory {
-		if letter == "Potion de poison" {
-			fmt.Println("Vous buvez la potion de poison, ouch")
-			p.RemoveInventory("Potion de poison")
-			time.Sleep(1 * time.Second)
-			fmt.Println(p.lp, "/", p.lpmax, "PV")
-			p.lp -= 10
-			fmt.Println(p.lp, "/", p.lpmax, "PV")
-			time.Sleep(1 * time.Second)
-			p.lp -= 10
-			fmt.Println(p.lp, "/", p.lpmax, "PV")
-			time.Sleep(1 * time.Second)
-			p.lp -= 10
-			fmt.Println(p.lp, "/", p.lpmax, "PV")
-		}
-	}
-}
-
-func (p *Personnage) Forgeron() {
 	var enclume int
 	fmt.Scanln(&enclume)
 	switch enclume {
@@ -434,9 +588,11 @@ func (p *Personnage) Forgeron() {
 			p.RemoveInventory("Plume de Corbac")
 			p.RemoveInventory("Cuir de Sanglier")
 			fmt.Println("Vous êtes désormais en possession de Chapeau de l'aventurier")
+			time.Sleep(2 * time.Second)
 			p.Forgeron()
 		} else {
 			fmt.Println("Tu te moques de moi ? Regarde ton inventaire l'ami")
+			time.Sleep(2 * time.Second)
 			p.Forgeron()
 		}
 	case 2:
@@ -447,12 +603,14 @@ func (p *Personnage) Forgeron() {
 				p.RemoveInventory("Peau de Troll")
 				p.AddInventory("Tunique de l'Aventurier", 5)
 				fmt.Println("Vous êtes désormais en possession de la Tunique de l'aventurier")
+				time.Sleep(2 * time.Second)
 				p.Forgeron()
 			} else {
 				p.AddInventory("Fourrure de Loup", 5)
 			}
 		} else {
 			fmt.Println("Tu te moques de moi ? Regarde ton inventaire l'ami")
+			time.Sleep(2 * time.Second)
 			p.Forgeron()
 		}
 	case 3:
@@ -461,12 +619,14 @@ func (p *Personnage) Forgeron() {
 			p.RemoveInventory("Cuir de Sanglier")
 			p.AddInventory("Bottes de l'Aventurier", 0)
 			fmt.Println("Vous êtes désormais en possession des Bottes de l'aventurier")
+			time.Sleep(2 * time.Second)
 			p.Forgeron()
 		} else {
 			fmt.Println("Tu te moques de moi ? Regarde ton inventaire l'ami")
+			time.Sleep(2 * time.Second)
 			p.Forgeron()
 		}
-	case 4:
+	case 0:
 		p.menu()
 	}
 }
@@ -483,18 +643,6 @@ func (p *Personnage) Checkinv(item string) bool {
 	} else {
 		return false
 	}
-}
-
-func (p *Personnage) RealKnife() bool {
-	var couteau bool
-	for _, letter := range p.inventory {
-		if letter == "Véritable couteau" {
-			couteau = true
-		} else {
-			couteau = false
-		}
-	}
-	return couteau
 }
 
 func (m *Monstre) InitGoblin(name string, lpmax int, attack int) {
@@ -536,7 +684,7 @@ func (p *Personnage) CharTurn(m *Monstre) {
 		}
 		fmt.Println("Prendre une potion de soin (1)")
 		fmt.Println("Prendre une potion de poison (2)")
-		fmt.Println("Retour (3)")
+		fmt.Println("Retour (0)")
 		var use int
 		fmt.Scanln(&use)
 		switch use {
@@ -544,10 +692,22 @@ func (p *Personnage) CharTurn(m *Monstre) {
 			p.TakePot()
 		case 2:
 			p.PoisonPot()
-		case 3:
+		case 0:
 			p.CharTurn(m)
 		}
 	}
+}
+
+func (p *Personnage) RealKnife() bool {
+	var couteau bool
+	for _, letter := range p.inventory {
+		if letter == "Véritable couteau" {
+			couteau = true
+		} else {
+			couteau = false
+		}
+	}
+	return couteau
 }
 
 func (p *Personnage) TrainingFight() {
@@ -555,7 +715,8 @@ func (p *Personnage) TrainingFight() {
 	var e2 Monstre
 	n := rand.Intn(10)
 	if n == 9 {
-		fmt.Println("Un mimic sauvage apparaît, que faites vous ?")
+		fmt.Println("Un mimic sauvage apparaît")
+		time.Sleep(3 * time.Second)
 		var turn int
 		e2.InitGoblin("Mimic", 80, 5)
 		for i := 0; i <= 9999; i++ {
@@ -584,7 +745,7 @@ func (p *Personnage) TrainingFight() {
 					z01.PrintRune(letter)
 				}
 				for _, letter := range strange3 {
-					time.Sleep(400 * time.Millisecond)
+					time.Sleep(300 * time.Millisecond)
 					z01.PrintRune(letter)
 				}
 				time.Sleep(3 * time.Second)
@@ -604,6 +765,7 @@ func (p *Personnage) TrainingFight() {
 	} else {
 		e1.InitGoblin("Gobelin d'entrainement", 40, 5)
 		fmt.Println("Le", e1.name, "estprêt à se battre")
+		time.Sleep(3 * time.Second)
 		var turn int
 		for i := 0; i <= 9999; i++ {
 			turn++
@@ -640,14 +802,14 @@ func (p *Personnage) TheFirst() {
 	var turn int
 	for i := 0; i <= 9999; i++ {
 		turn++
-
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+		fmt.Println("Le Grand Python se présente devant vous")
 		fmt.Println("Tour", turn)
 		time.Sleep(1 * time.Second)
 		fmt.Println("C'est au joueur !")
 		p.CharTurn(&e3)
 		if e3.lp <= 0 {
-			fmt.Println("\nVous avez vaincu", e3.name)
+			fmt.Println("\nVous avez vaincu le Grand", e3.name, "!")
 			time.Sleep(2 * time.Second)
 			p.TheSecond()
 			break
@@ -672,12 +834,13 @@ func (p *Personnage) TheSecond() {
 		turn2++
 
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+		fmt.Println("Le Grand Java se présente devant vous")
 		fmt.Println("Tour", turn2)
 		time.Sleep(1 * time.Second)
 		fmt.Println("C'est au joueur !")
 		p.CharTurn(&e4)
 		if e4.lp <= 0 {
-			fmt.Println("\nVous avez vaincu", e4.name)
+			fmt.Println("\nVous avez vaincu le Grand", e4.name, "!")
 			time.Sleep(2 * time.Second)
 			p.TheThird()
 			break
@@ -702,12 +865,13 @@ func (p *Personnage) TheThird() {
 		turn3++
 
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+		fmt.Println("Le Grand C++ se présente devant vous")
 		fmt.Println("Tour", turn3)
 		time.Sleep(1 * time.Second)
 		fmt.Println("C'est au joueur !")
 		p.CharTurn(&e5)
 		if e5.lp <= 0 {
-			fmt.Println("\nVous avez vaincu", e5.name)
+			fmt.Println("\nVous avez vaincu le Grand", e5.name, "!")
 			time.Sleep(2 * time.Second)
 			p.TheFourth()
 			break
@@ -732,12 +896,28 @@ func (p *Personnage) TheFourth() {
 		turn4++
 
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+		fmt.Println("Le plus Grand des Grand, Golang, se présente devant vous")
 		fmt.Println("Tour", turn4)
 		time.Sleep(1 * time.Second)
 		fmt.Println("C'est au joueur !")
 		p.CharTurn(&e6)
 		if e6.lp <= 0 {
-			fmt.Println("\nVous avez vaincu", e6.name)
+			var Golang1 string = "Vous avez vaincu Golang, le plus Grand des Grands."
+			for _, letter := range Golang1 {
+				time.Sleep(50 * time.Millisecond)
+				z01.PrintRune(letter)
+			}
+			fmt.Printf("\n")
+			var Golang2 string = "Dans son dernier souffle il vous murmure ces quelques chiffres:"
+			for _, letter := range Golang2 {
+				time.Sleep(50 * time.Millisecond)
+				z01.PrintRune(letter)
+			}
+			var lastwords string = "7 1 7 1"
+			for _, letter := range lastwords{
+				time.Sleep(200 * time.Millisecond)
+				z01.PrintRune(letter)
+			}
 			time.Sleep(2 * time.Second)
 			break
 		}
@@ -750,5 +930,24 @@ func (p *Personnage) TheFourth() {
 			break
 		}
 		time.Sleep(3 * time.Second)
+	}
+}
+
+func Slow(s string, v int) {
+	if v == 1 {
+		for _, letter := range s {
+			time.Sleep(50 * time.Millisecond)
+			z01.PrintRune(letter)
+		}
+	} else if v == 2 {
+		for _, letter := range s {
+			time.Sleep(25 * time.Millisecond)
+			z01.PrintRune(letter)
+		}
+	} else if v == 3 {
+		for _, letter := range s {
+			time.Sleep(1 * time.Millisecond)
+			z01.PrintRune(letter)
+		}
 	}
 }
