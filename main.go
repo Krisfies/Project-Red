@@ -629,17 +629,7 @@ func (p *Personnage) TakePot() {
 		if letter == "Potion de vie" {
 			if p.lp <= (p.lpmax - 50) {
 				p.lp += 50
-<<<<<<< HEAD
 				Slow("Glou glou glou, ça fait du bien",2)
-=======
-				// fmt.Println("   :~:  ")
-				// fmt.Println("   | |    ")
-				// fmt.Println("  .' `.   	 ") On garde ou pas ?
-				// fmt.Println(".'     `. ")
-				// fmt.Println("|       | ")
-				// fmt.Println(" `.._..' ")
-				Slow("Glou glou glou, ça fait du bien", 2)
->>>>>>> 78b31279b37ae775c8acaf3aefc57bbc07565c90
 				fmt.Print("\n")
 				Slow("Vous avez désormais: ", 2)
 				fmt.Print(Yellow + "")
@@ -1191,13 +1181,8 @@ func (p *Personnage) TrainingFight() {
 				p.GoblinPattern(&e1, 1)
 			}
 			if p.lp <= 0 {
-<<<<<<< HEAD
 				Slow(e1.name,2)
 				Slow(" vous a battu\n",2)
-=======
-				Slow(e1.name, 2)
-				Slow(" vous a battu", 2)
->>>>>>> 78b31279b37ae775c8acaf3aefc57bbc07565c90
 				p.Dead()
 				break
 			}
@@ -1215,8 +1200,6 @@ func (p *Personnage) TheFirst() {
 	for i := 0; i <= 9999; i++ {
 		turn++
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-<<<<<<< HEAD
-		
 		Slow("Tour",1)
 		fmt.Println(turn)
 		Slow("C'est au joueur !",2)
@@ -1225,30 +1208,12 @@ func (p *Personnage) TheFirst() {
 			Slow("\nVous avez vaincu le Grand ",1)
 			Slow(e3.name,1)
 			Slow(" !",1)
-=======
-		Slow("Le Grand Python se présente devant vous", 1)
-		Slow("Tour", 1)
-		fmt.Print(turn)
-		time.Sleep(1 * time.Second)
-		Slow("C'est au joueur !", 2)
-		p.CharTurn(&e3)
-		if e3.lp <= 0 {
-			fmt.Print("\n")
-			Slow("Vous avez vaincu le Grand ", 1)
-			Slow(e3.name, 1)
-			Slow(" !", 1)
->>>>>>> 78b31279b37ae775c8acaf3aefc57bbc07565c90
 			time.Sleep(2 * time.Second)
 			p.TheSecond()
 			break
 		}
 		time.Sleep(1 * time.Second)
-<<<<<<< HEAD
 		Slow("\nC'est à l'ennemi !\n",2)
-=======
-		fmt.Print("\n")
-		Slow("C'est à l'ennemi !", 2)
->>>>>>> 78b31279b37ae775c8acaf3aefc57bbc07565c90
 		p.GoblinPattern(&e3, 1)
 		if p.lp <= 0 {
 			Slow(e3.name, 1)
@@ -1268,9 +1233,7 @@ func (p *Personnage) TheSecond() {
 	for i := 0; i <= 9999; i++ {
 		turn2++
 
-		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-<<<<<<< HEAD
-		
+		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")	
 		Slow("Tour",2)
 		fmt.Print(turn2)
 		Slow("\nC'est au joueur !",2)
@@ -1279,38 +1242,15 @@ func (p *Personnage) TheSecond() {
 			Slow("\nVous avez vaincu le Grand ",1)
 			Slow(e4.name,1)
 			Slow(" !",1)
-=======
-		Slow("Le Grand Java se présente devant vous", 1)
-		Slow("Tour", 2)
-		fmt.Print(turn2)
-		time.Sleep(1 * time.Second)
-		Slow("C'est au joueur !", 2)
-		p.CharTurn(&e4)
-		if e4.lp <= 0 {
-			fmt.Print("\n")
-			Slow("Vous avez vaincu le Grand ", 1)
-			Slow(e4.name, 1)
-			Slow(" !", 1)
->>>>>>> 78b31279b37ae775c8acaf3aefc57bbc07565c90
 			time.Sleep(2 * time.Second)
 			p.TheThird()
 		}
 		time.Sleep(1 * time.Second)
-<<<<<<< HEAD
 		Slow("\nC'est à l'ennemi !\n",2)
 		p.GoblinPattern(&e4, 1)
 		if p.lp <= 0 {
 			Slow(e4.name,1)
 			Slow(" vous a battu",1)
-=======
-		fmt.Print("\n")
-		Slow("C'est à l'ennemi !", 2)
-		p.GoblinPattern(&e4, 1)
-		if p.lp <= 0 {
-			fmt.Print("\n")
-			Slow(e4.name, 1)
-			Slow(" vous a battu", 1)
->>>>>>> 78b31279b37ae775c8acaf3aefc57bbc07565c90
 			p.Dead()
 		}
 		time.Sleep(3 * time.Second)
@@ -1327,7 +1267,6 @@ func (p *Personnage) TheThird() {
 		turn3++
 
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-<<<<<<< HEAD
 		Slow("Tour",2)
 		fmt.Print(turn3)
 		fmt.Println("\nC'est au joueur !",2)
@@ -1336,19 +1275,6 @@ func (p *Personnage) TheThird() {
 			Slow("\nVous avez vaincu le Grand ",1)
 			Slow(e5.name,1)
 			Slow(" !",1)
-=======
-		Slow("Le Grand C++ se présente devant vous", 1)
-		Slow("Tour", 2)
-		fmt.Print(turn3)
-		time.Sleep(1 * time.Second)
-		fmt.Println("C'est au joueur !", 2)
-		p.CharTurn(&e5)
-		if e5.lp <= 0 {
-			fmt.Print("\n")
-			Slow("Vous avez vaincu le Grand ", 1)
-			Slow(e5.name, 1)
-			Slow(" !", 1)
->>>>>>> 78b31279b37ae775c8acaf3aefc57bbc07565c90
 			time.Sleep(2 * time.Second)
 			p.TheFourth()
 		}
@@ -1375,7 +1301,7 @@ func (p *Personnage) TheFourth() {
 		turn4++
 
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-<<<<<<< HEAD
+
 		Slow("Tour",2)
 		fmt.Println(turn4)
 		Slow("C'est au joueur !",2)
@@ -1384,29 +1310,11 @@ func (p *Personnage) TheFourth() {
 			Slow("Vous avez vaincu Golang, le plus Grand des Grands.\n",1)
 			Slow("Dans son dernier souffle il lâche un objet.",4)
 			p.AddInventory("Objet suspicieux",0)
-=======
-		Slow("Le plus Grand des Grand, Golang, se présente devant vous", 1)
-		Slow("Tour", 2)
-		fmt.Print(turn4)
-		time.Sleep(1 * time.Second)
-		Slow("C'est au joueur !", 2)
-		p.CharTurn(&e6)
-		if e6.lp <= 0 {
-			Slow("Vous avez vaincu Golang, le plus Grand des Grands.", 1)
-			fmt.Print("\n")
-			Slow("Dans son dernier souffle il lâche un objet.", 4)
-			p.AddInventory("Objet suspicieux", 0)
->>>>>>> 78b31279b37ae775c8acaf3aefc57bbc07565c90
 			time.Sleep(2 * time.Second)
 			break
 		}
 		time.Sleep(1 * time.Second)
-<<<<<<< HEAD
 		Slow("\nC'est à l'ennemi !\n",2)
-=======
-		fmt.Print("\n")
-		Slow("C'est à l'ennemi !", 2)
->>>>>>> 78b31279b37ae775c8acaf3aefc57bbc07565c90
 		p.GoblinPattern(&e6, 1)
 		if p.lp <= 0 {
 			Slow(e6.name, 1)
