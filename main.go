@@ -215,14 +215,15 @@ func (p *Personnage) menu() {
 	if !p.Checkinv("Objet Suspicieux") {
 		Slow(Yellow+"(1) "+Reset, 3)
 		Slow("Aller voir l'homme mystérieux sur le ", 3)
-		Slow(Yellow+"banc\n", 3)
+		Slow(Yellow+"banc\n"+Reset, 3)
+		Slow("----- \n", 3)
 	} else {
 		Slow(Yellow+"(1)"+Reset, 3)
 		Slow("Aller sur le ", 3)
-		Slow(Yellow+"banc\n", 3)
+		Slow(Yellow+"banc\n"+Reset, 3)
 		Slow("----- \n", 3)
 	}
-	Slow("(2) "+Reset, 3)
+	Slow(Yellow+"(2) "+Reset, 3)
 	fmt.Print("" + Reset)
 	Slow("Regarder la carte ", 3)
 	fmt.Print(Yellow + "")
@@ -415,12 +416,12 @@ func (p *Personnage) QuestMan() {
 		if !p.Checkinv("Véritable Couteau") {
 			if !rappel1 {
 				Slow(Yellow+"Bienvenue sur la Place Principale l'ami.\n"+Reset, 1)
-				Slow("(1) Lui demander son nom ?", 1)
-				Slow("(2) Lui demander ce qu'on fait la ?", 1)
+				Slow("(1) Lui demander son nom ?\n", 1)
+				Slow("(2) Lui demander ce qu'on fait la ?\n", 1)
 				fmt.Scanln(&choice)
 				switch choice {
 				case 1:
-					Slow(Yellow+"Mon nom importe peu l'ami ! Tu es la pour bien plus.\n Vois tu depuis peu les contrées de Goldy se sont fait envahir par quatres seigneur malveillants.", 1)
+					Slow(Yellow+"Mon nom importe peu l'ami ! Tu es la pour bien plus.\n Vois tu depuis peu les contrées de Goldy se sont faite envahir par quatres seigneur malveillants.", 1)
 					Slow("\nTa quête est de les éliminer, un par un et jusqu'au dernier.\n", 1)
 					Slow("\nMais avant cela tu dois te rendre dans le donjon afin d'y trouver l'arme qui te donnera la force de les battre.", 1)
 					Slow("\nBonne chance l'ami.\n"+Reset, 1)
