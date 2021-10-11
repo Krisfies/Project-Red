@@ -407,7 +407,7 @@ func (p *Personnage) menu() {
 	}
 }
 
-func(p *Personnage) QuestMan() {
+func (p *Personnage) QuestMan() {
 	var choice int
 	var rappel1 bool = false
 	if p.Checkinv("Objet Suspicieux") == false {
