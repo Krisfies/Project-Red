@@ -510,11 +510,11 @@ func (p *Personnage) SuperAccessInventory() {
 	}
 	fmt.Println(Yellow + "(1)" + Reset, "Prendre une", Yellow + "Potion de vie")
 	fmt.Println("(2)" + Reset, "Prendre une", Yellow + "Potion de poison")
-	fmt.Println("(3)" + Reset, "Utiliser le Livre de sort : ", Yellow + "Boule de Feu")
+	fmt.Println("(3)" + Reset, "Utiliser le Livre de sort :", Yellow + "Boule de Feu")
 	fmt.Println("(4)"+ Reset, "Mettre un", Yellow + "Chapeau")
 	fmt.Println("(5)"+ Reset, "Mettre une", Yellow + "Tunique")
 	fmt.Println("(6)"+ Reset, "Mettre des", Yellow + "Bottes")
-	fmt.Println("(0)"+ Reset, "Arrêter de regarder dans le ", Yellow + "Sac" + Reset, "\n----------------")
+	fmt.Println("(0)"+ Reset, "Arrêter de regarder dans le", Yellow + "Sac" + Reset, "\n----------------")
 	p.UseInventory()
 }
 
