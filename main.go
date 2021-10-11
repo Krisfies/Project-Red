@@ -212,16 +212,17 @@ func (p *Personnage) menu() {
 	Slow("+++++++++++++++++++++++++++++++\n", 3)
 	Slow("Que voulez vous faire ?\n", 3)
 	Slow("----- \n", 3)
-	if p.Checkinv("Objet Suspicieux") == false {
-		Slow(Yellow + "(1) " + Reset,3)
-		Slow("Aller voir l'homme mystérieux sur le ",3)
-		Slow(Yellow + "banc\n",3)
+	if !p.Checkinv("Objet Suspicieux") {
+		Slow(Yellow+"(1) "+Reset, 3)
+		Slow("Aller voir l'homme mystérieux sur le ", 3)
+		Slow(Yellow+"banc\n", 3)
 	} else {
-		Slow(Yellow + "(1)" + Reset,3)
-		Slow("Aller sur le ",3)
-		Slow(Yellow + "banc\n",3)
+		Slow(Yellow+"(1)"+Reset, 3)
+		Slow("Aller sur le ", 3)
+		Slow(Yellow+"banc\n", 3)
+		Slow("----- \n", 3)
 	}
-	Slow("(2) " + Reset, 3)
+	Slow("(2) "+Reset, 3)
 	fmt.Print("" + Reset)
 	Slow("Regarder la carte ", 3)
 	fmt.Print(Yellow + "")
@@ -282,12 +283,12 @@ func (p *Personnage) menu() {
 
 	switch menu {
 	case 1:
-		if p.Checkinv("Objet Suspicieux") == false {
+		if !p.Checkinv("Objet Suspicieux") {
 			p.QuestMan()
 		}
-		Slow("Il n'y a ",5)
-		Slow(Yellow + "personne ",5)
-		Slow("ici",5)
+		Slow("Il n'y a ", 5)
+		Slow(Yellow+"personne ", 5)
+		Slow("ici", 5)
 		time.Sleep(2 * time.Second)
 		p.menu()
 	case 2:
@@ -407,36 +408,36 @@ func (p *Personnage) menu() {
 	}
 }
 
-func(p *Personnage) QuestMan() {
+func (p *Personnage) QuestMan() {
 	var choice int
 	var rappel1 bool = false
-	if p.Checkinv("Objet Suspicieux") == false {
-		if p.Checkinv("Véritable Couteau") == false {
-			if rappel1 == false {
-				Slow(Yellow + "Bienvenue sur la Place Principale l'ami.\n" + Reset,1)
-				Slow("(1) Lui demander son nom ?",1)
-				Slow("(2) Lui demander ce qu'on fait la ?",1)
+	if !p.Checkinv("Objet Suspicieux") {
+		if !p.Checkinv("Véritable Couteau") {
+			if !rappel1 {
+				Slow(Yellow+"Bienvenue sur la Place Principale l'ami.\n"+Reset, 1)
+				Slow("(1) Lui demander son nom ?", 1)
+				Slow("(2) Lui demander ce qu'on fait la ?", 1)
 				fmt.Scanln(&choice)
 				switch choice {
 				case 1:
-					Slow(Yellow + "Mon nom importe peu l'ami ! Tu es la pour bien plus.\n Vois tu depuis peu les contrées de Goldy se sont fait envahir par quatres seigneur malveillants.",1)
-					Slow("\nTa quête est de les éliminer, un par un et jusqu'au dernier.\n",1)
-					Slow("\nMais avant cela tu dois te rendre dans le donjon afin d'y trouver l'arme qui te donnera la force de les battre.",1)
-					Slow("\nBonne chance l'ami.\n" + Reset,1)
+					Slow(Yellow+"Mon nom importe peu l'ami ! Tu es la pour bien plus.\n Vois tu depuis peu les contrées de Goldy se sont fait envahir par quatres seigneur malveillants.", 1)
+					Slow("\nTa quête est de les éliminer, un par un et jusqu'au dernier.\n", 1)
+					Slow("\nMais avant cela tu dois te rendre dans le donjon afin d'y trouver l'arme qui te donnera la force de les battre.", 1)
+					Slow("\nBonne chance l'ami.\n"+Reset, 1)
 					rappel1 = true
 				case 2:
-					Slow(Yellow + "Vois tu depuis peu les contrées de Goldy se sont fait envahir par quatres seigneur malveillants.",1)
-					Slow("\nTa quête est de les éliminer, un par un et jusqu'au dernier.\n",1)
-					Slow("\nMais avant cela tu dois te rendre dans le donjon afin d'y trouver l'arme qui te donnera la force de les battre.",1)
-					Slow("\nBonne chance l'ami.\n" + Reset,1)
+					Slow(Yellow+"Vois tu depuis peu les contrées de Goldy se sont fait envahir par quatres seigneur malveillants.", 1)
+					Slow("\nTa quête est de les éliminer, un par un et jusqu'au dernier.\n", 1)
+					Slow("\nMais avant cela tu dois te rendre dans le donjon afin d'y trouver l'arme qui te donnera la force de les battre.", 1)
+					Slow("\nBonne chance l'ami.\n"+Reset, 1)
 					rappel1 = true
 				}
-			} else if rappel1 == true {
-				Slow(Yellow + "Tu dois te rendre dans le donjon pour obtenir un artéfact qui te permettra de vaincre les Quatres Grands." + Reset,2)
+			} else if rappel1 {
+				Slow(Yellow+"Tu dois te rendre dans le donjon pour obtenir un artéfact qui te permettra de vaincre les Quatres Grands."+Reset, 2)
 			}
 		} else {
-			Slow(Yellow + "Bravo l'ami ! Tu as obtenus l'artéfact.",1)
-			Slow("\nJe te conseille maintenant d'aller t'équiper en conséquence et de te lancer à la recherche des Quatres Grands" + Reset,1)
+			Slow(Yellow+"Bravo l'ami ! Tu as obtenus l'artéfact.", 1)
+			Slow("\nJe te conseille maintenant d'aller t'équiper en conséquence et de te lancer à la recherche des Quatres Grands"+Reset, 1)
 		}
 	}
 	time.Sleep(2 * time.Second)
@@ -629,7 +630,7 @@ func (p *Personnage) TakePot() {
 		if letter == "Potion de vie" {
 			if p.lp <= (p.lpmax - 50) {
 				p.lp += 50
-				Slow("Glou glou glou, ça fait du bien",2)
+				Slow("Glou glou glou, ça fait du bien", 2)
 				fmt.Print("\n")
 				Slow("Vous avez désormais: ", 2)
 				fmt.Print(Yellow + "")
@@ -988,7 +989,7 @@ func (p *Personnage) Checkinv(item string) bool {
 			founditem = true
 		}
 	}
-	return founditem 
+	return founditem
 }
 
 func (m *Monstre) InitGoblin(name string, lpmax int, attack int) {
@@ -1181,8 +1182,8 @@ func (p *Personnage) TrainingFight() {
 				p.GoblinPattern(&e1, 1)
 			}
 			if p.lp <= 0 {
-				Slow(e1.name,2)
-				Slow(" vous a battu\n",2)
+				Slow(e1.name, 2)
+				Slow(" vous a battu\n", 2)
 				p.Dead()
 				break
 			}
@@ -1194,26 +1195,26 @@ func (p *Personnage) TrainingFight() {
 func (p *Personnage) TheFirst() {
 	var e3 Monstre
 	e3.InitGoblin("Python", 80, 8)
-	Slow("Le Grand Python se présente devant vous\n",1)
+	Slow("Le Grand Python se présente devant vous\n", 1)
 	time.Sleep(1 * time.Second)
 	var turn int
 	for i := 0; i <= 9999; i++ {
 		turn++
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-		Slow("Tour",1)
+		Slow("Tour", 1)
 		fmt.Println(turn)
-		Slow("C'est au joueur !",2)
+		Slow("C'est au joueur !", 2)
 		p.CharTurn(&e3)
 		if e3.lp <= 0 {
-			Slow("\nVous avez vaincu le Grand ",1)
-			Slow(e3.name,1)
-			Slow(" !",1)
+			Slow("\nVous avez vaincu le Grand ", 1)
+			Slow(e3.name, 1)
+			Slow(" !", 1)
 			time.Sleep(2 * time.Second)
 			p.TheSecond()
 			break
 		}
 		time.Sleep(1 * time.Second)
-		Slow("\nC'est à l'ennemi !\n",2)
+		Slow("\nC'est à l'ennemi !\n", 2)
 		p.GoblinPattern(&e3, 1)
 		if p.lp <= 0 {
 			Slow(e3.name, 1)
@@ -1227,30 +1228,30 @@ func (p *Personnage) TheFirst() {
 func (p *Personnage) TheSecond() {
 	var e4 Monstre
 	e4.InitGoblin("Java", 100, 10)
-	Slow("Le Grand Java se présente devant vous\n",1)
+	Slow("Le Grand Java se présente devant vous\n", 1)
 	time.Sleep(1 * time.Second)
 	var turn2 int
 	for i := 0; i <= 9999; i++ {
 		turn2++
 
-		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")	
-		Slow("Tour",2)
+		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+		Slow("Tour", 2)
 		fmt.Print(turn2)
-		Slow("\nC'est au joueur !",2)
+		Slow("\nC'est au joueur !", 2)
 		p.CharTurn(&e4)
 		if e4.lp <= 0 {
-			Slow("\nVous avez vaincu le Grand ",1)
-			Slow(e4.name,1)
-			Slow(" !",1)
+			Slow("\nVous avez vaincu le Grand ", 1)
+			Slow(e4.name, 1)
+			Slow(" !", 1)
 			time.Sleep(2 * time.Second)
 			p.TheThird()
 		}
 		time.Sleep(1 * time.Second)
-		Slow("\nC'est à l'ennemi !\n",2)
+		Slow("\nC'est à l'ennemi !\n", 2)
 		p.GoblinPattern(&e4, 1)
 		if p.lp <= 0 {
-			Slow(e4.name,1)
-			Slow(" vous a battu",1)
+			Slow(e4.name, 1)
+			Slow(" vous a battu", 1)
 			p.Dead()
 		}
 		time.Sleep(3 * time.Second)
@@ -1260,21 +1261,21 @@ func (p *Personnage) TheSecond() {
 func (p *Personnage) TheThird() {
 	var e5 Monstre
 	e5.InitGoblin("C++", 150, 15)
-	Slow("Le Grand C++ se présente devant vous\n",1)
+	Slow("Le Grand C++ se présente devant vous\n", 1)
 	time.Sleep(1 * time.Second)
 	var turn3 int
 	for i := 0; i <= 9999; i++ {
 		turn3++
 
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-		Slow("Tour",2)
+		Slow("Tour", 2)
 		fmt.Print(turn3)
-		fmt.Println("\nC'est au joueur !",2)
+		fmt.Println("\nC'est au joueur !", 2)
 		p.CharTurn(&e5)
 		if e5.lp <= 0 {
-			Slow("\nVous avez vaincu le Grand ",1)
-			Slow(e5.name,1)
-			Slow(" !",1)
+			Slow("\nVous avez vaincu le Grand ", 1)
+			Slow(e5.name, 1)
+			Slow(" !", 1)
 			time.Sleep(2 * time.Second)
 			p.TheFourth()
 		}
@@ -1294,7 +1295,7 @@ func (p *Personnage) TheThird() {
 func (p *Personnage) TheFourth() {
 	var e6 Monstre
 	e6.InitGoblin("Golang", 200, 20)
-	Slow("Le plus Grand des Grand, Golang, se présente devant vous\n",1)
+	Slow("Le plus Grand des Grand, Golang, se présente devant vous\n", 1)
 	time.Sleep(1 * time.Second)
 	var turn4 int
 	for i := 0; i <= 9999; i++ {
@@ -1302,19 +1303,19 @@ func (p *Personnage) TheFourth() {
 
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
 
-		Slow("Tour",2)
+		Slow("Tour", 2)
 		fmt.Println(turn4)
-		Slow("C'est au joueur !",2)
+		Slow("C'est au joueur !", 2)
 		p.CharTurn(&e6)
 		if e6.lp <= 0 {
-			Slow("Vous avez vaincu Golang, le plus Grand des Grands.\n",1)
-			Slow("Dans son dernier souffle il lâche un objet.",4)
-			p.AddInventory("Objet suspicieux",0)
+			Slow("Vous avez vaincu Golang, le plus Grand des Grands.\n", 1)
+			Slow("Dans son dernier souffle il lâche un objet.", 4)
+			p.AddInventory("Objet suspicieux", 0)
 			time.Sleep(2 * time.Second)
 			break
 		}
 		time.Sleep(1 * time.Second)
-		Slow("\nC'est à l'ennemi !\n",2)
+		Slow("\nC'est à l'ennemi !\n", 2)
 		p.GoblinPattern(&e6, 1)
 		if p.lp <= 0 {
 			Slow(e6.name, 1)
