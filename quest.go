@@ -17,13 +17,15 @@ func (p *Personnage) QuestMan(e3, e4, e5, e6 *Monstre) {
 				fmt.Scanln(&choice)
 				switch choice {
 				case 1:
-					Slow(Yellow+"Mon nom importe peu l'ami, je ne .", 1)
+					Slow(Yellow+"Mon nom importe peu l'ami, ", 1)
 					Slow("\nBonne chance l'ami.\n"+Reset, 1)
 				case 2:
-					Slow(Yellow+"Vois tu depuis peu les contrées de Goldy se sont fait envahir par quatres seigneur malveillants.", 1)
-					Slow("\nTa quête est de les éliminer, un par un et jusqu'au dernier.\n", 1)
+					Slow(Yellow+"Vois tu depuis peu les contrées de Goldy se sont fait envahir par quatres seigneurs malveillants.", 1)
+					Slow("\nJe te confie la mission de les éliminer jusqu'au dernier, en échange je t'offrirais un grand trésor", 1)
 					Slow("\nMais avant cela tu dois te rendre dans le donjon afin d'y trouver l'arme qui te donnera la force de les battre.", 1)
-					Slow("\nBonne chance l'ami.\n"+Reset, 1)
+					Slow("\nPourquoi je n'y vais pas moi ? Et bien parce que tout cela perdrait son sens n'est ce pas hahahaha"+Reset,1)
+					Slow("\nL'homme est pris d'un fous rire. Puis reprend quelques instants plus tard",1)
+					Slow(Yellow+"\nBonne chance l'ami.\n"+Reset, 1)
 				}
 		} else {
 			Slow(Yellow+"Bravo l'ami ! Tu as obtenus l'artéfact.", 1)
