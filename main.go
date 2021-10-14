@@ -26,7 +26,8 @@ type Personnage struct {
 	inventory []string
 	skill     []string
 	money     int
-	Equipement
+	damage    int
+	exp       int
 }
 
 type Equipement struct {
@@ -68,14 +69,4 @@ func main() {
 	fmt.Printf(".")
 	time.Sleep(1 * time.Second)
 	p1.menu(&e3, &e4, &e5, &e6, &a)
-}
-
-func (p *Personnage) Checkinv(item string) bool {
-	var founditem bool = false
-	for _, letter := range p.inventory {
-		if letter == item {
-			founditem = true
-		}
-	}
-	return founditem
 }

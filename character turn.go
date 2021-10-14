@@ -6,7 +6,6 @@ import (
 
 func (p *Personnage) CharTurn(m *Monstre) {
 	var choice int
-	var damage int = 5
 	fmt.Print(Yellow + "")
 	Slow("\n(1) ", 2)
 	fmt.Print("" + Reset)
@@ -19,11 +18,30 @@ func (p *Personnage) CharTurn(m *Monstre) {
 	switch choice {
 	case 1:
 		if p.Checkinv("Véritable Couteau") {
-			m.lp = damage*10
-			Slow("\nVous avez tué ", 2)
+			m.lp -= p.damage
+			fmt.Print(Yellow + "")
+			Slow(p.name, 2)
+			fmt.Print("" + Reset)
+			Slow(" utilise le ", 2)
+			fmt.Print(Yellow + "")
+			Slow("Véritable Couteau ", 2)
+			fmt.Print("" + Reset)
+			Slow(" et inflige ", 2)
+			fmt.Print(Red + "")
+			fmt.Print(p.damage)
+			Slow(" points de dégâts", 2)
+			fmt.Print("" + Reset)
+			Slow(" à ",2)
+			Slow(Yellow + "",2)
 			Slow(m.name, 2)
+			fmt.Print("" + Reset)
+			Slow(" il lui reste ", 2)
+			fmt.Print(Yellow + "")
+			fmt.Print(m.lp)
+			Slow(" points de vies\n", 2)
+			fmt.Print("" + Reset)
 		} else {
-			m.lp -= damage
+			m.lp -= p.damage
 			fmt.Print(Yellow + "")
 			Slow(p.name, 2)
 			fmt.Print("" + Reset)
@@ -33,7 +51,7 @@ func (p *Personnage) CharTurn(m *Monstre) {
 			fmt.Print("" + Reset)
 			Slow(" et inflige ", 2)
 			fmt.Print(Red + "")
-			fmt.Print(damage)
+			fmt.Print(p.damage)
 			Slow(" points de dégâts", 2)
 			fmt.Print("" + Reset)
 			Slow(" à ",2)

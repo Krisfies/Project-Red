@@ -39,25 +39,35 @@ func (p *Personnage) TrainingFight(a *Equipement) {
 	var e2 Monstre
 	n := rand.Intn(5)
 	if n == 4 {
-		Slow("Un mimic sauvage apparaît", 2)
+		Slow("Un mimic sauvage apparaît", 1)
 		time.Sleep(3 * time.Second)
 		var turn int
 		e2.InitGoblin("Mimic", 80, 5)
 		for i := 0; i <= 9999; i++ {
 			turn++
 			os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-			Slow("Tour ", 2)
+			Slow("Tour ", 1)
 			fmt.Print(turn)
 			time.Sleep(1 * time.Second)
-			Slow("\nC'est au joueur !", 2)
+			Slow("\nC'est au joueur !", 1)
+			Slow("\nIl reste ",1)
+			fmt.Print(e2.lp)
+			Slow("/",1)
+			fmt.Print(e2.lpmax)
+			Slow(" PV à ",1)
+			Slow(e2.name,1)
 			p.CharTurn(&e2)
 			if e2.lp <= 0 {
-				Slow("Vous avez vaincu le Mimic ", 2)
+				Slow("Vous avez vaincu le Mimic ", 1)
 				time.Sleep(1 * time.Second)
-				Slow("vous le fouillez et obtenez un objet étrange...", 5)
-				time.Sleep(3 * time.Second)
+				
 				if !p.Checkinv("Véritable couteau") {
 					p.AddInventory("Véritable couteau", 0)
+					Slow("vous le fouillez et obtenez un objet étrange...", 5)
+					time.Sleep(3 * time.Second)
+				} else {
+					p.Loot()
+					Slow("Le Mimic est rempli de pièce, vous vous servez autant que vous le pouvez et remportez 50 pièces",1)
 				}
 				break
 			}
@@ -86,10 +96,17 @@ func (p *Personnage) TrainingFight(a *Equipement) {
 			fmt.Print(turn)
 			time.Sleep(1 * time.Second)
 			Slow("\nC'est au joueur !\n", 2)
+			Slow("Il reste ",1)
+			fmt.Print(e1.lp)
+			Slow("/",1)
+			fmt.Print(e1.lpmax)
+			Slow(" PV à ",1)
+			Slow(e1.name,1)
 			p.CharTurn(&e1)
 			if e1.lp <= 0 {
 				Slow("Vous avez vaincu ", 2)
 				Slow(e1.name, 2)
+				p.Loot()
 				time.Sleep(2 * time.Second)
 				break
 			}

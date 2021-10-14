@@ -8,10 +8,10 @@ import (
 func (p *Personnage) Marchand(e3, e4, e5, e6 *Monstre, a *Equipement) {
 	// fonction affichant le menu du marchand , et les ajoute a notre inventaire
 	var menum int
-	Slow("Vous avez", 1)
+	Slow("Vous avez ", 1)
 	fmt.Print(Yellow + "")
 	fmt.Print(p.money)
-	Slow("pièces\n"+Reset, 1)
+	Slow(" pièces\n"+Reset, 1)
 	fmt.Scanln(&menum)
 	switch menum {
 	case 1:

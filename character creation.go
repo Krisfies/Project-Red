@@ -15,6 +15,7 @@ func (p *Personnage) CharCreation(a *Equipement) {
 	var inventory []string
 	var skill []string
 	var money int
+	var damage int
 	var chapeau string
 	var tunique string
 	var bottes string
@@ -22,7 +23,7 @@ func (p *Personnage) CharCreation(a *Equipement) {
 	os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
 	Slow("Bienvenue dans", 1)
 	fmt.Printf(Yellow + " ")
-	Slow("Goldy", 1)
+	Slow("Goldy, le pays où tout est jaune,", 1)
 	time.Sleep(100 * time.Millisecond)
 	fmt.Printf("\n" + Reset)
 	Slow("Vous êtes dans le menu de ", 1)
@@ -46,7 +47,10 @@ func (p *Personnage) CharCreation(a *Equipement) {
 		lp = lpmax
 		inventory = []string{"Véritable Couteau"}
 		money = 10000
-		Slow("Bienvenue Utilisateur\n", 1)
+		chapeau = "Couronne en or"
+		tunique = "Cape en fourrure, ornée de cristaux"
+		bottes = "Bottes en cuir"
+		Slow(Yellow+"Bienvenue Utilisateur\n"+Reset, 1)
 		time.Sleep(300 * time.Millisecond)
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
 	} else {
@@ -79,18 +83,21 @@ func (p *Personnage) CharCreation(a *Equipement) {
 		case "Humain":
 			class = "Humain"
 			lpmax = 100
+			damage = 8
 			chapeau = "Chapeau de paille"
 			tunique = "Vieux manteau"
 			bottes = "Vieille claquette"
 		case "Elfe":
 			class = "Elfe"
 			lpmax = 80
+			damage = 3
 			chapeau = "Chapeau d'érudit"
 			tunique = "Robe de sage"
 			bottes = "Chaussure pointue"
 		case "Nain":
 			class = "Nain"
 			lpmax = 120
+			damage = 5
 			chapeau = "Casque de mineur"
 			tunique = "Salopette rapiécée"
 			bottes = "Sabot renforcé"
@@ -98,6 +105,7 @@ func (p *Personnage) CharCreation(a *Equipement) {
 		if class != "Humain" && class != "Elfe" && class != "Nain" { //Easter egg n°3
 			class = "Troll"
 			lpmax = 50
+			damage = 2
 			chapeau = "Bonnet de petite taille"
 			tunique = "Veste abîmée"
 			bottes = "Sabot en boît"
@@ -151,10 +159,10 @@ func (p *Personnage) CharCreation(a *Equipement) {
 	a.Chapeau = chapeau
 	a.Tunique = tunique
 	a.Bottes = bottes
-	p.Init(name, class, level, lpmax, lp, inventory, skill, money)
+	p.Init(name, class, level, lpmax, lp, inventory, skill, money, damage)
 }
 
-func (p *Personnage) Init(name string, class string, level int, lpmax int, lp int, inventory []string, skill []string, money int) {
+func (p *Personnage) Init(name string, class string, level int, lpmax int, lp int, inventory []string, skill []string, money int, damage int) {
 	// initialisation de notre personnage
 	p.name = name
 	p.class = class
@@ -164,4 +172,5 @@ func (p *Personnage) Init(name string, class string, level int, lpmax int, lp in
 	p.inventory = inventory
 	p.skill = skill
 	p.money = money
+	p.damage = damage
 }

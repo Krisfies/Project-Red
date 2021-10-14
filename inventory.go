@@ -7,6 +7,12 @@ import (
 
 func (p *Personnage) AccessInventory(e3, e4, e5, e6 *Monstre, a *Equipement) {
 	// fonction qui nous permet d'acceder a notre inventaire
+	var LifePotion bool = false
+	var PoisonPotion bool = false
+	var FireBall bool = false
+	var Hat bool = false
+	var Tunique bool = false
+	var Boots bool = false
 	if len(p.inventory) == 0 {
 		Slow("\nLe sac est ", 1)
 		fmt.Print(Yellow + "")
@@ -20,48 +26,62 @@ func (p *Personnage) AccessInventory(e3, e4, e5, e6 *Monstre, a *Equipement) {
 				fmt.Print(""+Yellow, p.inventory[i], Reset+"")
 				Slow(" [---", 2)
 				fmt.Print("\n")
+				if p.inventory[i] == "Potion de vie" {
+					LifePotion = true
+				}
+				if p.inventory[i] == "Potion de poison" {
+					PoisonPotion = true
+				}
+				if p.inventory[i] == "Livre de sort: Boule de Feu" {
+					FireBall = true
+				}
+				if p.inventory[i] == "Couronne en or" || p.inventory[i] == "Chapeau de paille" || p.inventory[i] == "Chapeau d'érudit" || p.inventory[i] == "Casque de mineur" || p.inventory[i] ==  "Bonnet de petite taille"{
+					Hat = true
+				}
+				if p.inventory[i] == "Salopette rapiécée" || p.inventory[i] == "Cape en fourrure, ornée de cristaux" || p.inventory[i] == "Vieux manteau" || p.inventory[i] == "Robe de sage" || p.inventory[i] == "Veste abîmée" {
+					Tunique = true
+				}
+				if p.inventory[i] == "Sabot renforcé" || p.inventory[i] == "Bottes en cuir" || p.inventory[i] == "Vieille claquette" || p.inventory[i] == "Chaussure pointue" || p.inventory[i] == "Sabot en boît" {
+					Boots = true
+				}
 			}
 		}
 		fmt.Print("\n")
 	}
 	Slow("----------------\n", 3)
-	fmt.Print(Yellow + "")
-	Slow("(1) ", 3)
-	fmt.Print("" + Reset)
-	Slow("Prendre une ", 3)
-	fmt.Print(Yellow + "")
-	Slow("Potion de vie\n", 3)
-	Slow("(2) ", 3)
-	fmt.Print("" + Reset)
-	Slow("Prendre une ", 3)
-	fmt.Print(Yellow + "")
-	Slow("Potion de poison\n", 3)
-	Slow("(3) ", 3)
-	fmt.Print("" + Reset)
-	Slow("Utiliser le Livre de sort : ", 3)
-	fmt.Print(Yellow + "")
-	Slow("Boule de Feu\n", 3)
-	Slow("(4) ", 3)
-	fmt.Print("" + Reset)
-	Slow("Mettre un ", 3)
-	fmt.Print(Yellow + "")
-	Slow("Chapeau\n", 3)
-	Slow("(5) ", 3)
-	fmt.Print("" + Reset)
-	Slow("Mettre une ", 3)
-	fmt.Print(Yellow + "")
-	Slow("Tunique\n", 3)
-	Slow("(6) ", 3)
-	fmt.Print("" + Reset)
-	Slow("Mettre des ", 3)
-	fmt.Print(Yellow + "")
-	Slow("Bottes\n", 3)
-	Slow("(0) ", 3)
-	fmt.Print("" + Reset)
+	if LifePotion {
+		Slow(Yellow+"(1) "+Reset, 3)
+		Slow("Prendre une ", 3)
+		Slow(Yellow+"Potion de vie\n"+Reset, 3)
+	}
+	if PoisonPotion {
+		Slow(Yellow+"(2) "+Reset, 3)
+		Slow("Prendre une ", 3)
+		Slow(Yellow+"Potion de poison\n"+Reset, 3)
+	}
+	if FireBall {
+		Slow(Yellow+"(3) "+Reset, 3)
+		Slow("Utiliser le Livre de sort: ", 3)
+		Slow(Yellow+"Boule de Feu\n"+Reset, 3)
+	}
+	if Hat {
+		Slow(Yellow+"(4) "+Reset, 3)
+		Slow("Mettre un ", 3)
+		Slow(Yellow+"Chapeau\n"+Reset, 3)
+	}
+	if Tunique {
+		Slow(Yellow+"(5) "+Reset, 3)
+		Slow("Mettre une ", 3)
+		Slow(Yellow+"Tunique\n"+Reset, 3)
+	}
+	if Boots {
+		Slow(Yellow+"(6) "+Reset, 3)
+		Slow("Mettre des ", 3)
+		Slow(Yellow+"Bottes\n"+Reset, 3)
+	}
+	Slow(Yellow+"(0) "+Reset, 3)
 	Slow("Arrêter de regarder dans le ", 3)
-	fmt.Print(Yellow + "")
-	Slow("Sac\n", 3)
-	fmt.Print("" + Reset)
+	Slow(Yellow+"Sac\n"+Reset, 3)
 	Slow("----------------\n", 3)
 	p.UseInventory(e3, e4, e5, e6, a)
 }
@@ -107,7 +127,7 @@ func (p *Personnage) UseInventory(e3 , e4 , e5 , e6 *Monstre, a *Equipement) {
 		p.PoisonPot()
 		p.SuperAccessInventory(e3, e4, e5, e6, a)
 	case 3:
-		p.Spellbook(e3, e4, e5, e6, a)
+		p.Spellbook(e3, e4, e5, e6, a, "Boule de Feu")
 		p.SuperAccessInventory(e3, e4, e5, e6, a)
 	case 4:
 		if p.Checkinv("Chapeau de l'aventurier") {
@@ -153,17 +173,12 @@ func (p *Personnage) UseInventory(e3 , e4 , e5 , e6 *Monstre, a *Equipement) {
 	}
 }
 
-func (p *Personnage) Spellbook(e3, e4, e5, e6 *Monstre, a *Equipement) {
-	// fonction qui nous permet d'ajouter ou repertorier les sorts (spell)
-	for _, letter := range p.skill {
-		if letter == ("Boule de feu") {
-			Slow("Tu connais déjà ce ", 2)
-			fmt.Print(Yellow + "")
-			Slow("sort", 2)
-			fmt.Print("" + Reset)
-		} else {
-			p.skill = append(p.skill, "Boule de feu")
+func (p *Personnage) Checkinv(item string) bool {
+	var founditem bool = false
+	for _, letter := range p.inventory {
+		if letter == item {
+			founditem = true
 		}
 	}
-	p.menu(e3, e4, e5, e6, a)
+	return founditem
 }

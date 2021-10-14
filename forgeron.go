@@ -81,7 +81,7 @@ func (p *Personnage) Forgeron(e3, e4, e5, e6 *Monstre, a *Equipement) {
 	fmt.Print("" + Reset)
 	Slow("--", 3)
 	fmt.Print("\n \n")
-	Slow("Votre inventaire: ", 3)
+	Slow("Votre inventaire: \n", 3)
 	for i := 0; i < len(p.inventory); i++ {
 		if p.inventory[i] != " " {
 			Slow("---] ", 2)
@@ -90,6 +90,10 @@ func (p *Personnage) Forgeron(e3, e4, e5, e6 *Monstre, a *Equipement) {
 			fmt.Print("\n")
 		}
 	}
+	p.UseForgeron(e3, e4, e5, e6, a)
+}
+
+func (p *Personnage) UseForgeron(e3, e4, e5, e6 *Monstre, a *Equipement)  {
 	var enclume int
 	fmt.Scanln(&enclume)
 	switch enclume {
@@ -103,11 +107,11 @@ func (p *Personnage) Forgeron(e3, e4, e5, e6 *Monstre, a *Equipement) {
 			Slow("Chapeau de l'aventurier", 3)
 			fmt.Print("" + Reset)
 			time.Sleep(2 * time.Second)
-			p.Forgeron(e3, e4, e5, e6, a)
+			p.SuperAccessForgeron(e3, e4, e5, e6, a)
 		} else {
 			Slow("Tu te moques de moi ? Regarde ton inventaire l'ami", 3)
 			time.Sleep(2 * time.Second)
-			p.Forgeron(e3, e4, e5, e6, a)
+			p.SuperAccessForgeron(e3, e4, e5, e6, a)
 		}
 	case 2:
 		if p.Checkinv("Fourrure de Loup") && p.Checkinv("Peau de Troll") {
@@ -121,7 +125,7 @@ func (p *Personnage) Forgeron(e3, e4, e5, e6 *Monstre, a *Equipement) {
 				Slow("Tunique de l'aventurier", 2)
 				fmt.Print("" + Reset)
 				time.Sleep(2 * time.Second)
-				p.Forgeron(e3, e4, e5, e6, a)
+				p.SuperAccessForgeron(e3, e4, e5, e6, a)
 			} else {
 				p.AddInventory("Fourrure de Loup", 5)
 			}
@@ -132,7 +136,7 @@ func (p *Personnage) Forgeron(e3, e4, e5, e6 *Monstre, a *Equipement) {
 			fmt.Print("" + Reset)
 			Slow("l'ami", 2)
 			time.Sleep(2 * time.Second)
-			p.Forgeron(e3, e4, e5, e6, a)
+			p.SuperAccessForgeron(e3, e4, e5, e6, a)
 		}
 	case 3:
 		if p.Checkinv("Fourrure de Loup") && p.Checkinv("Cuir de Sanglier") {
@@ -144,13 +148,33 @@ func (p *Personnage) Forgeron(e3, e4, e5, e6 *Monstre, a *Equipement) {
 			Slow("Bottes de l'aventurier", 2)
 			fmt.Print("" + Reset)
 			time.Sleep(2 * time.Second)
-			p.Forgeron(e3, e4, e5, e6, a)
+			p.SuperAccessForgeron(e3, e4, e5, e6, a)
 		} else {
 			Slow("Tu te moques de moi ? Regarde ton inventaire l'ami", 2)
 			time.Sleep(2 * time.Second)
-			p.Forgeron(e3, e4, e5, e6, a)
+			p.SuperAccessForgeron(e3, e4, e5, e6, a)
 		}
 	case 0:
 		p.menu(e3, e4, e5, e6, a)
 	}
+}
+
+
+func (p *Personnage) SuperAccessForgeron(e3, e4, e5, e6 *Monstre, a *Equipement) {
+	os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+	fmt.Println("------ Vous entrez dans la ", Yellow+"Forge "+Reset,"------\n")
+	fmt.Println("--", Yellow+"(1) "+Reset,"Construire un", Yellow+"Chapeau de l'aventurier "+Reset)
+	fmt.Println("Requiert",Yellow + "1 Plume de corbeau"+Reset, "et", Yellow+"1 Cuir de sanglier\n"+Reset)
+	fmt.Println("--",Yellow + "(2)"+ Reset, "Construire une",Yellow + "Tunique de l'Aventurier"+Reset, "--")
+	fmt.Println("Requiert", Yellow +"2 Fourrure de Loup"+ Reset,"et",Yellow + "1 Peau de Troll\n" + Reset)
+	fmt.Println("--", Yellow + "(3)"+Reset, "Construire les",Yellow + "Bottes de l'aventurier"+ Reset,"--")
+	fmt.Println("Requiert", Yellow + "1 Fourrure de Loup"+ Reset, "et", Yellow + "1 Cuir de Sanglier\n"+ Reset)
+	fmt.Println("--",Yellow +"(0)"+ Reset,"Retourner à la",Yellow + "Place Principale"+ Reset,"--\n")
+	Slow("Votre inventaire:\n", 3)
+	for i := 0; i < len(p.inventory); i++ {
+		if p.inventory[i] != " " {
+			fmt.Println("---]"+Yellow, p.inventory[i],Reset +"[---")
+		}
+	}
+	p.UseForgeron(e3, e4, e5, e6, a)
 }

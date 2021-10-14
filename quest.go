@@ -20,10 +20,11 @@ func (p *Personnage) QuestMan(e3, e4, e5, e6 *Monstre) {
 					Slow(Yellow+"Mon nom importe peu l'ami, ", 1)
 					Slow("\nBonne chance l'ami.\n"+Reset, 1)
 				case 2:
-					Slow(Yellow+"Vois tu depuis peu les contrées de Goldy se sont fait envahir par quatres seigneurs malveillants.", 1)
-					Slow("\nJe te confie la mission de les éliminer jusqu'au dernier, en échange je t'offrirais un grand trésor", 1)
+					Slow(Yellow+"Il y a quelques temps, Goldy le pays où tout est jaune, s'est fait envahir par quatres seigneurs malveillants qui tente de changer ses couleurs.", 1)
+					Slow("\nDepuis leur apparition, la réalité est modifié et certaines choses appaarraisent en vert, bleu, rouge et blanc",1)
+					Slow("\nJe te confie la mission de les éliminer, Goldy se doit de retrouver sa couleur, je te récompenserais en conséquence", 1)
 					Slow("\nMais avant cela tu dois te rendre dans le donjon afin d'y trouver l'arme qui te donnera la force de les battre.", 1)
-					Slow("\nPourquoi je n'y vais pas moi ? Et bien parce que tout cela perdrait son sens n'est ce pas hahahaha"+Reset,1)
+					Slow("\nPourquoi n'y vais-je pas moi ? Je suis un être jaune, m'attaquer à eux pourrait supprimer mn existence du programme"+Reset,1)
 					Slow("\nL'homme est pris d'un fous rire. Puis reprend quelques instants plus tard",1)
 					Slow(Yellow+"\nBonne chance l'ami.\n"+Reset, 1)
 				}
