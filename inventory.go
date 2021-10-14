@@ -13,6 +13,7 @@ func (p *Personnage) AccessInventory(e3, e4, e5, e6 *Monstre, a *Equipement) {
 	var Hat bool = false
 	var Tunique bool = false
 	var Boots bool = false
+	var Weapon bool = false
 	if len(p.inventory) == 0 {
 		Slow("\nLe sac est ", 1)
 		fmt.Print(Yellow + "")
@@ -43,6 +44,9 @@ func (p *Personnage) AccessInventory(e3, e4, e5, e6 *Monstre, a *Equipement) {
 				}
 				if p.inventory[i] == "Sabot renforcé" || p.inventory[i] == "Bottes en cuir" || p.inventory[i] == "Vieille claquette" || p.inventory[i] == "Chaussure pointue" || p.inventory[i] == "Sabot en boît" {
 					Boots = true
+				}
+				if p.inventory[i] == "Véritable Couteau" {
+					Weapon = true
 				}
 			}
 		}
@@ -79,6 +83,11 @@ func (p *Personnage) AccessInventory(e3, e4, e5, e6 *Monstre, a *Equipement) {
 		Slow("Mettre des ", 3)
 		Slow(Yellow+"Bottes\n"+Reset, 3)
 	}
+	if Weapon {
+		Slow(Yellow+"(7)"+Reset,3)
+		Slow("Equiper une",3)
+		Slow(Yellow+"Arme"+Reset,3)
+	}
 	Slow(Yellow+"(0) "+Reset, 3)
 	Slow("Arrêter de regarder dans le ", 3)
 	Slow(Yellow+"Sac\n"+Reset, 3)
@@ -89,6 +98,13 @@ func (p *Personnage) AccessInventory(e3, e4, e5, e6 *Monstre, a *Equipement) {
 func (p *Personnage) SuperAccessInventory(e3, e4, e5, e6 *Monstre, a *Equipement) {
 	// fonction qui nous permet d'acceder a notre inventaire
 	os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
+	var LifePotion bool = false
+	var PoisonPotion bool = false
+	var FireBall bool = false
+	var Hat bool = false
+	var Tunique bool = false
+	var Boots bool = false
+	var Weapon bool = false
 	if len(p.inventory) == 0 {
 		Slow("\nLe sac est ", 1)
 		fmt.Print(Yellow + "")
@@ -98,19 +114,56 @@ func (p *Personnage) SuperAccessInventory(e3, e4, e5, e6 *Monstre, a *Equipement
 		fmt.Print("\n")
 		for i := 0; i < len(p.inventory); i++ {
 			if p.inventory[i] != " " {
-				fmt.Print("---] ")
+				Slow("---] ", 2)
 				fmt.Print(""+Yellow, p.inventory[i], Reset+"")
-				fmt.Println(" [---")
+				Slow(" [---", 2)
+				fmt.Print("\n")
+				if p.inventory[i] == "Potion de vie" {
+					LifePotion = true
+				}
+				if p.inventory[i] == "Potion de poison" {
+					PoisonPotion = true
+				}
+				if p.inventory[i] == "Livre de sort: Boule de Feu" {
+					FireBall = true
+				}
+				if p.inventory[i] == "Couronne en or" || p.inventory[i] == "Chapeau de paille" || p.inventory[i] == "Chapeau d'érudit" || p.inventory[i] == "Casque de mineur" || p.inventory[i] ==  "Bonnet de petite taille"{
+					Hat = true
+				}
+				if p.inventory[i] == "Salopette rapiécée" || p.inventory[i] == "Cape en fourrure, ornée de cristaux" || p.inventory[i] == "Vieux manteau" || p.inventory[i] == "Robe de sage" || p.inventory[i] == "Veste abîmée" {
+					Tunique = true
+				}
+				if p.inventory[i] == "Sabot renforcé" || p.inventory[i] == "Bottes en cuir" || p.inventory[i] == "Vieille claquette" || p.inventory[i] == "Chaussure pointue" || p.inventory[i] == "Sabot en boît" {
+					Boots = true
+				}
+				if p.inventory[i] == "Véritable Couteau" {
+					Weapon = true
+				}
 			}
 		}
 		fmt.Print("\n----------------\n")
 	}
-	fmt.Println(Yellow+"(1)"+Reset, "Prendre une", Yellow+"Potion de vie")
-	fmt.Println("(2)"+Reset, "Prendre une", Yellow+"Potion de poison")
-	fmt.Println("(3)"+Reset, "Utiliser le Livre de sort :", Yellow+"Boule de Feu")
-	fmt.Println("(4)"+Reset, "Mettre un", Yellow+"Chapeau")
-	fmt.Println("(5)"+Reset, "Mettre une", Yellow+"Tunique")
-	fmt.Println("(6)"+Reset, "Mettre des", Yellow+"Bottes")
+	if LifePotion {
+		fmt.Println(Yellow+"(1)"+Reset, "Prendre une", Yellow+"Potion de vie"+Reset)
+	}
+	if PoisonPotion {
+		fmt.Println(Yellow+"(2)"+Reset, "Prendre une", Yellow+"Potion de poison"+Reset)
+	}
+	if FireBall {
+		fmt.Println(Yellow+"(3)"+Reset, "Utiliser le Livre de sort :", Yellow+"Boule de Feu"+Reset)
+	}
+	if Hat {
+		fmt.Println(Yellow+"(4)"+Reset, "Mettre un", Yellow+"Chapeau"+Reset)
+	}
+	if Tunique {
+		fmt.Println(Yellow+"(5)"+Reset, "Mettre une", Yellow+"Tunique"+Reset)
+	}
+	if Boots {
+		fmt.Println(Yellow+"(6)"+Reset, "Mettre des", Yellow+"Bottes"+Reset)
+	}
+	if Weapon {
+		fmt.Println(Yellow+"(7)"+Reset, "Equiper une", Yellow+"Arme"+Reset)
+	}
 	fmt.Println("(0)"+Reset, "Arrêter de regarder dans le", Yellow+"Sac"+Reset, "\n----------------")
 	p.UseInventory(e3, e4, e5, e6, a)
 }
@@ -139,7 +192,7 @@ func (p *Personnage) UseInventory(e3 , e4 , e5 , e6 *Monstre, a *Equipement) {
 			p.RemoveInventory("Chapeau de l'Aventurier")
 			p.SuperAccessInventory(e3, e4, e5, e6, a)
 		} else if !p.Checkinv("Chapeau de L'aventurier") {
-			Slow("Tu l'as déja équiper !", 2)
+			Slow("Tu n'as pas cet obkjet dans ton inventaire !", 2)
 			p.SuperAccessInventory(e3, e4, e5, e6, a)
 		}
 	case 5:
@@ -152,7 +205,7 @@ func (p *Personnage) UseInventory(e3 , e4 , e5 , e6 *Monstre, a *Equipement) {
 			p.RemoveInventory("Tunique de l'Aventurier")
 			p.SuperAccessInventory(e3, e4, e5, e6, a)
 		} else if !p.Checkinv("Tunique de L'aventurier"){
-			Slow("Tu l'as déja équiper !", 2)
+			Slow("Tu n'as pas cet obkjet dans ton inventaire !", 2)
 			p.SuperAccessInventory(e3, e4, e5, e6, a)
 		}
 	case 6:
@@ -165,7 +218,18 @@ func (p *Personnage) UseInventory(e3 , e4 , e5 , e6 *Monstre, a *Equipement) {
 			p.RemoveInventory("Bottes de l'Aventurier")
 			p.SuperAccessInventory(e3, e4, e5, e6, a)
 		} else if !p.Checkinv("Bottes de L'aventurier"){
-			Slow("Tu l'as déja équiper !", 2)
+			Slow("Tu n'as pas cet obkjet dans ton inventaire !", 2)
+			p.SuperAccessInventory(e3, e4, e5, e6, a)
+		}
+	case 7:
+		if p.Checkinv("Véritable Couteau") {
+			p.RemoveInventory("Véritable Couteau")
+			a.Arme = "Véritable Couteau"
+			p.damage += 15
+			Slow("Vous équipez le Véritable Couteau\n",2)
+			p.SuperAccessInventory(e3, e4, e5, e6, a)
+		} else  if !p.Checkinv("Véritable Couteau") {
+			Slow("Tu n'as pas cet obkjet dans ton inventaire !",2)
 			p.SuperAccessInventory(e3, e4, e5, e6, a)
 		}
 	case 0:

@@ -47,6 +47,10 @@ func (p *Personnage) TheFirst(e3, e4, e5, e6 *Monstre, a *Equipement) {
 					Slow("\nVous avez vaincu le Grand ", 1)
 					Slow(e3.name, 1)
 					Slow(" !", 1)
+					Slow("Vous gagnez ",1)
+					Slow(Yellow+"15 points d'expérience"+Reset,2)
+					p.exp += 15
+					p.UpgradeLevel()
 					time.Sleep(2 * time.Second)
 					break
 				}
@@ -92,6 +96,10 @@ func (p *Personnage) TheSecond(e3, e4, e5, e6 *Monstre, a *Equipement) {
 				Slow("\nVous avez vaincu le Grand ", 1)
 				Slow(e4.name, 1)
 				Slow(" !", 1)
+				Slow("Vous gagnez ",1)
+				Slow(Yellow+"20 points d'expérience"+Reset,2)
+				p.exp += 20
+				p.UpgradeLevel()
 				time.Sleep(2 * time.Second)
 				break
 			}
@@ -134,6 +142,10 @@ func (p *Personnage) TheThird(e3, e4, e5, e6 *Monstre, a *Equipement) {
 				Slow("\nVous avez vaincu le Grand ", 1)
 				Slow(e5.name, 1)
 				Slow(" !", 1)
+				Slow("Vous gagnez ",1)
+				Slow(Yellow+"25 points d'expérience"+Reset,2)
+				p.exp += 25
+				p.UpgradeLevel()
 				time.Sleep(2 * time.Second)
 				break
 			}
@@ -178,6 +190,10 @@ func (p *Personnage) TheFourth(e3, e4, e5, e6 *Monstre, a *Equipement) {
 				Slow("Vous avez vaincu Golang, le plus Grand des Grands.\n", 1)
 				Slow("Dans son dernier souffle il lâche quelque chose, vous le ramassez.", 4)
 				p.AddInventory("Objet suspicieux", 0)
+				Slow("Vous gagnez ",1)
+				Slow(Yellow+"30 points d'expérience"+Reset,2)
+				p.exp += 30
+				p.UpgradeLevel()
 				time.Sleep(2 * time.Second)
 				break
 			}

@@ -28,6 +28,7 @@ type Personnage struct {
 	money     int
 	damage    int
 	exp       int
+	expmax    int
 }
 
 type Equipement struct {

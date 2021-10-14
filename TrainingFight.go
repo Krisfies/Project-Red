@@ -38,7 +38,7 @@ func (p *Personnage) TrainingFight(a *Equipement) {
 	var e1 Monstre
 	var e2 Monstre
 	n := rand.Intn(5)
-	if n == 4 {
+	if n == 0 {
 		Slow("Un mimic sauvage apparaît", 1)
 		time.Sleep(3 * time.Second)
 		var turn int
@@ -59,6 +59,10 @@ func (p *Personnage) TrainingFight(a *Equipement) {
 			p.CharTurn(&e2)
 			if e2.lp <= 0 {
 				Slow("Vous avez vaincu le Mimic ", 1)
+				Slow("Vous gagnez ",1)
+				Slow(Yellow+"10 points d'expérience"+Reset,2)
+				p.exp += 10
+				p.UpgradeLevel()
 				time.Sleep(1 * time.Second)
 				
 				if !p.Checkinv("Véritable couteau") {
@@ -106,7 +110,11 @@ func (p *Personnage) TrainingFight(a *Equipement) {
 			if e1.lp <= 0 {
 				Slow("Vous avez vaincu ", 2)
 				Slow(e1.name, 2)
+				Slow("Vous gagnez ",1)
+				Slow(Yellow+"5 points d'expérience"+Reset,2)
+				p.exp += 5
 				p.Loot()
+				p.UpgradeLevel()
 				time.Sleep(2 * time.Second)
 				break
 			}

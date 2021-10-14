@@ -8,7 +8,7 @@ import (
 func Slow(s string, v int) {
 	if v == 1 {
 		for _, letter := range s {
-			time.Sleep(25 * time.Millisecond)
+			time.Sleep(35 * time.Millisecond)
 			z01.PrintRune(letter)
 		}
 	} else if v == 2 {

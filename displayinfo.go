@@ -45,5 +45,9 @@ func (p *Personnage) DisplayInfo(a * Equipement) {
 	Slow(a.Tunique,2)
 	Slow(Yellow+"\nBottes: "+Reset,2)
 	Slow(a.Bottes,2)
+	if a.Arme == "Véritable Couteau" {
+		Slow(Yellow+"\nArme:"+Reset,2)
+		Slow(a.Arme,2)
+	}
 	Slow("\n-------------------------\n", 2)
 }

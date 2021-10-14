@@ -19,6 +19,7 @@ func (p *Personnage) CharCreation(a *Equipement) {
 	var chapeau string
 	var tunique string
 	var bottes string
+	var expmax int
 
 	os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
 	Slow("Bienvenue dans", 1)
@@ -159,10 +160,11 @@ func (p *Personnage) CharCreation(a *Equipement) {
 	a.Chapeau = chapeau
 	a.Tunique = tunique
 	a.Bottes = bottes
-	p.Init(name, class, level, lpmax, lp, inventory, skill, money, damage)
+	expmax = 15
+	p.Init(name, class, level, lpmax, lp, inventory, skill, money, damage, expmax)
 }
 
-func (p *Personnage) Init(name string, class string, level int, lpmax int, lp int, inventory []string, skill []string, money int, damage int) {
+func (p *Personnage) Init(name string, class string, level int, lpmax int, lp int, inventory []string, skill []string, money int, damage int, expmax int) {
 	// initialisation de notre personnage
 	p.name = name
 	p.class = class
@@ -173,4 +175,5 @@ func (p *Personnage) Init(name string, class string, level int, lpmax int, lp in
 	p.skill = skill
 	p.money = money
 	p.damage = damage
+	p.expmax = expmax
 }
