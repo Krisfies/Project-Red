@@ -123,13 +123,13 @@ func (p *Personnage) SuperAccessInventory(e3, e4, e5, e6 *Monstre, a *Equipement
 				if p.inventory[i] == "Livre de sort: Boule de Feu" {
 					FireBall = true
 				}
-				if p.inventory[i] == "Couronne en or" || p.inventory[i] == "Chapeau de paille" || p.inventory[i] == "Chapeau d'érudit" || p.inventory[i] == "Casque de mineur" || p.inventory[i] ==  "Bonnet de petite taille"{
+				if p.inventory[i] == "Chapeau de l'aventurier" {
 					Hat = true
 				}
-				if p.inventory[i] == "Salopette rapiécée" || p.inventory[i] == "Cape en fourrure, ornée de cristaux" || p.inventory[i] == "Vieux manteau" || p.inventory[i] == "Robe de sage" || p.inventory[i] == "Veste abîmée" {
+				if p.inventory[i] == "Tunique de l'Aventurier" {
 					Tunique = true
 				}
-				if p.inventory[i] == "Sabot renforcé" || p.inventory[i] == "Bottes en cuir" || p.inventory[i] == "Vieille claquette" || p.inventory[i] == "Chaussure pointue" || p.inventory[i] == "Sabot en boît" {
+				if p.inventory[i] == "Bottes de l'Aventurier" {
 					Boots = true
 				}
 				if p.inventory[i] == "Véritable Couteau" {
