@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func (p *Personnage) CharCreation(a *Equipement) {
+func (p *Personnage) CharCreation(a *Equipement, e6 *Monstre) {
 	var name string
 	var class string
 	var level int
@@ -23,9 +23,9 @@ func (p *Personnage) CharCreation(a *Equipement) {
 
 	os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
 	Slow("Bienvenue dans ", 1)
-	Slow(Yellow+"Goldy, le pays où tout est jaune,"+Reset, 1)
+	Slow(Yellow+"Goldy"+Reset, 1)
 	time.Sleep(100 * time.Millisecond)
-	Slow("Vous êtes dans le menu de ", 1)
+	Slow("\nVous êtes dans le menu de ", 1)
 	Slow(Yellow+"création de personnage\n"+Reset, 1)
 	Slow("Pour commencer, choisissez un ", 1)
 	Slow(Yellow+"nom "+Reset, 1)
@@ -34,11 +34,12 @@ func (p *Personnage) CharCreation(a *Equipement) {
 	Slow(": \n", 1)
 	fmt.Scanln(&name)
 	if name == "Utilisateur" { //Easter egg n°1, le mode développeur du jeu
+		e6.lp = 0
 		class = "Utilisateur"
 		level = 1
 		lpmax = 9999
 		lp = lpmax
-		inventory = []string{"Véritable Couteau"}
+		inventory = []string{"Véritable Couteau", "Objet Suspicieux"}
 		money = 10000
 		chapeau = "Couronne en or"
 		tunique = "Cape en fourrure, ornée de cristaux"

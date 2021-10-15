@@ -28,7 +28,12 @@ func Slow(s string, v int) {
 		}
 	} else if v == 5 {
 		for _, letter := range s {
-			time.Sleep(200 * time.Millisecond)
+			time.Sleep(150 * time.Millisecond)
+			z01.PrintRune(letter)
+		}
+	} else if v == 6 {
+		for _, letter := range s {
+			time.Sleep(50 * time.Millisecond)
 			z01.PrintRune(letter)
 		}
 	}

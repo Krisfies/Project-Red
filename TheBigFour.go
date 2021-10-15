@@ -6,7 +6,7 @@ import (
 	"fmt"
 )
 
-func (p *Personnage) TheFirst(e3, e4, e5, e6 *Monstre, a *Equipement) {
+func (p *Personnage) TheFirst(e3, e4, e5, e6, e7 *Monstre, a *Equipement) {
 	var enter int
 	if !p.Checkinv("Objet Suspicieux") {
 		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
@@ -25,11 +25,12 @@ func (p *Personnage) TheFirst(e3, e4, e5, e6 *Monstre, a *Equipement) {
 		Slow("Vous prenez votre courage à deux mains et vous ",1)
 		Slow(Yellow+"pénétrez dans le chateau\n"+Reset,1)
 		if e3.lp <= 0 {
-			p.TheSecond(e3, e4, e5, e6, a)
+			p.TheSecond(e3, e4, e5, e6,e7, a)
 		} else {
 			Slow("Le Grand Python se tiens devant vous\n", 1)
 			time.Sleep(1 * time.Second)
 			var turn int
+			Loop:
 			for i := 0; i <= 9999; i++ {
 				turn++
 				os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
@@ -45,7 +46,7 @@ func (p *Personnage) TheFirst(e3, e4, e5, e6 *Monstre, a *Equipement) {
 					p.exp += 15
 					p.UpgradeLevel()
 					time.Sleep(2 * time.Second)
-					p.TheSecond(e3, e4, e5, e6, a)
+					p.TheSecond(e3, e4, e5, e6,e7, a)
 				}
 				time.Sleep(1 * time.Second)
 				Slow("\nC'est à l'ennemi !\n", 2)
@@ -54,23 +55,25 @@ func (p *Personnage) TheFirst(e3, e4, e5, e6 *Monstre, a *Equipement) {
 					Slow(e3.name, 1)
 					Slow(" vous a battu", 1)
 					p.Dead(a)
-					break
+					break Loop
 				}
 				time.Sleep(3 * time.Second)
 			}
+			p.menu(e3, e4, e5, e6, e7, a)
 		}
 	case 2:
-		p.menu(e3, e4, e5, e6, a)
+		p.menu(e3, e4, e5, e6, e7, a)
 	}
 }
 
-func (p *Personnage) TheSecond(e3, e4, e5, e6 *Monstre, a *Equipement) {
+func (p *Personnage) TheSecond(e3, e4, e5, e6, e7 *Monstre, a *Equipement) {
 	if e4.lp <= 0 {
 		p.TheThird(e3, e4, e5, e6, a)
 	} else {
 		Slow("Le Grand Java se tiens devant vous\n", 1)
 		time.Sleep(1 * time.Second)
 		var turn2 int
+		Loop:
 		for i := 0; i <= 9999; i++ {
 			turn2++
 
@@ -96,10 +99,11 @@ func (p *Personnage) TheSecond(e3, e4, e5, e6 *Monstre, a *Equipement) {
 				Slow(e4.name, 1)
 				Slow(" vous a battu", 1)
 				p.Dead(a)
-				break
+				break Loop 
 			}
 			time.Sleep(3 * time.Second)
 		}
+		p.menu(e3, e4, e5, e6, e7, a)
 	}
 }
 
@@ -110,6 +114,7 @@ func (p *Personnage) TheThird(e3, e4, e5, e6 *Monstre, a *Equipement) {
 		Slow("Le Grand C++ se tiens devant vous\n", 1)
 		time.Sleep(1 * time.Second)
 		var turn3 int
+		Loop:
 		for i := 0; i <= 9999; i++ {
 			turn3++
 
@@ -135,7 +140,7 @@ func (p *Personnage) TheThird(e3, e4, e5, e6 *Monstre, a *Equipement) {
 				Slow(e5.name, 1)
 				Slow(" vous a battu", 1)
 				p.Dead(a)
-				break
+				break Loop
 			}
 			time.Sleep(3 * time.Second)
 		}
@@ -149,6 +154,7 @@ func (p *Personnage) TheFourth(e3, e4, e5, e6 *Monstre, a *Equipement) {
 		Slow("Le plus Grand des Grand, Golang, se tiens devant vous\n", 1)
 		time.Sleep(1 * time.Second)
 		var turn4 int
+		Loop:
 		for i := 0; i <= 9999; i++ {
 			turn4++
 
@@ -165,7 +171,7 @@ func (p *Personnage) TheFourth(e3, e4, e5, e6 *Monstre, a *Equipement) {
 				p.exp += 30
 				p.UpgradeLevel()
 				time.Sleep(2 * time.Second)
-				break
+				break Loop
 			}
 			time.Sleep(1 * time.Second)
 			Slow("\nC'est à l'ennemi !\n", 2)
@@ -174,7 +180,7 @@ func (p *Personnage) TheFourth(e3, e4, e5, e6 *Monstre, a *Equipement) {
 				Slow(e6.name, 1)
 				Slow(" vous a battu", 1)
 				p.Dead(a)
-				break
+				break Loop
 			}
 			time.Sleep(3 * time.Second)
 		}

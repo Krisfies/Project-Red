@@ -47,18 +47,20 @@ type Monstre struct {
 
 func main() {
 	// fonction qui execute nos sous fonctions et rentre les valeur ainsi que le menu principal
+	fmt.Println("Les deux artistes sont ABBA et Spielberg")
 	var a Equipement
 	var p1 Personnage
-	fmt.Println("Les dexu artistes sont ABBA et Spielberg")
-	p1.CharCreation(&a)
 	var e3 Monstre
-	e3.InitGoblin("Python", 160, 8)
 	var e4 Monstre
-	e4.InitGoblin("Java", 200, 10)
 	var e5 Monstre
-	e5.InitGoblin("C++", 300, 15)
 	var e6 Monstre
+	var e7 Monstre
+	e3.InitGoblin("Python", 160, 8)
+	e4.InitGoblin("Java", 200, 10)
+	e5.InitGoblin("C++", 300, 15)
 	e6.InitGoblin("Golang", 400, 20)
+	p1.CharCreation(&a, &e6)
+	e7.InitGoblin("L'Homme en Jaune", 1000, 50)
 	Slow("Vous vous rendez sur la ", 1)
 	Slow(Yellow+"Place Principale"+Reset, 1)
 	time.Sleep(1 * time.Second)
@@ -68,5 +70,5 @@ func main() {
 	time.Sleep(1 * time.Second)
 	fmt.Printf(".")
 	time.Sleep(1 * time.Second)
-	p1.menu(&e3, &e4, &e5, &e6, &a)
+	p1.menu(&e3, &e4, &e5, &e6, &e7, &a)
 }
