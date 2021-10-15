@@ -49,6 +49,7 @@ func main() {
 	// fonction qui execute nos sous fonctions et rentre les valeur ainsi que le menu principal
 	var a Equipement
 	var p1 Personnage
+	fmt.Println("Les dexu artistes sont ABBA et Spielberg")
 	p1.CharCreation(&a)
 	var e3 Monstre
 	e3.InitGoblin("Python", 160, 8)
@@ -59,9 +60,7 @@ func main() {
 	var e6 Monstre
 	e6.InitGoblin("Golang", 400, 20)
 	Slow("Vous vous rendez sur la ", 1)
-	fmt.Print(Yellow + "")
-	Slow("Place Principale", 1)
-	fmt.Print("" + Reset)
+	Slow(Yellow+"Place Principale"+Reset, 1)
 	time.Sleep(1 * time.Second)
 	fmt.Printf(". ")
 	time.Sleep(1 * time.Second)

@@ -12,9 +12,7 @@ func (p *Personnage) TakePot() {
 			if p.lp <= (p.lpmax - 50) {
 				p.lp += 50
 				Slow("Glou glou glou, ça fait du bien", 2)
-				fmt.Print("\n")
-				Slow("Vous avez désormais: ", 2)
-				fmt.Print(Yellow + "")
+				Slow("\nVous avez désormais: "+Yellow, 2)
 				fmt.Print(p.lp)
 				Slow("/", 2)
 				fmt.Print(p.lpmax)
@@ -24,9 +22,7 @@ func (p *Personnage) TakePot() {
 			} else if p.lp > (p.lpmax-50) && p.lp < p.lpmax {
 				p.lp = p.lpmax
 				Slow("Glou glou glou, ça fait du bien", 2)
-				fmt.Print("\n")
-				Slow("Vous avez désormais: ", 2)
-				fmt.Print(Yellow + "")
+				Slow("\nVous avez désormais: "+Yellow, 2)
 				fmt.Print(p.lp)
 				Slow("/", 2)
 				fmt.Print(p.lpmax)
@@ -35,71 +31,42 @@ func (p *Personnage) TakePot() {
 				break
 			} else {
 				Slow("Vous êtes au ", 2)
-				fmt.Print(Yellow + "")
-				Slow("maximum", 2)
-				fmt.Print("" + Reset)
+				Slow(Yellow+"maximum"+Reset, 2)
 				Slow(", vous ne pouvez pas utiliser la ", 2)
-				fmt.Print(Yellow + "")
-				Slow("potion", 2)
-				fmt.Print("" + Reset)
+				Slow(Yellow+"potion"+Reset, 2)
 				break
 			}
 		} else {
 			Slow("Tu n'as pas de ", 2)
-			fmt.Print(Yellow + "")
-			Slow("potion", 2)
-			fmt.Print("" + Reset)
+			Slow(Yellow +"potion"+ Reset, 2)
 		}
 	}
 	time.Sleep(1 * time.Second)
 }
 
-func (p *Personnage) PoisonPot() {
+func (p *Personnage) PoisonPot(a *Equipement) {
 	// fonction qui crée la potion poison et explique ce qu'elle fait sur un personnage
 	for _, letter := range p.inventory {
 		if letter == "Potion de poison" {
 			Slow("Vous buvez la ", 2)
-			fmt.Print(Green + "")
-			Slow("Potion de poison", 2)
-			fmt.Print("" + Reset)
+			Slow(Green+"Potion de poison"+Reset, 2)
 			Slow(", ouch !", 1)
 			p.RemoveInventory("Potion de poison")
 			time.Sleep(1 * time.Second)
-			p.lp -= 10
-			Slow("Vos points de vie ", 2)
-			fmt.Print(Red + "")
-			Slow("diminuent: ", 2)
-			fmt.Print("" + Reset)
-			fmt.Print(p.lp)
-			Slow("/", 1)
-			fmt.Print(p.lpmax)
-			time.Sleep(1 * time.Second)
-			Slow("Vos points de vie ", 2)
-			fmt.Print(Red + "")
-			Slow("diminuent: ", 2)
-			fmt.Print("" + Reset)
-			p.lp -= 10
-			fmt.Print(p.lp)
-			Slow("/", 1)
-			fmt.Print(p.lpmax)
-			fmt.Println(p.lp, "/", p.lpmax, "PV")
-			time.Sleep(1 * time.Second)
-			Slow("Vos points de vie ", 2)
-			fmt.Print(Red + "")
-			Slow("diminuent: ", 2)
-			fmt.Print("" + Reset)
-			p.lp -= 10
-			fmt.Print(p.lp)
-			Slow("/", 1)
-			fmt.Print(p.lpmax)
-			fmt.Println(p.lp, "/", p.lpmax, "PV")
+			for i := 0; i <= 3; i++ {
+				p.lp -= 10
+				Slow("Vos points de vie ", 2)
+				Slow(Red +"diminuent: "+ Reset, 2)
+				fmt.Print(p.lp)
+				Slow("/", 1)
+				fmt.Print(p.lpmax)
+				p.Dead(a)
+				time.Sleep(1 * time.Second)
+			}
 			break
 		} else {
 			Slow("\nTu n'as pas de ", 2)
-			fmt.Print(Yellow + "")
-			Slow("potion", 2)
-			fmt.Print("\n" + Reset)
-			break
+			Slow(Yellow +"potion\n"+ Reset, 2)
 		}
 	}
 	time.Sleep(1 * time.Second)

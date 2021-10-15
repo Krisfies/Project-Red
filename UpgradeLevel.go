@@ -4,7 +4,7 @@ import "fmt"
 
 func (p *Personnage) UpgradeLevel() {
 	if p.exp >= p.expmax {
-		Slow("Bravo, vous passez au niveau "+Yellow,1)
+		Slow("\nBravo, vous passez au niveau "+Yellow,1)
 		p.level += 1
 		fmt.Print(p.level)
 		p.exp -= p.expmax
@@ -16,7 +16,7 @@ func (p *Personnage) UpgradeLevel() {
 		fmt.Print(p.lp, "/", p.lpmax)
 		p.damage += 2
 		Slow(Reset+"\nVos dégâts augmentent de ",1)
-		Slow(Yellow+"2"+Reset,1)
+		Slow(Yellow+"2\n"+Reset,1)
 		p.expmax += 5
 	}
 }

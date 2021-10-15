@@ -33,26 +33,19 @@ func (p *Personnage) TheFirst(e3, e4, e5, e6 *Monstre, a *Equipement) {
 			for i := 0; i <= 9999; i++ {
 				turn++
 				os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-				Slow("Tour", 1)
+				Slow("Tour ", 1)
 				fmt.Println(turn)
-				Slow("C'est au joueur !", 2)
-				Slow("Il reste ",1)
-				fmt.Print(e3.lp)
-				Slow("/",1)
-				fmt.Print(e3.lpmax)
-				Slow(" PV à ",1)
-				Slow(e3.name,1)
-				p.CharTurn(e3)
+				p.CharTurn(e3, a)
 				if e3.lp <= 0 {
 					Slow("\nVous avez vaincu le Grand ", 1)
 					Slow(e3.name, 1)
 					Slow(" !", 1)
-					Slow("Vous gagnez ",1)
+					Slow("\nVous gagnez ",1)
 					Slow(Yellow+"15 points d'expérience"+Reset,2)
 					p.exp += 15
 					p.UpgradeLevel()
 					time.Sleep(2 * time.Second)
-					break
+					p.TheSecond(e3, e4, e5, e6, a)
 				}
 				time.Sleep(1 * time.Second)
 				Slow("\nC'est à l'ennemi !\n", 2)
@@ -82,26 +75,19 @@ func (p *Personnage) TheSecond(e3, e4, e5, e6 *Monstre, a *Equipement) {
 			turn2++
 
 			os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-			Slow("Tour", 2)
+			Slow("Tour ", 2)
 			fmt.Print(turn2)
-			Slow("\nC'est au joueur !", 2)
-			Slow("Il reste ",1)
-			fmt.Print(e4.lp)
-			Slow("/",1)
-			fmt.Print(e4.lpmax)
-			Slow(" PV à ",1)
-			Slow(e4.name,1)
-			p.CharTurn(e4)
+			p.CharTurn(e4,a)
 			if e4.lp <= 0 {
 				Slow("\nVous avez vaincu le Grand ", 1)
 				Slow(e4.name, 1)
 				Slow(" !", 1)
-				Slow("Vous gagnez ",1)
+				Slow("\nVous gagnez ",1)
 				Slow(Yellow+"20 points d'expérience"+Reset,2)
 				p.exp += 20
 				p.UpgradeLevel()
 				time.Sleep(2 * time.Second)
-				break
+				p.TheThird(e3, e4, e5, e6, a)
 			}
 			time.Sleep(1 * time.Second)
 			Slow("\nC'est à l'ennemi !\n", 2)
@@ -128,26 +114,19 @@ func (p *Personnage) TheThird(e3, e4, e5, e6 *Monstre, a *Equipement) {
 			turn3++
 
 			os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-			Slow("Tour", 2)
+			Slow("Tour ", 2)
 			fmt.Print(turn3)
-			fmt.Println("\nC'est au joueur !", 2)
-			Slow("Il reste ",1)
-			fmt.Print(e5.lp)
-			Slow("/",1)
-			fmt.Print(e5.lpmax)
-			Slow(" PV à ",1)
-			Slow(e5.name,1)
-			p.CharTurn(e5)
+			p.CharTurn(e5,a)
 			if e5.lp <= 0 {
 				Slow("\nVous avez vaincu le Grand ", 1)
 				Slow(e5.name, 1)
 				Slow(" !", 1)
-				Slow("Vous gagnez ",1)
+				Slow("\nVous gagnez ",1)
 				Slow(Yellow+"25 points d'expérience"+Reset,2)
 				p.exp += 25
 				p.UpgradeLevel()
 				time.Sleep(2 * time.Second)
-				break
+				p.TheFourth(e3, e4, e5, e6, a)
 			}
 			time.Sleep(1 * time.Second)
 			Slow("\nC'est à l'ennemi !\n", 2)
@@ -157,7 +136,6 @@ func (p *Personnage) TheThird(e3, e4, e5, e6 *Monstre, a *Equipement) {
 				Slow(" vous a battu", 1)
 				p.Dead(a)
 				break
-
 			}
 			time.Sleep(3 * time.Second)
 		}
@@ -175,22 +153,14 @@ func (p *Personnage) TheFourth(e3, e4, e5, e6 *Monstre, a *Equipement) {
 			turn4++
 
 			os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
-
-			Slow("Tour", 2)
+			Slow("Tour ", 2)
 			fmt.Println(turn4)
-			Slow("C'est au joueur !", 2)
-			Slow("Il reste ",1)
-			fmt.Print(e6.lp)
-			Slow("/",1)
-			fmt.Print(e6.lpmax)
-			Slow(" PV à ",1)
-			Slow(e6.name,1)
-			p.CharTurn(e6)
+			p.CharTurn(e6,a)
 			if e6.lp <= 0 {
 				Slow("Vous avez vaincu Golang, le plus Grand des Grands.\n", 1)
 				Slow("Dans son dernier souffle il lâche quelque chose, vous le ramassez.", 4)
 				p.AddInventory("Objet suspicieux", 0)
-				Slow("Vous gagnez ",1)
+				Slow("\nVous gagnez ",1)
 				Slow(Yellow+"30 points d'expérience"+Reset,2)
 				p.exp += 30
 				p.UpgradeLevel()

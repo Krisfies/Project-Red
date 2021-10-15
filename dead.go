@@ -3,27 +3,21 @@ package main
 import (
 	"fmt"
 	"time"
+	"os"
 )
 
 func (p *Personnage) Dead(a *Equipement) {
 	// fonction qui verifie si le personnage est mort et le ressucite a la moitié de ses pv
-	if p.lp == 0 {
+	if p.lp <= 0 {
+		os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
 		Slow("Bravo, vous êtes ", 1)
-		fmt.Print(Red + "")
-		Slow("mort.", 1)
-		fmt.Print("" + Reset)
-		fmt.Print("\n")
+		Slow(Red+"mort."+Reset, 1)
 		time.Sleep(1 * time.Second)
-		Slow("Mais ne paniquez pas, vous allez être ", 1)
-		fmt.Print(Yellow + "")
-		Slow("ressucité", 1)
-		fmt.Print("" + Reset)
-		fmt.Print("\n")
+		Slow("\nMais ne paniquez pas, vous allez être ", 1)
+		Slow(Yellow+"ressucité"+Reset, 1)
 		time.Sleep(1 * time.Second)
-		Slow("Manoeuvre de ", 1)
-		fmt.Print(Yellow + "")
-		Slow("réanimation ", 1)
-		fmt.Print("" + Reset)
+		Slow("\nManoeuvre de ", 1)
+		Slow(Yellow+"réanimation "+Reset, 1)
 		Slow("en cours", 1)
 		time.Sleep(1 * time.Second)
 		Slow(". ", 1)

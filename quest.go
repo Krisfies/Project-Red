@@ -6,11 +6,11 @@ import (
 	"time"
 )
 
-func (p *Personnage) QuestMan(e3, e4, e5, e6 *Monstre) {
+func (p *Personnage) QuestMan(e3, e4, e5, e6 *Monstre, a *Equipement) {
 	os.Stdout.WriteString("\x1b[3;J\x1b[H\x1b[2J")
 	var choice int
 	if !p.Checkinv("Objet Suspicieux") {
-		if !p.Checkinv("Véritable Couteau") {
+		if !p.Checkinv("Véritable Couteau") || a.Arme == "Véritable Couteau" {
 				Slow(Yellow+"Bienvenue sur la Place Principale l'ami.\n"+Reset, 1)
 				Slow("(1) Lui demander son nom ?\n", 1)
 				Slow("(2) Lui demander ce qu'on fait la ?\n", 1)

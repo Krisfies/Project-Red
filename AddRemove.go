@@ -1,18 +1,12 @@
 package main
 
-import (
-	"fmt"
-)
-
 func (p *Personnage) AddInventory(item string, price int) {
 	if p.money >= price {
 		p.money -= price
 		p.inventory = append(p.inventory, item)
 	} else {
 		Slow("Tu n'as pas assez ", 2)
-		fmt.Print(Yellow + "")
-		Slow("d'argent ", 2)
-		fmt.Print("" + Reset)
+		Slow(Yellow+"d'argent "+Reset, 2)
 		Slow("pour acheter cet objet", 1)
 	}
 }

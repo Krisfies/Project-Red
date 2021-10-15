@@ -16,20 +16,18 @@ func (m *Monstre) InitGoblin(name string, lpmax int, attack int) {
 }
 
 func (p *Personnage) GoblinPattern(m *Monstre, att int) {
-	p.lp -= m.attack * att
+	damage := m.attack * att
+	p.lp -= damage
 	Slow(Yellow+m.name+ Reset, 2)
 	Slow(" attaque ", 2)
 	Slow(Yellow+p.name+Reset, 2)
-	Slow(" et lui inflige ", 2)
-	fmt.Print(Red+"")
-	fmt.Print(m.attack)
+	Slow(" et lui inflige "+Red, 2)
+	fmt.Print(damage)
 	Slow(" points de dégâts"+Reset,2)
-	Slow(", il lui reste ", 2)
-	fmt.Print(Yellow+"")
+	Slow(", il lui reste "+Yellow, 2)
 	fmt.Print(p.lp)
 	Slow(" points de vies "+Reset,2)
-	Slow("sur un total de ", 2)
-	fmt.Print(Yellow+"")
+	Slow("sur un total de "+Yellow, 2)
 	fmt.Print(p.lpmax)
 	fmt.Println(""+Reset)
 }
@@ -37,8 +35,10 @@ func (p *Personnage) GoblinPattern(m *Monstre, att int) {
 func (p *Personnage) TrainingFight(a *Equipement) {
 	var e1 Monstre
 	var e2 Monstre
-	n := rand.Intn(5)
-	if n == 0 {
+	// var entier int 
+	n := rand.Intn(4)
+	fmt.Println(n)
+	if n == 3 {
 		Slow("Un mimic sauvage apparaît", 1)
 		time.Sleep(3 * time.Second)
 		var turn int
@@ -49,25 +49,19 @@ func (p *Personnage) TrainingFight(a *Equipement) {
 			Slow("Tour ", 1)
 			fmt.Print(turn)
 			time.Sleep(1 * time.Second)
-			Slow("\nC'est au joueur !", 1)
-			Slow("\nIl reste ",1)
-			fmt.Print(e2.lp)
-			Slow("/",1)
-			fmt.Print(e2.lpmax)
-			Slow(" PV à ",1)
-			Slow(e2.name,1)
-			p.CharTurn(&e2)
+			p.CharTurn(&e2,a)
 			if e2.lp <= 0 {
 				Slow("Vous avez vaincu le Mimic ", 1)
-				Slow("Vous gagnez ",1)
+				Slow("\nVous gagnez ",1)
 				Slow(Yellow+"10 points d'expérience"+Reset,2)
 				p.exp += 10
+				p.Loot()
 				p.UpgradeLevel()
 				time.Sleep(1 * time.Second)
 				
 				if !p.Checkinv("Véritable couteau") {
 					p.AddInventory("Véritable couteau", 0)
-					Slow("vous le fouillez et obtenez un objet étrange...", 5)
+					Slow("\nVous le fouillez et obtenez un objet étrange...", 5)
 					time.Sleep(3 * time.Second)
 				} else {
 					p.Loot()
@@ -76,7 +70,7 @@ func (p *Personnage) TrainingFight(a *Equipement) {
 				break
 			}
 			time.Sleep(1 * time.Second)
-			Slow("\nC'est à l'ennemi !\n", 2)
+			Slow("\n\nC'est à l'ennemi !\n", 2)
 			p.GoblinPattern(&e2, 1)
 			if p.lp <= 0 {
 				Slow(e2.name, 2)
@@ -99,18 +93,11 @@ func (p *Personnage) TrainingFight(a *Equipement) {
 			Slow("Tour ", 2)
 			fmt.Print(turn)
 			time.Sleep(1 * time.Second)
-			Slow("\nC'est au joueur !\n", 2)
-			Slow("Il reste ",1)
-			fmt.Print(e1.lp)
-			Slow("/",1)
-			fmt.Print(e1.lpmax)
-			Slow(" PV à ",1)
-			Slow(e1.name,1)
-			p.CharTurn(&e1)
+			p.CharTurn(&e1,a)
 			if e1.lp <= 0 {
 				Slow("Vous avez vaincu ", 2)
 				Slow(e1.name, 2)
-				Slow("Vous gagnez ",1)
+				Slow("\nVous gagnez ",1)
 				Slow(Yellow+"5 points d'expérience"+Reset,2)
 				p.exp += 5
 				p.Loot()
@@ -119,8 +106,8 @@ func (p *Personnage) TrainingFight(a *Equipement) {
 				break
 			}
 			time.Sleep(1 * time.Second)
-			Slow("C'est à l'ennemi !\n", 2)
-			if turn%3 == 3 || turn == 3 {
+			Slow("\n\nC'est à l'ennemi !\n", 2)
+			if turn%3 == 0 || turn == 3 {
 				p.GoblinPattern(&e1, 2)
 			} else {
 				p.GoblinPattern(&e1, 1)

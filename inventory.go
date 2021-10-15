@@ -16,9 +16,7 @@ func (p *Personnage) AccessInventory(e3, e4, e5, e6 *Monstre, a *Equipement) {
 	var Weapon bool = false
 	if len(p.inventory) == 0 {
 		Slow("\nLe sac est ", 1)
-		fmt.Print(Yellow + "")
-		Slow("vide", 1)
-		fmt.Print("" + Reset)
+		Slow(Yellow+"vide"+Reset, 1)
 	} else {
 		fmt.Print("\n")
 		for i := 0; i < len(p.inventory); i++ {
@@ -36,13 +34,13 @@ func (p *Personnage) AccessInventory(e3, e4, e5, e6 *Monstre, a *Equipement) {
 				if p.inventory[i] == "Livre de sort: Boule de Feu" {
 					FireBall = true
 				}
-				if p.inventory[i] == "Couronne en or" || p.inventory[i] == "Chapeau de paille" || p.inventory[i] == "Chapeau d'érudit" || p.inventory[i] == "Casque de mineur" || p.inventory[i] ==  "Bonnet de petite taille"{
+				if p.inventory[i] == "Couronne en or" || p.inventory[i] == "Chapeau de paille" || p.inventory[i] == "Chapeau d'érudit" || p.inventory[i] == "Casque de mineur" || p.inventory[i] ==  "Bonnet de petite taille" || p.inventory[i] == "Chapeau de l'aventurier" {
 					Hat = true
 				}
-				if p.inventory[i] == "Salopette rapiécée" || p.inventory[i] == "Cape en fourrure, ornée de cristaux" || p.inventory[i] == "Vieux manteau" || p.inventory[i] == "Robe de sage" || p.inventory[i] == "Veste abîmée" {
+				if p.inventory[i] == "Salopette rapiécée" || p.inventory[i] == "Cape en fourrure, ornée de cristaux" || p.inventory[i] == "Vieux manteau" || p.inventory[i] == "Robe de sage" || p.inventory[i] == "Veste abîmée" ||p.inventory[i] == "Tunique de l'Aventurier" {
 					Tunique = true
 				}
-				if p.inventory[i] == "Sabot renforcé" || p.inventory[i] == "Bottes en cuir" || p.inventory[i] == "Vieille claquette" || p.inventory[i] == "Chaussure pointue" || p.inventory[i] == "Sabot en boît" {
+				if p.inventory[i] == "Sabot renforcé" || p.inventory[i] == "Bottes en cuir" || p.inventory[i] == "Vieille claquette" || p.inventory[i] == "Chaussure pointue" || p.inventory[i] == "Sabot en boît" || p.inventory[i] == "Bottes de l'aventurier" {
 					Boots = true
 				}
 				if p.inventory[i] == "Véritable Couteau" {
@@ -107,9 +105,7 @@ func (p *Personnage) SuperAccessInventory(e3, e4, e5, e6 *Monstre, a *Equipement
 	var Weapon bool = false
 	if len(p.inventory) == 0 {
 		Slow("\nLe sac est ", 1)
-		fmt.Print(Yellow + "")
-		Slow("vide", 1)
-		fmt.Print("" + Reset)
+		Slow(Yellow+"vide"+Reset, 1)
 	} else {
 		fmt.Print("\n")
 		for i := 0; i < len(p.inventory); i++ {
@@ -141,7 +137,7 @@ func (p *Personnage) SuperAccessInventory(e3, e4, e5, e6 *Monstre, a *Equipement
 				}
 			}
 		}
-		fmt.Print("\n----------------\n")
+		fmt.Println("\n----------------")
 	}
 	if LifePotion {
 		fmt.Println(Yellow+"(1)"+Reset, "Prendre une", Yellow+"Potion de vie"+Reset)
@@ -164,7 +160,7 @@ func (p *Personnage) SuperAccessInventory(e3, e4, e5, e6 *Monstre, a *Equipement
 	if Weapon {
 		fmt.Println(Yellow+"(7)"+Reset, "Equiper une", Yellow+"Arme"+Reset)
 	}
-	fmt.Println("(0)"+Reset, "Arrêter de regarder dans le", Yellow+"Sac"+Reset, "\n----------------")
+	fmt.Println(Yellow+"(0)"+Reset, "Arrêter de regarder dans le", Yellow+"Sac"+Reset, "\n----------------")
 	p.UseInventory(e3, e4, e5, e6, a)
 }
 
@@ -177,14 +173,14 @@ func (p *Personnage) UseInventory(e3 , e4 , e5 , e6 *Monstre, a *Equipement) {
 		p.TakePot()
 		p.SuperAccessInventory(e3, e4, e5, e6, a)
 	case 2:
-		p.PoisonPot()
+		p.PoisonPot(a)
 		p.SuperAccessInventory(e3, e4, e5, e6, a)
 	case 3:
 		p.Spellbook(e3, e4, e5, e6, a, "Boule de Feu")
 		p.SuperAccessInventory(e3, e4, e5, e6, a)
 	case 4:
 		if p.Checkinv("Chapeau de l'aventurier") {
-			if a.EquipLpBonus("chapeau", p) {
+			if a.ExchangeEquip("chapeau", p) {
 				p.lp +=15
 				p.lpmax+= 15
 				Slow("Vous avez désormais +15 points de vies maximum avec le couvre chef !\n", 2)
@@ -197,7 +193,7 @@ func (p *Personnage) UseInventory(e3 , e4 , e5 , e6 *Monstre, a *Equipement) {
 		}
 	case 5:
 		if p.Checkinv("Tunique de l'Aventurier") {
-			if a.EquipLpBonus("tunique", p) {
+			if a.ExchangeEquip("tunique", p) {
 				p.lp +=20
 				p.lpmax+= 20
 				Slow("Vous avez désormais +20 points de vies maximum grâce a la tunique !\n", 2)
@@ -210,7 +206,7 @@ func (p *Personnage) UseInventory(e3 , e4 , e5 , e6 *Monstre, a *Equipement) {
 		}
 	case 6:
 		if p.Checkinv("Bottes de l'Aventurier") {
-			if a.EquipLpBonus("bottes",p) {
+			if a.ExchangeEquip("bottes",p) {
 				p.lp +=10
 				p.lpmax+= 10
 				Slow("Vous avez désormais +10 points de vies maximum grâce aux bottes !\n", 2)
